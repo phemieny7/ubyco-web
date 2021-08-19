@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { useRouter } from "next/router";
+import Image from 'next/image'
 // react plugin for creating charts
 import ChartistGraph from "react-chartist";
 // @material-ui/core
@@ -9,6 +10,8 @@ import Box from "@material-ui/core/Box";
 import GridList from "@material-ui/core/GridList";
 import GridListTile from "@material-ui/core/GridListTile";
 import ListSubheader from "@material-ui/core/ListSubheader";
+// import ImageList from '@material-ui/core/ImageList';
+// import ImageListItem from '@material-ui/core/ImageListItem';
 
 // @material-ui/icons
 
@@ -31,80 +34,61 @@ import CardAvatar from "components/Card/CardAvatar.js";
 import avatar from "assets/img/faces/marc.jpg";
 
 import styles from "assets/jss/nextjs-material-dashboard/views/dashboardStyle.js";
+import moment from 'moment'
+import Server from "../../api/Server";
+const token ="NA.8CLdZK2WVnNpzQkmCxXT22MKM9flWULai47qR_8TFvSR0iLdgVAxLKSpbMDI";
 
-function Id() {
+
+function Id(props) {
   const useStyles = makeStyles(styles);
   const classes = useStyles();
-  const router = useRouter();
-  const query = router.query.id;
+  const image = props.coin.receipt
+  const remove = image.substring(1, image.length-1);
+  const split = remove.split(",")
+  // const serve= Server`/tmp/coins/}`
+  // console.log(props.coin)
+  const Router = useRouter();
 
-  const [data, setData] = useState([
-    {
-      img: [],
-      comment: "All this card is itunes",
-      brand: "Apple",
-      card: "Itunes 200-400",
-      amount: 300,
-      user: {
-        name: "Femi Oyewo",
-        amount: 30000,
-      },
-    },
-  ]);
-
-  console.log(data);
   return (
     <>
-      {data.map((tile) => (
         <GridContainer>
           <GridItem xs={12} sm={12} md={8}>
             <Card>
               <CardHeader color="primary">
-                <h4 className={classes.cardTitleWhite}>Gift Card Rate</h4>
+                <h4 className={classes.cardTitleWhite}>Trade</h4>
                 <p className={classes.cardCategoryWhite}>
                   List of Gift Card Rate
                 </p>
               </CardHeader>
               <CardBody>
-                <GridList cellHeight={180} className={classes.gridList}>
-                  <GridListTile
-                    key="Subheader"
-                    cols={2}
-                    style={{ height: "auto" }}
-                  >
-                    <ListSubheader component="div">December</ListSubheader>
-                  </GridListTile>
-
-                  <div>
-                    <GridListTile key={tile.img}>
-                      <img src={tile.img} alt={tile.title} />
-                    </GridListTile>
-                    <p>Comnent : {tile.comment}</p>
-                    <p>Brand: {tile.brand}</p>
-                    <p>Amount: {tile.amount}</p>
-                    <p>Card: {tile.card}</p>
-                  </div>
-                </GridList>
+              <GridItem xs={6} sm={6} md={4}>
+                <img src={avatar}/>
+              </GridItem>
+              <GridItem xs={6} sm={6} md={4}>
+                <img src={avatar}/>
+              </GridItem>
+   
+             
+                
               </CardBody>
 
               <CardFooter>
-              <GridItem xs={12} sm={12} md={4}>
-              <Button color="success" round>
-                  Complete trade
-                </Button>
-              </GridItem>
-
-              <GridItem xs={12} sm={12} md={4}>
-              <Button color="warning" round>
-                  Flag Trade
-              </Button>
-              </GridItem>
-
-              <GridItem xs={12} sm={12} md={4}>
-              <Button color="danger" round>
-                 Fault Trade
-                </Button>
-              </GridItem>
+              {props.coin.status_name.name == 'pending' ?
+              <>
+                  <GridItem xs={12} sm={12} md={4}>
+                  <Button color="warning" round>
+                      Flag Trade
+                  </Button>
+                  </GridItem>
+                   <GridItem xs={12} sm={12} md={4}>
+                   <Button color="danger" round>
+                      Fault Trade
+                     </Button>
+                   </GridItem>
+              </> : 'Trade Completed'
+              
+              }
+              
               </CardFooter>
             </Card>
           </GridItem>
@@ -117,20 +101,37 @@ function Id() {
                 </a>
               </CardAvatar>
               <CardBody profile>
-                <h4 className={classes.cardTitle}>{tile.user.name}</h4>
-                <h4 className={classes.cardTitle}> Available amount: {tile.user.amount}</h4>
-                <Button color="primary" round>
+                <h4 className={classes.cardTitle}>{props.coin.user.fullname}</h4>
+                <h4 className={classes.cardTitle}> Total amount: {props.coin.total}</h4>
+                <Button color="primary" round  onClick={() => Router.push(`/admin/users/${props.coin.user_id}`)}>
                   View Profile
                 </Button>
               </CardBody>
             </Card>
           </GridItem>
         </GridContainer>
-      ))}
     </>
   );
 }
 
 Id.layout = Admin;
 
+export async function getServerSideProps(context) {
+  const id = context.params.id 
+  const coinData = await Server.get(`/admin/coin/${id}`,{
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+  
+
+  const coin = await coinData.data.message;
+  const image = await Server
+
+  return {
+    props: {
+     coin
+    },
+  };
+}
 export default Id;

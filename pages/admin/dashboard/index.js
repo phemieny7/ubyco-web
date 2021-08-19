@@ -13,10 +13,6 @@ import LocalOffer from "@material-ui/icons/LocalOffer";
 import Update from "@material-ui/icons/Update";
 import ArrowUpward from "@material-ui/icons/ArrowUpward";
 import AccessTime from "@material-ui/icons/AccessTime";
-import Accessibility from "@material-ui/icons/Accessibility";
-import BugReport from "@material-ui/icons/BugReport";
-import Code from "@material-ui/icons/Code";
-import Cloud from "@material-ui/icons/Cloud";
 // layout for this page
 import Admin from "layouts/Admin.js";
 // core components
@@ -31,6 +27,12 @@ import CardIcon from "components/Card/CardIcon.js";
 import CardBody from "components/Card/CardBody.js";
 import CardFooter from "components/Card/CardFooter.js";
 
+import { useSession, signOut } from 'next-auth/client'
+import { useRouter } from 'next/router'
+import { useEffect } from 'react'
+
+import Server from '../../api/Server'
+
 import { bugs, website, server } from "variables/general.js";
 
 import {
@@ -41,9 +43,17 @@ import {
 
 import styles from "assets/jss/nextjs-material-dashboard/views/dashboardStyle.js";
 
-function Dashboard() {
+function Dashboard(props) {
   const useStyles = makeStyles(styles);
   const classes = useStyles();
+  const [session, loading] = useSession()
+	const router = useRouter()
+	console.log(!session?.accessToken, loading)
+	useEffect(() => {
+		if(!loading && !session?.accessToken) {
+			router.push('/login')
+		}
+	}, [loading, session])
   return (
     <div>
       <GridContainer>
@@ -55,7 +65,7 @@ function Dashboard() {
               </CardIcon>
               <p className={classes.cardCategory}>Users</p>
               <h3 className={classes.cardTitle}>
-                200
+                {props.user_count}
               </h3>
             </CardHeader>
             <CardFooter stats>
@@ -77,7 +87,7 @@ function Dashboard() {
                 <Store />
               </CardIcon>
               <p className={classes.cardCategory}>Revenue</p>
-              <h3 className={classes.cardTitle}>&#8358; 34,245</h3>
+              <h3 className={classes.cardTitle}>&#8358; {props.revenue}</h3>
             </CardHeader>
             <CardFooter stats>
               <div className={classes.stats}>
@@ -94,7 +104,7 @@ function Dashboard() {
                 <Icon>info_outline</Icon>
               </CardIcon>
               <p className={classes.cardCategory}>Pending Trades</p>
-              <h3 className={classes.cardTitle}>75</h3>
+              <h3 className={classes.cardTitle}>{props.pending}</h3>
             </CardHeader>
             <CardFooter stats>
               <div className={classes.stats}>
@@ -171,20 +181,17 @@ function Dashboard() {
           <Card>
             <CardHeader color="danger">
               <h4 className={classes.cardTitleWhite}>Gift Card Rates</h4>
-              <p className={classes.cardCategoryWhite}>
+              {/* <p className={classes.cardCategoryWhite}>
                Last Updated 2 days ago
-              </p>
+              </p> */}
             </CardHeader>
             <CardBody>
               <Table
                 tableHeaderColor="warning"
-                tableHead={["ID", "Brand", "Card", "Rate"]}
-                tableData={[
-                  ["1", "Apple", "Itunes Card 100 - 200", "400"],
-                  ["2", "Google", "Google Play", "200"],
-                  ["3", "Vanila Card", "Vanilla 200", "300"],
-                  ["4", "Apple", "Itunes 400- 1000", "390"],
-                ]}
+                tableHead={["ID", "Brand", "Rate"]}
+                tableData={
+                  props.cardRate.map((name) => [name.id, name.name, name.rate]).sort()
+                }
               />
             </CardBody>
           </Card>
@@ -194,20 +201,14 @@ function Dashboard() {
           <Card>
             <CardHeader color="warning">
               <h4 className={classes.cardTitleWhite}>Crypto Exchange Rate</h4>
-              <p className={classes.cardCategoryWhite}>
-                Last Updated 2 days ago
-              </p>
             </CardHeader>
             <CardBody>
               <Table
                 tableHeaderColor="warning"
                 tableHead={["ID", "Coins", "Rate"]}
-                tableData={[
-                  ["1", "BTC", "500"],
-                  ["2", "Litecoin", "350"],
-                  ["3", "Dodgecoin", "430"],
-                  ["4", "Etherum", "560"],
-                ]}
+                tableData={
+                  props.coinRate.map((name) => [name.id, name.name, name.rate]).sort()
+                }
               />
             </CardBody>
           </Card>
@@ -219,5 +220,69 @@ function Dashboard() {
 }
 
 Dashboard.layout = Admin;
+
+export async function getStaticProps(){
+  const token = 'NA.8CLdZK2WVnNpzQkmCxXT22MKM9flWULai47qR_8TFvSR0iLdgVAxLKSpbMDI'
+  const userData = await Server.get('/admin/user',{
+    headers: {
+      'Authorization': `Bearer ${token}`,
+  }
+  })
+
+  //fetch revenue
+  const revenueData = await Server.get('/admin/revenue', {
+    headers: {
+      'Authorization': `Bearer ${token}`,
+  }
+  })
+  //pending counter
+  const pendingData = await Server.get('/admin/pending-trade', {
+    headers: {
+      'Authorization': `Bearer ${token}`,
+  }
+  })
+
+  //card  grapht data
+  const cardGraphData = await Server.get('/admin/weekly-card-exchange', {
+      headers: {
+        'Authorization': `Bearer ${token}`,
+    }
+  })
+
+  //card rate data
+  const cardRateData = await Server.get('/admin/card_rate', {
+    headers: {
+      'Authorization': `Bearer ${token}`,
+    }
+  })
+
+  //card rate data
+  const coinRateData = await Server.get('/admin/coin_rate', {
+    headers: {
+      'Authorization': `Bearer ${token}`,
+    }
+  })
+
+  const user = await userData.data.message
+  const revenue = await revenueData.data.message
+  const pending = await pendingData.data.message
+  const cardGraph = await cardGraphData.data.message
+  const cardRate = await cardRateData.data.message
+  const coinRate = await coinRateData.data.message
+
+  // const cardGraphString= JSON.stringify(cardGraph)
+ 
+  return {
+    props: {
+      user_count : user.length,
+      revenue,
+      pending,
+      cardGraph,
+      cardRate,
+      coinRate,
+    },
+    revalidate: 10
+  };
+}
 
 export default Dashboard;

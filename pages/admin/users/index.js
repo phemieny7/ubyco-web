@@ -1,55 +1,47 @@
 import React, { useState } from "react";
 import MaterialTable from "material-table";
 import Router from "next/router";
+import axios from "axios";
 
 // @material-ui/core
 import { makeStyles } from "@material-ui/core/styles";
 import Icon from "@material-ui/core/Icon";
 // @material-ui/icons
-import Success from "components/Typography/Success.js"
+import Success from "components/Typography/Success.js";
 // layout for this page
 import Admin from "layouts/Admin.js";
 // core components
 import GridItem from "components/Grid/GridItem.js";
 import GridContainer from "components/Grid/GridContainer.js";
-
 import Card from "components/Card/Card.js";
-
 import CardHeader from "components/Card/CardHeader.js";
 import CardBody from "components/Card/CardBody.js";
 import CardFooter from "components/Card/CardFooter.js";
+import Server from "../../api/Server";
 
 import styles from "assets/jss/nextjs-material-dashboard/views/dashboardStyle.js";
+const token ="NA.8CLdZK2WVnNpzQkmCxXT22MKM9flWULai47qR_8TFvSR0iLdgVAxLKSpbMDI";
 
-function Users() {
-  const [data, setData] = useState([
-    { 
-      id:1,
-      fullname: "oyewo oluwafemi", 
-      customer_id: "1012321232",
-      phone: '08034605723',
-      amount: 2000,
-      status: 1
-    },
-    { 
-      id:2,
-      fullname: "Olaiya Ajao", 
-      customer_id: "1012321232",
-      phone: '08034605723',
-      amount: 2000,
-      status: 1
-    },
-    { 
-      id:3,
-      fullname: "Oghogho Zino", 
-      customer_id: "1012321232",
-      phone: '08034605723',
-      amount: 2000,
-      status: 1
-    },
-  ]);
+function Users(props) {
   const useStyles = makeStyles(styles);
+  const [data, setData] = React.useState(props.user);
   const classes = useStyles();
+  const updateStatus = async () => {
+    const res = await fetch('/api/user_status', {
+      body: props.user.id
+    },{
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      method: 'PUT'
+    })
+
+    const result = await res.json()
+    console.log(result)
+  }
+
+    
+  
   return (
     <GridContainer>
       <GridItem xs={12} sm={12} md={12}>
@@ -64,38 +56,51 @@ function Users() {
                 {
                   title: "Name",
                   field: "fullname",
-                  editable: 'never',
-
+                  editable: "never",
                 },
-                { title: "Customer ID", field: "customer_id", editable: 'never' },
-                { title: "Phone", field: "phone", editable: 'never' },
-                {title: "Status", field: "status", lookup:{1: "Active", 2:"Banned"}},
-                { title: "Available Amount", field: "amount", editable: 'never'},
+                {
+                  title: "Customer ID",
+                  field: "customer_id",
+                  editable: "never",
+                },
+                { title: "Phone", field: "phone", editable: "never" },
+                {
+                  title: "Status",
+                  field: "banned",
+                  lookup: { false: "Active", true: "Banned" },
+                },
+                {
+                  title: "Available Amount",
+                  field: "userAmount.amount",
+                  editable: "never",
+                },
               ]}
               data={data}
               title=""
               editable={{
-                onRowUpdate: (newData, oldData) =>
+                onRowUpdate:(newData, oldData) =>
                   new Promise((resolve, reject) => {
-                    setTimeout(() => {
+                    setTimeout(async() => {
+                      
                       const dataUpdate = [...data];
                       const index = oldData.tableData.id;
                       dataUpdate[index] = newData;
                       setData([...dataUpdate]);
-        
                       resolve();
-                    }, 1000)
+                      updateStatus()
+                    }, 1000);
                   }),
               }}
-              actions= {[
+              actions={[
                 {
-                  icon: 'visibility',
-                  tooltip: 'View User',
-                  onClick: (event, rowData) => Router.push(`/admin/users/${rowData.id}`)
-                }
+                  icon: "visibility",
+                  tooltip: "View User",
+                  onClick: (event, rowData) =>
+                    Router.push(`/admin/users/${rowData.id}`),
+                },
               ]}
               options={{
-                actionsColumnIndex: -1
+                actionsColumnIndex: -1,
               }}
             />
           </CardBody>
@@ -116,5 +121,21 @@ function Users() {
 }
 
 Users.layout = Admin;
+export async function getStaticProps() {
+  
+  const userData = await Server.get("/admin/user", {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
 
+  const user = await userData.data.message;
+
+  return {
+    props: {
+      user,
+    },
+    revalidate: 10,
+  };
+}
 export default Users;

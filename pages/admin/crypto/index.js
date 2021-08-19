@@ -22,34 +22,13 @@ import CardFooter from "components/Card/CardFooter.js";
 // import { bugs, website, server } from "variables/general.js";
 
 import MaterialTable from "material-table";
+import Server from '../../api/Server'
 
 import styles from "assets/jss/nextjs-material-dashboard/views/dashboardStyle.js";
 
-function Crypto() {
-  const [data, setData] = useState([
-    { 
-      id:1,
-      fullname: "oyewo oluwafemi", 
-      customer_id: "1012321232",
-      brand: 'Btc',
-      amount: 2000,
-    },
-    { 
-      id: 2,
-      fullname: "Olaiya Ajao", 
-      customer_id: "1012321232",
-      brand: 'Litecoin',
-      amount: 2020,
-    },
-    { 
-      id:3,
-      fullname: "Oghogho Zino", 
-      customer_id: "1012321232",
-      brand: 'DodgeCoin',
-      amount: 2000,
-    },
-  ]);
+function Crypto(props) {
   const useStyles = makeStyles(styles);
+  console.log(props.coin)
   const classes = useStyles();
   return (
     <div>
@@ -69,11 +48,11 @@ function Crypto() {
         </GridItem>
         <GridItem xs={12} sm={6} md={6}>
         <Card>
-            <CardBody color="warning" stats icon>
+            <CardBody color="warning">
               <Button
                 fullWidth
                 color="warning"
-                onClick={() => showNotification("tl")}
+                // onClick={() => showNotification("tl")}
               >
                Histroy
               </Button>
@@ -93,15 +72,13 @@ function Crypto() {
           <CardBody>
             <MaterialTable
               columns={[
-                {
-                  title: "Name",
-                  field: "fullname",
-                },
-                { title: "Customer ID", field: "customer_id" },
-                { title: "Brand", field: "brand"},
+                { title: "Customer ID", field: "user.customer_id" },
+                { title: "Brand", field: "coin.name"},
+                { title: "Rate", field: "coin.rate"},
+                { title: "Status", field: "status_name.name"},
                 { title: "Amount", field: "amount"},
               ]}
-              data={data}
+              data={props.coin}
               title=""
               actions={[
                 {
@@ -125,5 +102,23 @@ function Crypto() {
 }
 
 Crypto.layout = Admin;
+export async function getStaticProps(){
+  const token = 'NA.8CLdZK2WVnNpzQkmCxXT22MKM9flWULai47qR_8TFvSR0iLdgVAxLKSpbMDI'
+  const coinTransaction = await Server.get('/admin/coin',{
+    headers: {
+      'Authorization': `Bearer ${token}`,
+  }
+  })
 
+ 
+  const coin = await coinTransaction.data.message
+  // const cardGraphString= JSON.stringify(cardGraph)
+ 
+  return {
+    props: {
+      coin,
+    },
+    revalidate: 10
+  };
+}
 export default Crypto;

@@ -16,9 +16,18 @@ import Card from "components/Card/Card.js";
 import CardHeader from "components/Card/CardHeader.js";
 import CardAvatar from "components/Card/CardAvatar.js";
 import CardBody from "components/Card/CardBody.js";
+import Table from "components/Table/Table.js";
+
+
+
 import CardFooter from "components/Card/CardFooter.js";
+import MaterialTable from "material-table";
+import moment from 'moment'
 
 import avatar from "assets/img/faces/marc.jpg";
+import Server from "../../api/Server";
+const token ="NA.8CLdZK2WVnNpzQkmCxXT22MKM9flWULai47qR_8TFvSR0iLdgVAxLKSpbMDI";
+
 
 const styles = {
   cardCategoryWhite: {
@@ -39,138 +48,137 @@ const styles = {
   },
 };
 
-function UserProfile() {
+function UserProfile(props) {
   const useStyles = makeStyles(styles);
   const classes = useStyles();
+  console.log(props.user)
 
-  const router = useRouter();
-  const query = router.query.id;
-
-  const [data, setData] = useState("");
-  const list = [
-    {id: 1, value:'Btc'},
-    {id: 2, value:'Litecoin'},
-  ];
-
-  const handleChange = (event) => {
-    //const name = event.target.name;
-    setData(event.target.value);
-  };
   return (
     <div>
       <GridContainer>
         <GridItem xs={12} sm={12} md={8}>
           <Card>
             <CardHeader color="primary">
-              <h4 className={classes.cardTitleWhite}>Edit Profile</h4>
-              <p className={classes.cardCategoryWhite}>Complete your profile</p>
+              <h4 className={classes.cardTitleWhite}>{props.user.fullname} Profile</h4>
+              <p className={classes.cardCategoryWhite}>User available info</p>
             </CardHeader>
             <CardBody>
               <GridContainer>
                 <GridItem xs={12} sm={12} md={5}>
-                  <CustomInput
-                    labelText="Company (disabled)"
-                    id="company-disabled"
+                <CustomInput
+                    id="username"
+                    labelText="Fullname"
                     formControlProps={{
                       fullWidth: true,
                     }}
                     inputProps={{
                       disabled: true,
+                      value: props.user.fullname,                     
                     }}
                   />
                 </GridItem>
                 <GridItem xs={12} sm={12} md={3}>
                   <CustomInput
-                    labelText="Username"
+                    labelText="Phone"
                     id="username"
                     formControlProps={{
                       fullWidth: true,
                     }}
-                    value="Oyewo"
+                    inputProps={{
+                      disabled: true,
+                      value: props.user.phone,                     
+                    }}
                   />
                 </GridItem>
                 <GridItem xs={12} sm={12} md={4}>
                   <CustomInput
-                    labelText="Email address"
+                    labelText="Customer Id"
                     id="email-address"
                     formControlProps={{
                       fullWidth: true,
                     }}
-                  />
-                </GridItem>
-              </GridContainer>
-              <GridContainer>
-                <GridItem xs={12} sm={12} md={6}>
-                  <CustomSelect 
-                    labelText='Select A Card'
-                    value={data}
-                    onChange={handleChange}
-                   item = {list}
-                    formControlProps={{
-                      fullWidth: true,
-                    }}
-                    error
-                  />
-                </GridItem>
-                <GridItem xs={12} sm={12} md={6}>
-                  <CustomInput
-                    labelText="Last Name"
-                    id="last-name"
-                    formControlProps={{
-                      fullWidth: true,
-                    }}
-                  />
-                </GridItem>
-              </GridContainer>
-              <GridContainer>
-                <GridItem xs={12} sm={12} md={4}>
-                  <CustomInput
-                    labelText="City"
-                    id="city"
-                    formControlProps={{
-                      fullWidth: true,
-                    }}
-                  />
-                </GridItem>
-                <GridItem xs={12} sm={12} md={4}>
-                  <CustomInput
-                    labelText="Country"
-                    id="country"
-                    formControlProps={{
-                      fullWidth: true,
-                    }}
-                  />
-                </GridItem>
-                <GridItem xs={12} sm={12} md={4}>
-                  <CustomInput
-                    labelText="Postal Code"
-                    id="postal-code"
-                    formControlProps={{
-                      fullWidth: true,
+                    inputProps={{
+                      disabled: true,
+                      value: props.user.customer_id,                     
                     }}
                   />
                 </GridItem>
               </GridContainer>
               <GridContainer>
                 <GridItem xs={12} sm={12} md={12}>
-                  <InputLabel style={{ color: "#AAAAAA" }}>About me</InputLabel>
-                  <CustomInput
-                    labelText="Lamborghini Mercy, Your chick she so thirsty, I'm in that two seat Lambo."
-                    id="about-me"
-                    formControlProps={{
-                      fullWidth: true,
-                    }}
-                    inputProps={{
-                      multiline: true,
-                      rows: 5,
-                    }}
-                  />
+                <MaterialTable
+              columns={[
+                {
+                  title: "Card",
+                  field: "card_type_id",
+                  editable: "never",
+                },
+                {
+                  title: "Rate",
+                  field: "rate",
+                  editable: "never",
+                },
+                { title: "Amount", field: "amount", editable: "never" },
+                { title: "Date", field: `created_at`, render: rowData => moment(rowData.created_at).fromNow()},
+
+                {
+                  title: "Status",
+                  field: "status",
+                  lookup: { 1: "Pending", 2: "Processing", 3: "Closed", 4: "Flagged" },
+                },
+                {
+                  title: "Total",
+                  field: "total",
+                },
+              ]}
+              data={props.user.cardTransaction}
+              title="User Card Transactions"
+              options={{
+                actionsColumnIndex: -1,
+              }}
+            />
+                </GridItem>
+
+                <GridItem xs={12} sm={12} md={12}>
+                <MaterialTable
+              columns={[
+                {
+                  title: "Coin",
+                  field: "coin_id",
+                },
+                {
+                  title: "Rate",
+                  field: "rate",
+                },
+                { title: "Amount", field: "amount",},
+                { title: "Date", field: `created_at`, render: rowData => moment(rowData.created_at).fromNow()},
+
+                {
+                  title: "Status",
+                  field: "status",
+                  lookup: { 1: "Pending", 2: "Processing", 3: "Closed", 4: "Flagged" },
+                },
+                {
+                  title: "Total",
+                  field: "total",
+                },
+              ]}
+              data={props.user.coinTransaction}
+              title="User Crypto Transactions"
+              options={{
+                actionsColumnIndex: -1,
+              }}
+            />
                 </GridItem>
               </GridContainer>
+              
             </CardBody>
-            <CardFooter>
-              <Button color="primary">Update Profile</Button>
-            </CardFooter>
+            {/* <CardFooter>
+              {
+                props.user.banned == true ? <Button color="primary">Unbanned user</Button> : null
+              }
+             
+            </CardFooter> */}
           </Card>
         </GridItem>
         <GridItem xs={12} sm={12} md={4}>
@@ -181,24 +189,66 @@ function UserProfile() {
               </a>
             </CardAvatar>
             <CardBody profile>
-              <h6 className={classes.cardCategory}>CEO / CO-FOUNDER</h6>
-              <h4 className={classes.cardTitle}>Alec Thompson</h4>
+              <h6 className={classes.cardCategory}>Balance: N{props.user.userAmount.amount}</h6>
+              <h4 className={classes.cardTitle}>{props.user.fullname}</h4>
               <p className={classes.description}>
-                Don{"'"}t be scared of the truth because we need to restart the
-                human foundation in truth And I love you like Kanye loves Kanye
-                I love Rick Owens’ bed design but the back is...
+               { props.user.userAccount > 0 ? 
+                  props.user.userAccount.map((x) => {<li>{x.bank_name, x.bank_code}</li>}) :
+                  'User Has No Account Yet'
+                }
               </p>
-              <Button color="primary" round>
-                Follow
-              </Button>
+              
+              {
+                props.user.banned == true ? <Button color="primary" round>Unbanned user</Button> : null
+              }
+             
             </CardBody>
           </Card>
+
+         
+        <Card>
+            <CardHeader color="danger">
+              <h4 className={classes.cardTitleWhite}>All Withdrawals</h4>
+              {/* <p className={classes.cardCategoryWhite}>
+               Last Updated 2 days ago
+              </p> */}
+            </CardHeader>
+            <CardBody>
+              <Table
+                tableHeaderColor="warning"
+                tableHead={["Amount", "Status", "Date"]}
+                tableData={
+                  props.user.userWithdrawal.map((name) => [name.id, name.name, name.rate]).sort()
+                }
+              />
+            </CardBody>
+          </Card>
+        
         </GridItem>
+
+       
       </GridContainer>
     </div>
   );
 }
 
 UserProfile.layout = Admin;
+
+export async function getServerSideProps(context) {
+  const id = context.params.id 
+  const userData = await Server.get(`/admin/user/${id}`,{
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+
+  const user = await userData.data.message;
+
+  return {
+    props: {
+      user:user
+    },
+  };
+}
 
 export default UserProfile;
