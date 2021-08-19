@@ -13,7 +13,6 @@ import GridContainer from "components/Grid/GridContainer.js";
 import Card from "components/Card/Card.js";
 import CardBody from "components/Card/CardBody.js";
 import CardFooter from "components/Card/CardFooter.js";
-import { GiftedChat } from 'react-web-gifted-chat';
 
 // import { bugs, website, server } from "variables/general.js";
 
@@ -63,13 +62,7 @@ function Index() {
           <Card>
             <CardBody>
 
-            <GiftedChat
-                messages={message}
-                onSend={(messages) => onSend(messages)}
-                user={{
-                id: 1,
-                }}
-            />
+            
              
             </CardBody>
            </Card>
