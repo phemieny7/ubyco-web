@@ -20,14 +20,22 @@ export default function Login () {
 
   const handleLogin = (e) => {
     e.preventDefault()
+    setLoginError('')
     setIsLoginStarted(true)
     signIn('credentials',
       {
         email,
         password,
-        callbackUrl: `${window.location.origin}/welcome`
+        callbackUrl: `${window.location.origin}/web`
       }
-    )
+    ).then((res) => {
+        console.log('form::res -> ', res);
+        // router.back();
+      })
+      .catch((e) => {
+        console.log('form::e -> ', e);
+        setError('login error');
+      });
   }
 
   return (
@@ -40,11 +48,11 @@ export default function Login () {
           <h1>Welcome Back</h1>
           <form onSubmit={(e) => handleLogin(e)}>
             <label htmlFor='loginEmail'>Email</label>
-            <input id='loginEmail' type='email' value={email} onChange={(e) => setEmail(e.target.value)} />
+            <input id='loginEmail' type='email' value={email} onChange={(e) => setEmail(e.target.value)}/>
             <span>{loginError}</span>
             <label htmlFor='inputPassword'>Password</label>
             <input id='inputPassword' type='password' value={password} onChange={(e) => setPassword(e.target.value)} />
-            <button type='submit' disabled={isLoginStarted} >Log In</button>
+            <button type='submit' disabled={isLoginStarted}>Log In</button>
           </form>
         </div>
       </main>

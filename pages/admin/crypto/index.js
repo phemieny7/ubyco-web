@@ -22,7 +22,7 @@ import CardFooter from "components/Card/CardFooter.js";
 // import { bugs, website, server } from "variables/general.js";
 
 import MaterialTable from "material-table";
-import Server from '../../api/Server'
+import Server from '../../api/lib/Server'
 
 import styles from "assets/jss/nextjs-material-dashboard/views/dashboardStyle.js";
 
@@ -104,15 +104,11 @@ function Crypto(props) {
 Crypto.layout = Admin;
 export async function getStaticProps(){
   const token = 'NA.8CLdZK2WVnNpzQkmCxXT22MKM9flWULai47qR_8TFvSR0iLdgVAxLKSpbMDI'
-  const coinTransaction = await Server.get('/admin/coin',{
-    headers: {
-      'Authorization': `Bearer ${token}`,
-  }
-  })
+  const coinTransaction = await Server.get('/admin/coin')
 
  
   const coin = await coinTransaction.data.message
-  // const cardGraphString= JSON.stringify(cardGraph)
+
  
   return {
     props: {

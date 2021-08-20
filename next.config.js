@@ -10,4 +10,10 @@ module.exports = withPlugins([[withSass], [withImages], [withCSS]], {
     config.resolve.modules.push(path.resolve("./"));
     return config;
   },
+}, 
+{
+  images:{
+    loader:'custom',
+    path: 'https://http://42163adee1bf.ngrok.io/tmp/'
+  }
 });

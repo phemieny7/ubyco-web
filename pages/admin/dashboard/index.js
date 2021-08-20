@@ -27,11 +27,11 @@ import CardIcon from "components/Card/CardIcon.js";
 import CardBody from "components/Card/CardBody.js";
 import CardFooter from "components/Card/CardFooter.js";
 
-import { useSession, signOut } from 'next-auth/client'
-import { useRouter } from 'next/router'
-import { useEffect } from 'react'
+// import { useSession} from 'next-auth/client'
+// import { useRouter } from 'next/router'
+// import { useEffect } from 'react'
 
-import Server from '../../api/Server'
+import Server from '../../api/lib/Server'
 
 import { bugs, website, server } from "variables/general.js";
 
@@ -45,15 +45,7 @@ import styles from "assets/jss/nextjs-material-dashboard/views/dashboardStyle.js
 
 function Dashboard(props) {
   const useStyles = makeStyles(styles);
-  const classes = useStyles();
-  const [session, loading] = useSession()
-	const router = useRouter()
-	console.log(!session?.accessToken, loading)
-	useEffect(() => {
-		if(!loading && !session?.accessToken) {
-			router.push('/login')
-		}
-	}, [loading, session])
+  const classes = useStyles();	
   return (
     <div>
       <GridContainer>
@@ -222,46 +214,21 @@ function Dashboard(props) {
 Dashboard.layout = Admin;
 
 export async function getStaticProps(){
-  const token = 'NA.8CLdZK2WVnNpzQkmCxXT22MKM9flWULai47qR_8TFvSR0iLdgVAxLKSpbMDI'
-  const userData = await Server.get('/admin/user',{
-    headers: {
-      'Authorization': `Bearer ${token}`,
-  }
-  })
+  const userData = await Server.get('/admin/user');
 
   //fetch revenue
-  const revenueData = await Server.get('/admin/revenue', {
-    headers: {
-      'Authorization': `Bearer ${token}`,
-  }
-  })
+  const revenueData = await Server.get('/admin/revenue')
   //pending counter
-  const pendingData = await Server.get('/admin/pending-trade', {
-    headers: {
-      'Authorization': `Bearer ${token}`,
-  }
-  })
+  const pendingData = await Server.get('/admin/pending-trade')
 
   //card  grapht data
-  const cardGraphData = await Server.get('/admin/weekly-card-exchange', {
-      headers: {
-        'Authorization': `Bearer ${token}`,
-    }
-  })
+  const cardGraphData = await Server.get('/admin/weekly-card-exchange')
 
   //card rate data
-  const cardRateData = await Server.get('/admin/card_rate', {
-    headers: {
-      'Authorization': `Bearer ${token}`,
-    }
-  })
+  const cardRateData = await Server.get('/admin/card_rate')
 
   //card rate data
-  const coinRateData = await Server.get('/admin/coin_rate', {
-    headers: {
-      'Authorization': `Bearer ${token}`,
-    }
-  })
+  const coinRateData = await Server.get('/admin/coin_rate')
 
   const user = await userData.data.message
   const revenue = await revenueData.data.message

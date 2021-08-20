@@ -35,9 +35,7 @@ import avatar from "assets/img/faces/marc.jpg";
 
 import styles from "assets/jss/nextjs-material-dashboard/views/dashboardStyle.js";
 import moment from 'moment'
-import Server from "../../api/Server";
-const token ="NA.8CLdZK2WVnNpzQkmCxXT22MKM9flWULai47qR_8TFvSR0iLdgVAxLKSpbMDI";
-
+import Server from "../../api/lib/Server";
 
 function Id(props) {
   const useStyles = makeStyles(styles);
@@ -45,8 +43,7 @@ function Id(props) {
   const image = props.coin.receipt
   const remove = image.substring(1, image.length-1);
   const split = remove.split(",")
-  // const serve= Server`/tmp/coins/}`
-  // console.log(props.coin)
+  
   const Router = useRouter();
 
   return (
@@ -118,15 +115,11 @@ Id.layout = Admin;
 
 export async function getServerSideProps(context) {
   const id = context.params.id 
-  const coinData = await Server.get(`/admin/coin/${id}`,{
-    headers: {
-      Authorization: `Bearer ${token}`,
-    },
-  });
+  const coinData = await Server.get(`/admin/coin/${id}`);
   
 
   const coin = await coinData.data.message;
-  const image = await Server
+  // const image = await Server
 
   return {
     props: {

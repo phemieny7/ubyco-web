@@ -1,8 +1,6 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import MaterialTable from "material-table";
 import Router from "next/router";
-import axios from "axios";
-
 // @material-ui/core
 import { makeStyles } from "@material-ui/core/styles";
 import Icon from "@material-ui/core/Icon";
@@ -17,30 +15,28 @@ import Card from "components/Card/Card.js";
 import CardHeader from "components/Card/CardHeader.js";
 import CardBody from "components/Card/CardBody.js";
 import CardFooter from "components/Card/CardFooter.js";
-import Server from "../../api/Server";
+import Server from '../../api/lib/Server'
 
 import styles from "assets/jss/nextjs-material-dashboard/views/dashboardStyle.js";
-const token ="NA.8CLdZK2WVnNpzQkmCxXT22MKM9flWULai47qR_8TFvSR0iLdgVAxLKSpbMDI";
-
 function Users(props) {
   const useStyles = makeStyles(styles);
   const [data, setData] = React.useState(props.user);
   const classes = useStyles();
-  const updateStatus = async () => {
-    const res = await fetch('/api/user_status', {
-      body: props.user.id
-    },{
+  const updateStatus = async (id, status) => {
+    const res = await fetch('/api/user_status',{
+      body: JSON.stringify({
+        id,
+        status
+      }),
       headers: {
         'Content-Type': 'application/json'
       },
       method: 'PUT'
     })
+    // const result = await res.json()
 
-    const result = await res.json()
-    console.log(result)
+    // console.log(result.user)
   }
-
-    
   
   return (
     <GridContainer>
@@ -81,13 +77,15 @@ function Users(props) {
                 onRowUpdate:(newData, oldData) =>
                   new Promise((resolve, reject) => {
                     setTimeout(async() => {
-                      
                       const dataUpdate = [...data];
                       const index = oldData.tableData.id;
                       dataUpdate[index] = newData;
+                      const id = (dataUpdate[index].id)
+                      const status = (dataUpdate[index].banned)
+
                       setData([...dataUpdate]);
                       resolve();
-                      updateStatus()
+                      updateStatus(id, status)
                     }, 1000);
                   }),
               }}
@@ -123,11 +121,7 @@ function Users(props) {
 Users.layout = Admin;
 export async function getStaticProps() {
   
-  const userData = await Server.get("/admin/user", {
-    headers: {
-      Authorization: `Bearer ${token}`,
-    },
-  });
+  const userData = await Server.get("/admin/user");
 
   const user = await userData.data.message;
 
