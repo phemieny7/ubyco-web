@@ -20,34 +20,12 @@ import CardFooter from "components/Card/CardFooter.js";
 
 import styles from "assets/jss/nextjs-material-dashboard/views/dashboardStyle.js";
 
-function WithDrawal() {
-  const [data, setData] = useState([
-    { 
-      fullname: "oyewo oluwafemi", 
-      customer_id: "1012321232",
-      phone: '08034605723',
-      withdrawal_amount: 500,
-      status: 1,
-      amount: 2000,
-    },
-    { 
-      fullname: "Olaiya Ajao", 
-      customer_id: "1012321232",
-      phone: '08034605723',
-      withdrawal_amount: 700,
-      status: 1,
-      amount: 2000,
-    },
-    { 
-      fullname: "Oghogho Zino", 
-      customer_id: "1012321232",
-      phone: '08034605723',
-      status: 1,
-      withdrawal_amount: 600,
-      amount: 2000,
-    },
-  ]);
+import Server from "./../../api/lib/Server"
+import {useRouter} from 'next/router'
+function WithDrawal(props) {
+  const [data, setData] = useState(props.withdrawal);
   const useStyles = makeStyles(styles);
+  const Router = useRouter()
   const classes = useStyles();
   return (
     <GridContainer>
@@ -61,46 +39,33 @@ function WithDrawal() {
               columns={[
                 {
                   title: "Name",
-                  field: "fullname",
+                  field: "user.fullname",
                   editable: 'never',
                 },
-                { title: "Customer ID", field: "customer_id", editable: 'never', },
-                { title: "Phone", field: "phone", editable: 'never', },
-                { title: "Available Amount", field: "amount", editable: 'never',},
-                {title: "Withdraw Request", field:'withdrawal_amount', editable: 'never',},
-                {title: "status", field:"status", lookup:{1:"pending", 2:"processing", 3:"success"}}
+                { title: "Customer ID", field: "user.customer_id", editable: 'never', },
+                { title: "Phone", field: "user.phone", editable: 'never', },
+                { title: "Available Amount", field: "userAmount.amount", editable: 'never',},
+                {title: "Withdraw Request", field:'amount', editable: 'never',},
+                {title: "status", field:"status_name.name"}
               ]}
               data={data}
               title=""
-              editable={{
-                onRowUpdate: (newData, oldData) =>
-                  new Promise((resolve, reject) => {
-                    setTimeout(() => {
-                      const dataUpdate = [...data];
-                      const index = oldData.tableData.id;
-                      dataUpdate[index] = newData;
-                      setData([...dataUpdate]);
-        
-                      resolve();
-                    }, 1000)
-                  }),
-              }}
+
+              actions={[
+                {
+                  icon: "visibility",
+                  tooltip: "View User",
+                  onClick: (event, rowData) =>
+                    Router.push(`/admin/withdrawal/${rowData.id}`),
+                },
+              ]}
              
               options={{
                 actionsColumnIndex: -1
               }}
             />
           </CardBody>
-          {/* <CardFooter stats>
-              <div className={classes.stats}>
-                <Success>
-                  <ArrowUpward />
-                </Success>
-                <a href="#pablo" onClick={(e) => e.preventDefault()}>
-                  up by 5% today
-                </a>
-              </div>
-            </CardFooter> */}
+         
         </Card>
       </GridItem>
     </GridContainer>
@@ -109,4 +74,17 @@ function WithDrawal() {
 
 WithDrawal.layout = Admin;
 
+export async function getStaticProps() {
+  
+  const userData = await Server.get("/admin/withdrawal");
+
+  const withdrawal = await userData.data.message;
+
+  return {
+    props: {
+      withdrawal,
+    },
+    revalidate: 10,
+  };
+}
 export default WithDrawal;

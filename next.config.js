@@ -12,8 +12,7 @@ module.exports = withPlugins([[withSass], [withImages], [withCSS]], {
   },
 }, 
 {
-  images:{
-    loader:'custom',
-    path: 'https://http://42163adee1bf.ngrok.io/tmp/'
-  }
+  env: {
+    server: 'http://ffd0-105-112-63-114.ngrok.io',
+  },
 });

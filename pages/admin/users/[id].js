@@ -17,16 +17,12 @@ import CardHeader from "components/Card/CardHeader.js";
 import CardAvatar from "components/Card/CardAvatar.js";
 import CardBody from "components/Card/CardBody.js";
 import Table from "components/Table/Table.js";
-
-
-
 import CardFooter from "components/Card/CardFooter.js";
 import MaterialTable from "material-table";
 import moment from 'moment'
 
 import avatar from "assets/img/faces/marc.jpg";
-import Server from "../../api/Server";
-const token ="NA.8CLdZK2WVnNpzQkmCxXT22MKM9flWULai47qR_8TFvSR0iLdgVAxLKSpbMDI";
+import Server from "../../api/lib/Server";
 
 
 const styles = {
@@ -51,7 +47,18 @@ const styles = {
 function UserProfile(props) {
   const useStyles = makeStyles(styles);
   const classes = useStyles();
-  console.log(props.user)
+  const unbanned = async()=> {
+    const res = await fetch('/api/user_status',{
+      body: JSON.stringify({
+        id: props.user.id,
+        status: false
+      }),
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      method: 'PUT'
+    })
+  } 
 
   return (
     <div>
@@ -199,9 +206,9 @@ function UserProfile(props) {
               </p>
               
               {
-                props.user.banned == true ? <Button color="primary" round>Unbanned user</Button> : null
+                props.user.banned == true ? <Button color="primary" round onClick={unbanned}>Unbanned user</Button> : null
               }
-             
+             --
             </CardBody>
           </Card>
 
@@ -218,7 +225,7 @@ function UserProfile(props) {
                 tableHeaderColor="warning"
                 tableHead={["Amount", "Status", "Date"]}
                 tableData={
-                  props.user.userWithdrawal.map((name) => [name.id, name.name, name.rate]).sort()
+                  props.user.userWithdrawal.map((name) => [name.amount, name.status, moment(name.created_at).fromNow()]).sort()
                 }
               />
             </CardBody>
@@ -236,11 +243,7 @@ UserProfile.layout = Admin;
 
 export async function getServerSideProps(context) {
   const id = context.params.id 
-  const userData = await Server.get(`/admin/user/${id}`,{
-    headers: {
-      Authorization: `Bearer ${token}`,
-    },
-  });
+  const userData = await Server.get(`/admin/user/${id}`);
 
   const user = await userData.data.message;
 

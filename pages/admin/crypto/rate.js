@@ -17,6 +17,8 @@ import CardAvatar from "components/Card/CardAvatar.js";
 import CardBody from "components/Card/CardBody.js";
 import CardFooter from "components/Card/CardFooter.js";
 
+import Server from '../../api/lib/Server'
+
 import avatar from "assets/img/faces/marc.jpg";
 
 const styles = {
@@ -38,27 +40,10 @@ const styles = {
   },
 };
 
-function Rate() {
+function Rate(props) {
   const useStyles = makeStyles(styles);
   const classes = useStyles();
-  const [data, setData] = useState("");
-  const [card, setCard] = useState([
-    { id: 1, brand: 1,  rate: "350" },
-    { id: 2, brand: 2, rate: "450" },
-  ]);
-  const [brand, setBrand] = useState([
-    { id: 1, brand: "Bitcoin"},
-    { id: 2, brand: "Litecoin"},
-  ]);
-  const list = [
-    { id: 1, value: "Btc" },
-    { id: 2, value: "Litecoin" },
-  ];
-
-  const handleChange = (event) => {
-    //const name = event.target.name;
-    setData(event.target.value);
-  };
+  const [data, setData] = React.useState(props.coinRate);
   return (
     <div>
       <GridContainer>
@@ -69,47 +54,32 @@ function Rate() {
               <p className={classes.cardCategoryWhite}>List of Crypto Rate</p>
             </CardHeader>
             <CardBody>
-              <MaterialTable
+            <MaterialTable
                 columns={[
                   {
                     title: "Coin Brand",
-                    field: "brand",
-                    lookup: { 1: 'Bitcoin', 2: 'Litecoin'}
+                    field: "name",
+                    editable: 'never',
                   },
-                  { title: "Rate", field: "rate" },
+                  {
+                    title: "Rate",
+                    field: "rate",
+                  },
                 ]}
-                data={card}
+                data={data}
                 title=""
                 editable={{
-                  onRowAdd: newData =>
-                    new Promise((resolve, reject) => {
-                      setTimeout(() => {
-                        setCard([...card, newData]);
-                        
-                        resolve();
-                      }, 1000)
-                    }),
                   onRowUpdate: (newData, oldData) =>
                     new Promise((resolve, reject) => {
                       setTimeout(() => {
-                        const dataUpdate = [...card];
+                        const dataUpdate = [...data];
                         const index = oldData.tableData.id;
                         dataUpdate[index] = newData;
-                        setCard([...dataUpdate]);
-          
+                        console.log(dataUpdate[index])
+                        setData([...dataUpdate]);
                         resolve();
                       }, 1000)
-                    }),
-                  onRowDelete: oldData =>
-                    new Promise((resolve, reject) => {
-                      setTimeout(() => {
-                        const dataDelete = [...card];
-                        const index = oldData.tableData.id;
-                        dataDelete.splice(index, 1);
-                        setCard([...dataDelete]);
-                        resolve()
-                      }, 1000)
-                    }),
+                    })
                 }}
                 options={{
                   actionsColumnIndex: -1,
@@ -129,18 +99,17 @@ function Rate() {
                 columns={[
                   {
                     title: "Brand",
-                    field: "brand",
-                  },
-                  { title: "Counts", field: "count", editable: 'never', initialEditValue: '0' },
+                    field: "name",
+                  }
                 ]}
-                data={brand}
+                data={data}
                 title=""
                 editable={{
                   onRowAdd: newData =>
                     new Promise((resolve, reject) => {
                       setTimeout(() => {
-                        setBrand([...brand, newData]);
-                        
+                        setData([...data, newData]);
+                        console.log(newData.name)
                         resolve();
                       }, 1000)
                     }),
@@ -158,10 +127,10 @@ function Rate() {
                   onRowDelete: oldData =>
                     new Promise((resolve, reject) => {
                       setTimeout(() => {
-                        const dataDelete = [...brand];
+                        const dataDelete = [...data];
                         const index = oldData.tableData.id;
                         dataDelete.splice(index, 1);
-                        setBrand([...dataDelete]);
+                        setData([...dataDelete]);
                         resolve()
                       }, 1000)
                     }),
@@ -180,4 +149,15 @@ function Rate() {
 
 Rate.layout = Admin;
 
+export async function getStaticProps(){
+  const coin = await Server.get('/user/coin')
+  const coinRate = coin.data.message
+  console.log(coinRate)
+  return {
+    props: {
+      coinRate,
+    },
+    revalidate: 10
+  };
+}
 export default Rate;

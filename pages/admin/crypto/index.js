@@ -103,13 +103,8 @@ function Crypto(props) {
 
 Crypto.layout = Admin;
 export async function getStaticProps(){
-  const token = 'NA.8CLdZK2WVnNpzQkmCxXT22MKM9flWULai47qR_8TFvSR0iLdgVAxLKSpbMDI'
   const coinTransaction = await Server.get('/admin/coin')
-
- 
   const coin = await coinTransaction.data.message
-
- 
   return {
     props: {
       coin,

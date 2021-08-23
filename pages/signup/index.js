@@ -32,8 +32,10 @@ export default function Login () {
       }
     ).then((res) => {
         console.log('form::res -> ', res);
+        // router.back();
       })
       .catch((e) => {
+        console.log('form::e -> ', e);
         setError('login error');
       });
   }
@@ -65,10 +67,10 @@ export default function Login () {
     padding: "40px",
     background: "#fff",
     borderRadius: "4px",
-    maxWidth: "400px"
+    boxShadow: "0 .3rem .9rem rgba(0,0,0, .3)"
   }
   const formdiv = {
-    width: "320px"
+    width: "320px",
   }
   const label = {
     display: "block",
@@ -93,11 +95,10 @@ export default function Login () {
   const inputs = {
     margin: "5px 0",
     padding: "12px 15px",
-    // paddingLeft: "15px",
     width: "100%",
     borderRadius: "30px",
     border: "1px solid #888",
-    display: "inline-block",
+    // display: "inline-block",
     fontSize: "14px"
   }
   const forgot = {
@@ -140,16 +141,17 @@ export default function Login () {
       </Head>
       <main style={container}>
         <div style={formBg}>
-          <h1 style={heading}>Hello.</h1>
+          <h1 style={heading}>Welcome.</h1>
           <p style={headtext}>Kindly enter your details below.</p>
           <form onSubmit={(e) => handleLogin(e)} style={formdiv}>
+          <label style={label} htmlFor='inputName'>Name</label>
+            <input style={inputs} id='inputName' type='text' value={password} onChange={(e) => setPassword(e.target.value)} />
             <label style={label} htmlFor='loginEmail'>Email</label>
             <input style={inputs} id='loginEmail' type='email' value={email} onChange={(e) => setEmail(e.target.value)}/>
             <span>{loginError}</span>
             <label style={label} htmlFor='inputPassword'>Password</label>
             <input style={inputs} id='inputPassword' type='password' value={password} onChange={(e) => setPassword(e.target.value)} />
-            <p style={forgot}>Forgot Password?</p>
-            <button type='submit' disabled={isLoginStarted} style={loginbtn}>Login</button>
+            <button type='submit' disabled={isLoginStarted} style={loginbtn}>signup</button>
             <hr></hr>
             <p style={signuptext}>Or Sign In with</p>
             <div style={flexdiv}>

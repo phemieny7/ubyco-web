@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useRouter } from "next/router";
-import Image from 'next/image'
+import Image from "next/image";
 // react plugin for creating charts
 import ChartistGraph from "react-chartist";
 // @material-ui/core
@@ -34,79 +34,110 @@ import CardAvatar from "components/Card/CardAvatar.js";
 import avatar from "assets/img/faces/marc.jpg";
 
 import styles from "assets/jss/nextjs-material-dashboard/views/dashboardStyle.js";
-import moment from 'moment'
+import moment from "moment";
 import Server from "../../api/lib/Server";
 
 function Id(props) {
   const useStyles = makeStyles(styles);
   const classes = useStyles();
-  const image = props.coin.receipt
-  const remove = image.substring(1, image.length-1);
-  const split = remove.split(",")
-  
+  const image = props.coin.receipt;
+  const remove = image.substring(1, image.length - 1);
+  const split = remove.split(",");
   const Router = useRouter();
-
+  const coins = ({ src, width, quality }) => {
+    return `${
+      process.env.NEXT_PUBLIC_SERVER_URL
+    }/get-picture/coins/${src}?w=${width}&q=${quality || 75}`;
+  };
   return (
     <>
-        <GridContainer>
-          <GridItem xs={12} sm={12} md={8}>
-            <Card>
-              <CardHeader color="primary">
-                <h4 className={classes.cardTitleWhite}>Trade</h4>
-                <p className={classes.cardCategoryWhite}>
-                  List of Gift Card Rate
-                </p>
-              </CardHeader>
-              <CardBody>
+      <GridContainer>
+        <GridItem xs={12} sm={12} md={8}>
+          <Card>
+            <CardHeader color="primary">
+              <h4 className={classes.cardTitleWhite}>Trade</h4>
+              <p className={classes.cardCategoryWhite}>
+                List of Gift Card Rate
+              </p>
+            </CardHeader>
+            <CardBody>
               <GridItem xs={6} sm={6} md={4}>
-                <img src={avatar}/>
+                <Image
+                  loader={coins}
+                  src={split[0].replace(
+                    /[`~!@#$%^&*()_|+\-=?;:'",<>\{\}\[\]\\\/]/gi,
+                    ""
+                  )}
+                  width={300}
+                  height={200}
+                />
               </GridItem>
               <GridItem xs={6} sm={6} md={4}>
-                <img src={avatar}/>
+              <Image
+                  loader={coins}
+                  src={split[1].replace(
+                    /[`~!@#$%^&*()_|+\-=?;:'",<>\{\}\[\]\\\/]/gi,
+                    ""
+                  )}
+                  width={300}
+                  height={200}
+                />
               </GridItem>
-   
-             
-                
-              </CardBody>
+            </CardBody>
 
-              <CardFooter>
-              {props.coin.status_name.name == 'pending' ?
-              <>
+            <CardFooter>
+              {props.coin.status_name.name == "pending" ? (
+                <>
                   <GridItem xs={12} sm={12} md={4}>
-                  <Button color="warning" round>
+                    <Button color="warning" round>
                       Flag Trade
-                  </Button>
+                    </Button>
                   </GridItem>
-                   <GridItem xs={12} sm={12} md={4}>
-                   <Button color="danger" round>
-                      Fault Trade
-                     </Button>
-                   </GridItem>
-              </> : 'Trade Completed'
-              
-              }
-              
-              </CardFooter>
-            </Card>
-          </GridItem>
+                  <GridItem xs={12} sm={12} md={4}>
+                    <Button color="success" round>
+                      Complete Trade
+                    </Button>
+                  </GridItem>
 
-          <GridItem xs={12} sm={12} md={4}>
-            <Card profile>
-              <CardAvatar profile>
-                <a href="#pablo" onClick={(e) => e.preventDefault()}>
-                  <img src={avatar} alt="..." />
-                </a>
-              </CardAvatar>
-              <CardBody profile>
-                <h4 className={classes.cardTitle}>{props.coin.user.fullname}</h4>
-                <h4 className={classes.cardTitle}> Total amount: {props.coin.total}</h4>
-                <Button color="primary" round  onClick={() => Router.push(`/admin/users/${props.coin.user_id}`)}>
-                  View Profile
-                </Button>
-              </CardBody>
-            </Card>
-          </GridItem>
-        </GridContainer>
+                  <GridItem xs={12} sm={12} md={4}>
+                    <Button color="danger" round>
+                      Fault Trade
+                    </Button>
+                  </GridItem>
+                </>
+              ) : (
+                "Trade Completed"
+              )}
+            </CardFooter>
+          </Card>
+        </GridItem>
+
+        <GridItem xs={12} sm={12} md={4}>
+          <Card profile>
+            <CardAvatar profile>
+              <a href="#pablo" onClick={(e) => e.preventDefault()}>
+                <img src={avatar} alt="..." />
+              </a>
+            </CardAvatar>
+            <CardBody profile>
+              <h4 className={classes.cardTitle}>{props.coin.user.fullname}</h4>
+              <h4 className={classes.cardTitle}>
+                {" "}
+                Total amount: {props.coin.total}
+              </h4>
+              <Button
+                color="primary"
+                round
+                onClick={() =>
+                  Router.push(`/admin/users/${props.coin.user_id}`)
+                }
+              >
+                View Profile
+              </Button>
+            </CardBody>
+          </Card>
+        </GridItem>
+      </GridContainer>
     </>
   );
 }
@@ -114,16 +145,15 @@ function Id(props) {
 Id.layout = Admin;
 
 export async function getServerSideProps(context) {
-  const id = context.params.id 
+  const id = context.params.id;
   const coinData = await Server.get(`/admin/coin/${id}`);
-  
 
   const coin = await coinData.data.message;
   // const image = await Server
 
   return {
     props: {
-     coin
+      coin,
     },
   };
 }

@@ -22,39 +22,11 @@ import CardFooter from "components/Card/CardFooter.js";
 // import { bugs, website, server } from "variables/general.js";
 
 import MaterialTable from "material-table";
+import Server from '../../api/lib/Server'
 
 import styles from "assets/jss/nextjs-material-dashboard/views/dashboardStyle.js";
 
-function GiftCard() {
-  const [data, setData] = useState([
-    { 
-      id:1,
-      fullname: "oyewo oluwafemi", 
-      customer_id: "CUS_ochmt6zibhgqd5n",
-      brand: 'Apple',
-      card: 'Itunes 100 - 200',
-      amount: 2000,
-      status: 1
-    },
-    { 
-      id: 2,
-      fullname: "Aderemi Ayomide", 
-      customer_id: "CUS_9qx8fmlogixuz10",
-      brand: 'Google',
-      card: 'Google Play',
-      amount: 2020,
-      status: 1
-    },
-    { 
-      id:3,
-      fullname: "Test one", 
-      customer_id: "CUS_gamdn1ryrlk1msa",
-      brand: 'Google',
-      card: 'Google Play',
-      amount: 2050,
-      status: 1
-    },
-  ]);
+function Giftcard(props) {
   const useStyles = makeStyles(styles);
   const classes = useStyles();
   return (
@@ -75,11 +47,11 @@ function GiftCard() {
         </GridItem>
         <GridItem xs={12} sm={6} md={6}>
         <Card>
-            <CardBody color="warning" stats icon>
+            <CardBody color="warning">
               <Button
                 fullWidth
                 color="warning"
-                onClick={() => showNotification("tl")}
+                // onClick={() => showNotification("tl")}
               >
                Histroy
               </Button>
@@ -88,43 +60,25 @@ function GiftCard() {
         </GridItem>
        </GridContainer>
 
-      {/* Gift Cards Trade */}
+      {/* Crypto Cards Trade */}
 
       <GridContainer>
       <GridItem xs={12} sm={12} md={12}>
         <Card>
           <CardHeader color="danger">
-            <h4 className={classes.cardTitleWhite}>Gift Card Transaction</h4>
+            <h4 className={classes.cardTitleWhite}>Gift Card Trade Transaction</h4>
           </CardHeader>
           <CardBody>
             <MaterialTable
               columns={[
-                {
-                  title: "Name",
-                  field: "fullname",
-                  editable: "never"
-                },
-                { title: "Customer ID", field: "customer_id", editable: "never" },
-                { title: "Brand", field: "brand", editable: "never"},
-                { title: "Card", field: "card", editable: "never"},
-
-                { title: "Amount", field: "amount", editable: "never"},
-                { title: "status", field:"status",lookup:{1: "Processing", 2:"Flaged", 3: "Completed"}},
+                { title: "Customer ID", field: "user.customer_id" },
+                { title: "Brand", field: "card.name"},
+                { title: "Rate", field: "card.rate"},
+                { title: "Status", field: "status_name.name"},
+                { title: "Amount", field: "amount"},
+                { title: "Total", field: "total"},
               ]}
-              data={data}
-              editable={{
-                onRowUpdate: (newData, oldData) =>
-                  new Promise((resolve, reject) => {
-                    setTimeout(() => {
-                      const dataUpdate = [...data];
-                      const index = oldData.tableData.id;
-                      dataUpdate[index] = newData;
-                      setData([...dataUpdate]);
-        
-                      resolve();
-                    }, 1000)
-                  }),
-              }}
+              data={props.card}
               title=""
               actions={[
                 {
@@ -147,6 +101,15 @@ function GiftCard() {
   );
 }
 
-GiftCard.layout = Admin;
-
-export default GiftCard;
+Giftcard.layout = Admin;
+export async function getStaticProps(){
+  const cardTransaction = await Server.get('/admin/card')
+  const card = await cardTransaction.data.message
+  return {
+    props: {
+      card,
+    },
+    revalidate: 10
+  };
+}
+export default Giftcard;

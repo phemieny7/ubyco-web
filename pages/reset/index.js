@@ -6,7 +6,7 @@ import { signIn, useSession } from 'next-auth/client'
 
 import Background from '../../assets/img/bg7.jpg'
 
-export default function Login () {
+export default function Reset () {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [isLoginStarted, setIsLoginStarted] = useState(false)
@@ -32,8 +32,10 @@ export default function Login () {
       }
     ).then((res) => {
         console.log('form::res -> ', res);
+        // router.back();
       })
       .catch((e) => {
+        console.log('form::e -> ', e);
         setError('login error');
       });
   }
@@ -44,7 +46,6 @@ export default function Login () {
     alignItems: "center",
     justifyContent: "center",
     minHeight: "100vh",
-    // background: "#333",
     backgroundImage: `url(${Background})`,
     backgroundSize: "cover"
   }
@@ -140,22 +141,13 @@ export default function Login () {
       </Head>
       <main style={container}>
         <div style={formBg}>
-          <h1 style={heading}>Hello.</h1>
-          <p style={headtext}>Kindly enter your details below.</p>
+          <h1 style={heading}>Reset Password.</h1>
+          <p style={headtext}>Kindly enter your email below to reset your password.</p>
           <form onSubmit={(e) => handleLogin(e)} style={formdiv}>
             <label style={label} htmlFor='loginEmail'>Email</label>
             <input style={inputs} id='loginEmail' type='email' value={email} onChange={(e) => setEmail(e.target.value)}/>
             <span>{loginError}</span>
-            <label style={label} htmlFor='inputPassword'>Password</label>
-            <input style={inputs} id='inputPassword' type='password' value={password} onChange={(e) => setPassword(e.target.value)} />
-            <p style={forgot}>Forgot Password?</p>
-            <button type='submit' disabled={isLoginStarted} style={loginbtn}>Login</button>
-            <hr></hr>
-            <p style={signuptext}>Or Sign In with</p>
-            <div style={flexdiv}>
-            <button type='button' style={googlebtn}>Google</button>
-            <button type='button' style={facebookbtn}>Facebook</button>
-            </div>
+            <button type='submit' disabled={isLoginStarted} style={loginbtn}>reset password</button>
           </form>
         </div>
       </main>
