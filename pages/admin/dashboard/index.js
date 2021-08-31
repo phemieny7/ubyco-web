@@ -46,7 +46,6 @@ import styles from "assets/jss/nextjs-material-dashboard/views/dashboardStyle.js
 function Dashboard(props) {
   const useStyles = makeStyles(styles);
   const classes = useStyles();
-  console.log(process.env.NEXT_PUBLIC_SERVER_URL)	
   return (
     <div>
       <GridContainer>

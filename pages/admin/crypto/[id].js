@@ -49,6 +49,34 @@ function Id(props) {
       process.env.NEXT_PUBLIC_SERVER_URL
     }/get-picture/coins/${src}?w=${width}&q=${quality || 75}`;
   };
+
+  const actionCoin = async (status) => {
+    const res = await fetch("/api/update-cointransaction", {
+      body: JSON.stringify({
+        id: props.coin.id,
+        status,
+      }),
+      headers: {
+        "Content-Type": "application/json",
+      },
+      method: "PUT",
+    });
+    Router.reload(window.location.pathname);
+  };
+
+  const confirmPayment = async()=>{
+    const res = await fetch("/api/confirm-coin", {
+      body: JSON.stringify({
+        id: props.coin.id,
+        user_id: props.coin.user_id,
+      }),
+      headers: {
+        "Content-Type":"application/json",
+      },
+      method: "PUT"
+    })
+    Router.reload(window.location.pathname);
+  }
   return (
     <>
       <GridContainer>
@@ -88,26 +116,54 @@ function Id(props) {
             <CardFooter>
               {props.coin.status_name.name == "pending" ? (
                 <>
-                  <GridItem xs={12} sm={12} md={4}>
-                    <Button color="warning" round>
-                      Flag Trade
-                    </Button>
-                  </GridItem>
-                  <GridItem xs={12} sm={12} md={4}>
-                    <Button color="success" round>
-                      Complete Trade
+                  <GridItem xs={12} sm={12} md={3}>
+                    <Button
+                      color="danger"
+                      round
+                      onClick={() => {
+                        actionCoin(3);
+                      }}
+                    >
+                      fault Trade
                     </Button>
                   </GridItem>
 
-                  <GridItem xs={12} sm={12} md={4}>
-                    <Button color="danger" round>
-                      Fault Trade
+                  <GridItem xs={12} sm={12} md={3}>
+                    <Button
+                      color="success"
+                      round
+                      onClick={() => {
+                        actionCoin(4);
+                      }}
+                    >
+                      confirm payment
                     </Button>
                   </GridItem>
                 </>
-              ) : (
-                "Trade Completed"
-              )}
+              ) : null}
+
+              {props.coin.status_name.name == "completed" &&  props.coin.completed == false ? (
+                <>
+                  <GridItem xs={12} sm={12} md={3}>
+                    <Button
+                      color="success"
+                      round
+                      onClick={() => {
+                        confirmPayment()
+                      }}
+                    >
+                      Payout
+                    </Button>
+                  </GridItem>
+                </>
+              ) : null}
+
+      {props.coin.completed == false ? (
+                <>
+                 <p>Incomplete Trade</p>
+                </>
+              ) : <p>complete Trade</p>}
+              
             </CardFooter>
           </Card>
         </GridItem>

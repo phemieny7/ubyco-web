@@ -1,32 +1,20 @@
 import React, { useState } from "react";
 import { useRouter } from "next/router";
 import Image from "next/image";
-// react plugin for creating charts
-import ChartistGraph from "react-chartist";
-// @material-ui/core
-import { makeStyles } from "@material-ui/core/styles";
-import Icon from "@material-ui/core/Icon";
-import Box from "@material-ui/core/Box";
-import GridList from "@material-ui/core/GridList";
-import GridListTile from "@material-ui/core/GridListTile";
-import ListSubheader from "@material-ui/core/ListSubheader";
-// import ImageList from '@material-ui/core/ImageList';
-// import ImageListItem from '@material-ui/core/ImageListItem';
 
 // @material-ui/icons
+import { makeStyles } from "@material-ui/core/styles";
+import GridList from "@material-ui/core/GridList";
 
 // layout for this page
 import Admin from "layouts/Admin.js";
 // core components
 import GridItem from "components/Grid/GridItem.js";
 import GridContainer from "components/Grid/GridContainer.js";
-import Table from "components/Table/Table.js";
 import Button from "components/CustomButtons/Button";
-import Success from "components/Typography/Success.js";
 import Card from "components/Card/Card.js";
 
 import CardHeader from "components/Card/CardHeader.js";
-import CardIcon from "components/Card/CardIcon.js";
 import CardBody from "components/Card/CardBody.js";
 import CardFooter from "components/Card/CardFooter.js";
 import CardAvatar from "components/Card/CardAvatar.js";
@@ -49,6 +37,36 @@ function Id(props) {
       process.env.NEXT_PUBLIC_SERVER_URL
     }/get-picture/cards/${src}?w=${width}&q=${quality || 75}`;
   };
+
+  const actionCoin = async (status) => {
+    const res = await fetch("/api/update-cointransaction", {
+      body: JSON.stringify({
+        id: props.coin.id,
+        status,
+      }),
+      headers: {
+        "Content-Type": "application/json",
+      },
+      method: "PUT",
+    });
+    Router.reload(window.location.pathname);
+  };
+
+  const confirmPayment = async()=>{
+    const res = await fetch("/api/confirm-card", {
+      body: JSON.stringify({
+        id: props.card.id,
+        user_id: props.card.user_id,
+        amount: props.card.total
+      }),
+      headers: {
+        "Content-Type":"application/json",
+      },
+      method: "PUT"
+    })
+    console.log(res)
+    // Router.reload(window.location.pathname);
+  }
 
   return (
     <>
@@ -90,25 +108,54 @@ function Id(props) {
             <CardFooter>
               {props.card.status_name.name == "pending" ? (
                 <>
-                  <GridItem xs={12} sm={12} md={4}>
-                    <Button color="warning" round>
-                      Flag Trade
+                  <GridItem xs={12} sm={12} md={3}>
+                    <Button
+                      color="danger"
+                      round
+                      onClick={() => {
+                        actionCoin(3);
+                      }}
+                    >
+                      fault Trade
                     </Button>
                   </GridItem>
-                  <GridItem xs={12} sm={12} md={4}>
-                    <Button color="success" round>
-                      Complete Trade
-                    </Button>
-                  </GridItem>
-                  <GridItem xs={12} sm={12} md={4}>
-                    <Button color="danger" round>
-                      Fault Trade
+
+                  <GridItem xs={12} sm={12} md={3}>
+                    <Button
+                      color="success"
+                      round
+                      onClick={() => {
+                        actionCoin(4);
+                      }}
+                    >
+                      confirm payment
                     </Button>
                   </GridItem>
                 </>
-              ) : (
-                "Trade Completed"
-              )}
+              ) : null}
+
+              {props.card.status_name.name == "completed" &&  props.card.completed == false ? (
+                <>
+                  <GridItem xs={12} sm={12} md={3}>
+                    <Button
+                      color="success"
+                      round
+                      onClick={() => {
+                        confirmPayment()
+                      }}
+                    >
+                      Payout
+                    </Button>
+                  </GridItem>
+                </>
+              ) : null}
+
+      {props.card.completed == false ? (
+                <>
+                 <p>Incomplete Trade</p>
+                </>
+              ) : <p>complete Trade</p>}
+              
             </CardFooter>
           </Card>
         </GridItem>

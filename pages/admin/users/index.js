@@ -33,9 +33,7 @@ function Users(props) {
       },
       method: 'PUT'
     })
-    // const result = await res.json()
-
-    // console.log(result.user)
+    Router.reload(window.location.pathname);
   }
   
   return (

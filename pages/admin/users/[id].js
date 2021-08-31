@@ -58,7 +58,8 @@ function UserProfile(props) {
       },
       method: 'PUT'
     })
-  } 
+    Router.reload(window.location.pathname);
+  }
 
   return (
     <div>
@@ -131,7 +132,12 @@ function UserProfile(props) {
                 {
                   title: "Status",
                   field: "status",
-                  lookup: { 1: "Pending", 2: "Processing", 3: "Closed", 4: "Flagged" },
+                  lookup: { 1: "Pending", 2: "Processing", 3: "Fault Trade", 4: "Completed" },
+                },
+                {
+                  title: "Paid",
+                  field: "completed",
+                  lookup:{true: "Yes", false: "No"}
                 },
                 {
                   title: "Total",
@@ -163,7 +169,7 @@ function UserProfile(props) {
                 {
                   title: "Status",
                   field: "status",
-                  lookup: { 1: "Pending", 2: "Processing", 3: "Closed", 4: "Flagged" },
+                  lookup: { 1: "Pending", 2: "Processing", 3: "Flagged", 4: "Complete" },
                 },
                 {
                   title: "Total",
@@ -196,7 +202,7 @@ function UserProfile(props) {
               </a>
             </CardAvatar>
             <CardBody profile>
-              <h6 className={classes.cardCategory}>Balance: N{props.user.userAmount.amount}</h6>
+              <h4 className={classes.cardCategory}>Balance: N{props.user.userAmount.amount}</h4>
               <h4 className={classes.cardTitle}>{props.user.fullname}</h4>
               <p className={classes.description}>
                { props.user.userAccount > 0 ? 

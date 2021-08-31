@@ -28,6 +28,28 @@ function WithDrawal(props) {
   const useStyles = makeStyles(styles);
   const Router = useRouter();
   const classes = useStyles();
+  const initiateWithdrawal = async () => {
+    const res = await fetch("/api/initiate-withdrawal", {
+      body: JSON.stringify({
+        id: data.id,
+      }),
+      headers: {
+        "Content-Type": "application/json",
+      },
+      method: "PUT",
+    });
+  };
+  const verifyWithdrawal = async() =>{
+    const res = await fetch("/api/verify-withdrawal", {
+      body: JSON.stringify({
+        id: data.id
+      }),
+      headers: {
+        "Content-Type": "application/json"
+      },
+      method: "PUT"
+    })
+  }
   return (
     <div>
       <GridContainer>
@@ -84,55 +106,85 @@ function WithDrawal(props) {
       </GridContainer>
 
       <GridContainer>
-        <GridItem xs={12} sm={6} md={4}>
-          <Button color="warning" fullWidth>
-            Initialize Transaction
-          </Button>
-        </GridItem>
-        <GridItem xs={12} sm={6} md={4}>
-          <Button color="primary" fullWidth>
-            Reject Transaction
-          </Button>
-        </GridItem>
-        <GridItem xs={12} sm={6} md={4}>
-          <Button color="varaint" fullWidth>
-            Unbanned user
-          </Button>
-        </GridItem>
+        {data.receipt == null && data.completed == false ? (
+          <>
+            <GridItem xs={12} sm={6} md={4}>
+              <Button
+                color="warning"
+                fullWidth
+                onClick={() => {
+                  initiateWithdrawal();
+                }}
+              >
+                Generate Receipt
+              </Button>
+            </GridItem>
+
+            <GridItem xs={12} sm={6} md={4}>
+              <Button
+                color="danger"
+                fullWidth
+                onClick={() => {
+                  initiateWithdrawal();
+                }}
+              >
+               Decline Withdrawal
+              </Button>
+            </GridItem>
+          </>
+        ) : null}
+        {data.receipt != null && data.completed == false ?
+          <>
+            <GridItem xs={12} sm={6} md={4}>
+              <Button color="success" onClick={()=>{verifyWithdrawal()}} fullWidth>
+                Confirm Payment
+              </Button>
+            </GridItem>
+          </>
+         : null}
       </GridContainer>
       <GridContainer>
         <GridItem xs={12} sm={12} md={12}>
           <Card>
             <CardHeader color="danger">
-              <h4 className={classes.cardTitleWhite}>User Past Withdrawals records</h4>
+              <h4 className={classes.cardTitleWhite}>
+                User Past Withdrawals records
+              </h4>
             </CardHeader>
             <CardBody>
-            <MaterialTable
-              columns={[
-                {
-                  title: "Amount",
-                  field: "amount",
-                  editable: 'never',
-                },
-                {title: "Date", field:'amount', editable: 'never',},
-                {title: "status", field:"status", lookup:{1:"Pending", 2: "Processing", 3:"flagged", 4:"Completed"}}
-              ]}
-              data={props.user.userWithdrawal}
-              title=""
-
-              actions={[
-                {
-                  icon: "visibility",
-                  tooltip: "View User",
-                  onClick: (event, rowData) =>
-                    Router.push(`/admin/withdrawal/${rowData.id}`),
-                },
-              ]}
-             
-              options={{
-                actionsColumnIndex: -1
-              }}
-            />
+              <MaterialTable
+                columns={[
+                  {
+                    title: "Amount",
+                    field: "amount",
+                    editable: "never",
+                  },
+                  { title: "Date", field: "amount", editable: "never" },
+                  {
+                    title: "status",
+                    field: "status",
+                    lookup: {
+                      1: "Pending",
+                      2: "Processing",
+                      3: "flagged",
+                      4: "Completed",
+                    },
+                  },
+                ]}
+                data={props.user.userWithdrawal}
+                title=""
+                actions={[
+                  {
+                    icon: "visibility",
+                    tooltip: "View User",
+                    onClick: (event, rowData) =>
+                      Router.push(`/admin/withdrawal/${rowData.id}`),
+                  },
+                ]}
+                options={{
+                  actionsColumnIndex: -1,
+                }}
+              />
             </CardBody>
           </Card>
         </GridItem>
@@ -147,16 +199,17 @@ export async function getServerSideProps(context) {
   const id = context.params.id;
   const userData = await Server.get(`/admin/withdrawal/${id}`);
   const withdrawal = await userData.data.message;
-  const requestuserWithdrawal = await Server.get(`/admin/user/${withdrawal.user_id}`);
-  const user = await requestuserWithdrawal.data.message
-    console.log(user)
+  const requestuserWithdrawal = await Server.get(
+    `/admin/user/${withdrawal.user_id}`
+  );
+  const user = await requestuserWithdrawal.data.message;
+  console.log(user);
   return {
     props: {
       withdrawal,
-     user
+      user,
     },
   };
 }
-
 
 export default WithDrawal;
