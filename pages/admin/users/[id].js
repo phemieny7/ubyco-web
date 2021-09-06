@@ -252,6 +252,7 @@ UserProfile.layout = Admin;
 export async function getServerSideProps(context) {
   const id = context.params.id 
   const userData = await Server.get(`/admin/user/${id}`);
+  
   const user = await userData.data.message;
   return {
     props: {

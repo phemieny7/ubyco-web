@@ -15,27 +15,28 @@ import Card from "components/Card/Card.js";
 import CardHeader from "components/Card/CardHeader.js";
 import CardBody from "components/Card/CardBody.js";
 import CardFooter from "components/Card/CardFooter.js";
-import Server from '../../api/lib/Server'
+import Server from "../../api/lib/Server";
 
 import styles from "assets/jss/nextjs-material-dashboard/views/dashboardStyle.js";
 function Users(props) {
   const useStyles = makeStyles(styles);
   const [data, setData] = React.useState(props.user);
+  console.log(data.is_verified);
   const classes = useStyles();
   const updateStatus = async (id, status) => {
-    const res = await fetch('/api/user_status',{
+    const res = await fetch("/api/user_status", {
       body: JSON.stringify({
         id,
-        status
+        status,
       }),
       headers: {
-        'Content-Type': 'application/json'
+        "Content-Type": "application/json",
       },
-      method: 'PUT'
-    })
+      method: "PUT",
+    });
     Router.reload(window.location.pathname);
-  }
-  
+  };
+
   return (
     <GridContainer>
       <GridItem xs={12} sm={12} md={12}>
@@ -64,6 +65,11 @@ function Users(props) {
                   lookup: { false: "Active", true: "Banned" },
                 },
                 {
+                  title: "Verified",
+                  field: "is_verified",
+                  lookup: { false: "Not Verified", true: "Confirmed" },
+                },
+                {
                   title: "Available Amount",
                   field: "userAmount.amount",
                   editable: "never",
@@ -72,18 +78,18 @@ function Users(props) {
               data={data}
               title=""
               editable={{
-                onRowUpdate:(newData, oldData) =>
+                onRowUpdate: (newData, oldData) =>
                   new Promise((resolve, reject) => {
-                    setTimeout(async() => {
+                    setTimeout(async () => {
                       const dataUpdate = [...data];
                       const index = oldData.tableData.id;
                       dataUpdate[index] = newData;
-                      const id = (dataUpdate[index].id)
-                      const status = (dataUpdate[index].banned)
+                      const id = dataUpdate[index].id;
+                      const status = dataUpdate[index].banned;
 
                       setData([...dataUpdate]);
                       resolve();
-                      updateStatus(id, status)
+                      updateStatus(id, status);
                     }, 1000);
                   }),
               }}
@@ -92,7 +98,9 @@ function Users(props) {
                   icon: "visibility",
                   tooltip: "View User",
                   onClick: (event, rowData) =>
-                    Router.push(`/admin/users/${rowData.id}`),
+                    {rowData.is_verified ?
+                    Router.push(`/admin/users/${rowData.id}`): null
+                    }
                 },
               ]}
               options={{
@@ -118,7 +126,6 @@ function Users(props) {
 
 Users.layout = Admin;
 export async function getStaticProps() {
-  
   const userData = await Server.get("/admin/user");
 
   const user = await userData.data.message;
