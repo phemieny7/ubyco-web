@@ -4,7 +4,7 @@ import Router from "next/router";
 
 export default function Index() {
   React.useEffect(() => {
-    Router.push("/web");
+    Router.push("/login");
   });
 
   return <div />;

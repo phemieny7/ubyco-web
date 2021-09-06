@@ -28,7 +28,7 @@ export default function Login () {
       {
         email,
         password,
-        callbackUrl: `${window.location.origin}/web`
+        callbackUrl: `${window.location.origin}/admin/dashboard`
       }
     ).then((res) => {
         console.log('I did login');
