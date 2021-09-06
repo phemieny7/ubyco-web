@@ -144,10 +144,10 @@ export default function Login () {
           <p style={headtext}>Kindly enter your details below.</p>
           <form onSubmit={(e) => handleLogin(e)} style={formdiv}>
             <label style={label} htmlFor='loginEmail'>Email</label>
-            <input style={inputs} id='loginEmail' type='email' value={email || ''} onChange={(e) => setEmail(e.target.value)}/>
+            <input style={inputs} id='loginEmail' type='email' value={email} onChange={(e) => setEmail(e.target.value)}/>
             <span>{loginError}</span>
             <label style={label} htmlFor='inputPassword'>Password</label>
-            <input style={inputs} id='inputPassword' type='password' value={password || ''} onChange={(e) => setPassword(e.target.value)} />
+            <input style={inputs} id='inputPassword' type='password' value={password} onChange={(e) => setPassword(e.target.value)} />
             <p style={forgot}>Forgot Password?</p>
             <button type='submit' disabled={isLoginStarted} style={loginbtn}>Login</button>
             <hr></hr>
