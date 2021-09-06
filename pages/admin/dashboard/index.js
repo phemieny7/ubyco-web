@@ -27,29 +27,23 @@ import CardIcon from "components/Card/CardIcon.js";
 import CardBody from "components/Card/CardBody.js";
 import CardFooter from "components/Card/CardFooter.js";
 
-// import { useSession} from 'next-auth/client'
-// import { useRouter } from 'next/router'
-// import { useEffect } from 'react'
-
+import Cookies from 'js-cookie'
 import Server from '../../api/lib/Server'
 
 import { bugs, website, server } from "variables/general.js";
 
 import {
   dailySalesChart,
-  emailsSubscriptionChart,
-  completedTasksChart,
 } from "variables/charts.js";
 
 import styles from "assets/jss/nextjs-material-dashboard/views/dashboardStyle.js";
-
 function Dashboard(props) {
   const useStyles = makeStyles(styles);
   const classes = useStyles();
   return (
     <div>
       <GridContainer>
-        <GridItem xs={12} sm={6} md={4}>
+        <GridItem xs={12} sm={12} md={4}>
           <Card>
             <CardHeader color="warning" stats icon>
               <CardIcon color="warning">
@@ -72,7 +66,7 @@ function Dashboard(props) {
             </CardFooter>
           </Card>
         </GridItem>
-        <GridItem xs={12} sm={6} md={4}>
+        <GridItem xs={12} sm={12} md={4}>
           <Card>
             <CardHeader color="dark" stats icon>
               <CardIcon color="dark">
@@ -89,7 +83,7 @@ function Dashboard(props) {
             </CardFooter>
           </Card>
         </GridItem>
-        <GridItem xs={12} sm={6} md={4}>
+        <GridItem xs={12} sm={12} md={4}>
           <Card>
             <CardHeader color="danger" stats icon>
               <CardIcon color="danger">
@@ -214,19 +208,16 @@ function Dashboard(props) {
 Dashboard.layout = Admin;
 
 export async function getStaticProps(){
+  
   const userData = await Server.get('/admin/user');
-
   //fetch revenue
   const revenueData = await Server.get('/admin/revenue')
   //pending counter
   const pendingData = await Server.get('/admin/pending-trade')
-
   //card  grapht data
   const cardGraphData = await Server.get('/admin/weekly-card-exchange')
-
   //card rate data
   const cardRateData = await Server.get('/admin/card_rate')
-
   //card rate data
   const coinRateData = await Server.get('/admin/coin_rate')
 
@@ -237,7 +228,7 @@ export async function getStaticProps(){
   const cardRate = await cardRateData.data.message
   const coinRate = await coinRateData.data.message
 
-  // const cardGraphString= JSON.stringify(cardGraph)
+  const cardGraphString= JSON.stringify(cardGraph)
  
   return {
     props: {

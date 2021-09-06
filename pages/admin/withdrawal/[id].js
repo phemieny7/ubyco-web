@@ -18,6 +18,7 @@ import CardHeader from "components/Card/CardHeader.js";
 import CardBody from "components/Card/CardBody.js";
 import CardFooter from "components/Card/CardFooter.js";
 import Table from "components/Table/Table.js";
+import moment from 'moment'
 
 import styles from "assets/jss/nextjs-material-dashboard/views/dashboardStyle.js";
 
@@ -159,7 +160,7 @@ function WithDrawal(props) {
                     field: "amount",
                     editable: "never",
                   },
-                  { title: "Date", field: "amount", editable: "never" },
+                  { title: "Date",  field: `created_at`, render: rowData => moment(rowData.created_at).fromNow(), editable: "never" },
                   {
                     title: "status",
                     field: "status",
@@ -203,7 +204,6 @@ export async function getServerSideProps(context) {
     `/admin/user/${withdrawal.user_id}`
   );
   const user = await requestuserWithdrawal.data.message;
-  console.log(user);
   return {
     props: {
       withdrawal,

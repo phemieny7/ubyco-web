@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useRouter } from "next/router";
 import Image from "next/image";
+import { getSession } from "next-auth/client";
 
 // @material-ui/icons
 import { makeStyles } from "@material-ui/core/styles";
@@ -52,21 +53,21 @@ function Id(props) {
     Router.reload(window.location.pathname);
   };
 
-  const confirmPayment = async()=>{
+  const confirmPayment = async () => {
     const res = await fetch("/api/confirm-card", {
       body: JSON.stringify({
         id: props.card.id,
         user_id: props.card.user_id,
-        amount: props.card.total
+        amount: props.card.total,
       }),
       headers: {
-        "Content-Type":"application/json",
+        "Content-Type": "application/json",
       },
-      method: "PUT"
-    })
-    console.log(res)
+      method: "PUT",
+    });
+    console.log(res);
     // Router.reload(window.location.pathname);
-  }
+  };
 
   return (
     <>
@@ -134,14 +135,15 @@ function Id(props) {
                 </>
               ) : null}
 
-              {props.card.status_name.name == "completed" &&  props.card.completed == false ? (
+              {props.card.status_name.name == "completed" &&
+              props.card.completed == false ? (
                 <>
                   <GridItem xs={12} sm={12} md={3}>
                     <Button
                       color="success"
                       round
                       onClick={() => {
-                        confirmPayment()
+                        confirmPayment();
                       }}
                     >
                       Payout
@@ -150,12 +152,13 @@ function Id(props) {
                 </>
               ) : null}
 
-      {props.card.completed == false ? (
+              {props.card.completed == false ? (
                 <>
-                 <p>Incomplete Trade</p>
+                  <p>Incomplete Trade</p>
                 </>
-              ) : <p>complete Trade</p>}
-              
+              ) : (
+                <p>complete Trade</p>
+              )}
             </CardFooter>
           </Card>
         </GridItem>
@@ -193,8 +196,14 @@ function Id(props) {
 Id.layout = Admin;
 
 export async function getServerSideProps(context) {
+  const session = await getSession(context);
+  const token = session?.accessToken;
   const id = context.params.id;
-  const cardData = await Server.get(`/admin/card/${id}`);
+  const cardData = await Server.get(`/admin/card/${id}`, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
   const card = await cardData.data.message;
   return {
     props: {

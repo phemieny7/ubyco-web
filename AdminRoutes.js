@@ -23,7 +23,7 @@ import LibraryBooks from "@material-ui/icons/LibraryBooks";
 import BubbleChart from "@material-ui/icons/BubbleChart";
 import LocationOn from "@material-ui/icons/LocationOn";
 import Notifications from "@material-ui/icons/Notifications";
-import{ BiBitcoin }from 'react-icons/bi';
+import{ BiBitcoin, BiEnvelope }from 'react-icons/bi';
 import {FaBank, FaBitcoin, FaPiggyBank} from 'react-icons/fa';
 import {FiMessageCircle, FiSettings} from 'react-icons/fi'
 import Language from "@material-ui/icons/Language";
@@ -75,15 +75,12 @@ const dashboardRoutes = [
     icon: FiSettings,
     layout: "/admin",
   },
- 
-  // {
-  //   path: "/icons",
-  //   name: "Icons",
-  //   rtlName: "الرموز",
-  //   icon: BubbleChart,
-
-  //   layout: "/admin",
-  // },
+  {
+    path: "/newsletter",
+    name: "News Letter",
+    icon: BiEnvelope,
+    layout: "/admin",
+  },
   // {
   //   path: "/maps",
   //   name: "Maps",

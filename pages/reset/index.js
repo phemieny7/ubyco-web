@@ -12,7 +12,7 @@ export default function Reset () {
   const [isLoginStarted, setIsLoginStarted] = useState(false)
   const [loginError, setLoginError] = useState('')
   const router = useRouter()
-
+  
   useEffect(() => {
     if (router.query.error) {
       setLoginError(router.query.error)

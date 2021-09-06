@@ -1,6 +1,5 @@
 import React,{useState} from "react";
 import Router from "next/router";
-
 // @material-ui/core
 import { makeStyles } from "@material-ui/core/styles";
 import Icon from "@material-ui/core/Icon";
@@ -18,8 +17,6 @@ import CardHeader from "components/Card/CardHeader.js";
 import CardIcon from "components/Card/CardIcon.js";
 import CardBody from "components/Card/CardBody.js";
 import CardFooter from "components/Card/CardFooter.js";
-
-// import { bugs, website, server } from "variables/general.js";
 
 import MaterialTable from "material-table";
 import Server from '../../api/lib/Server'

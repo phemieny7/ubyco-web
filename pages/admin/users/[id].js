@@ -205,8 +205,10 @@ function UserProfile(props) {
               <h4 className={classes.cardCategory}>Balance: N{props.user.userAmount.amount}</h4>
               <h4 className={classes.cardTitle}>{props.user.fullname}</h4>
               <p className={classes.description}>
-               { props.user.userAccount > 0 ? 
-                  props.user.userAccount.map((x) => {<li>{x.bank_name, x.bank_code}</li>}) :
+               { props.user.userAccounts.length > 0 ?
+                  props.user.userAccounts.map((x) => [
+                    <p>Bank: {x.bank} <br/> Account Number : {x.account_number}</p>
+                  ] ) :
                   'User Has No Account Yet'
                 }
               </p>
@@ -214,7 +216,7 @@ function UserProfile(props) {
               {
                 props.user.banned == true ? <Button color="primary" round onClick={unbanned}>Unbanned user</Button> : null
               }
-             --
+           
             </CardBody>
           </Card>
 
@@ -250,9 +252,7 @@ UserProfile.layout = Admin;
 export async function getServerSideProps(context) {
   const id = context.params.id 
   const userData = await Server.get(`/admin/user/${id}`);
-
   const user = await userData.data.message;
-
   return {
     props: {
       user:user

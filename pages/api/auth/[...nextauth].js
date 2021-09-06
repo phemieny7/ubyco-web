@@ -1,16 +1,24 @@
 import NextAuth from "next-auth";
 import Providers from "next-auth/providers";
-import Server from "../lib/Server"
+import Server from "../lib/Server";
 
 const options = {
   pages: {
-    error: '/login',
-    signIn:'/login'
+    error: "/login",
+    signIn: "/login",
   },
   jwt: {
     signingKey: process.env.JWT_SIGNING_PRIVATE_KEY,
   },
-
+  session: {
+    jwt: true,
+  },
+  cookies: {
+    sessionToken: {
+      name: `next-auth.session-token`,
+      options: { httpOnly: false },
+    },
+  },
   providers: [
     Providers.Credentials({
       name: "PSA",
@@ -28,6 +36,7 @@ const options = {
             },
           }
         );
+        // console.log(result)
         const id = result.data.user.id;
         const token = result.data.message.token;
         const tokenExpires = result.data.message.expires_at;
@@ -35,7 +44,7 @@ const options = {
           id,
           token,
           tokenExpires,
-          email
+          email,
         };
       },
     }),
@@ -47,9 +56,10 @@ const options = {
           headers: {
             accept: "*/*",
             "Content-Type": "application/json",
-            Authorization: `Bearer ${user.token}`
+            Authorization: `Bearer ${user.token}`,
           },
         });
+        // console.log(result)
         if (result && result.data) {
           user.role = result.data.message.role_id;
         }
@@ -62,19 +72,20 @@ const options = {
         token = {
           accessToken: user.token,
           user: {
-              id: user.id,
-              email: user.email,
-              role: user.role
+            id: user.id,
+            email: user.email,
+            role: user.role,
           },
         };
       }
       return token;
     },
     session: (session, token) => {
-        session.accessToken = token.accessToken
-        session.user = token.user
-        return session
-      },
+      session.accessToken = token.accessToken;
+      session.user = token.user;
+      // console.log(session);
+      return session;
+    },
   },
 };
 const Auth = (req, res) => NextAuth(req, res, options);
