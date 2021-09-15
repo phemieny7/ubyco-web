@@ -109,7 +109,6 @@ function Rate(props) {
                         const dataUpdate = [...card];
                         const index = oldData.tableData.id;
                         dataUpdate[index] = newData;
-                        console.log(dataUpdate[index])
                         setData([...dataUpdate]);
                         resolve();
                       }, 1000)
@@ -194,7 +193,6 @@ export async function getStaticProps(){
 
   const cardRate = card.data.message
   const cardBrand = brand.data.message
-  console.log(cardBrand)
   return {
     props: {
       cardRate,

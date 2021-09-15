@@ -75,7 +75,6 @@ function Rate(props) {
                         const dataUpdate = [...data];
                         const index = oldData.tableData.id;
                         dataUpdate[index] = newData;
-                        console.log(dataUpdate[index])
                         setData([...dataUpdate]);
                         resolve();
                       }, 1000)
@@ -109,7 +108,6 @@ function Rate(props) {
                     new Promise((resolve, reject) => {
                       setTimeout(() => {
                         setData([...data, newData]);
-                        console.log(newData.name)
                         resolve();
                       }, 1000)
                     }),
@@ -152,7 +150,6 @@ Rate.layout = Admin;
 export async function getStaticProps(){
   const coin = await Server.get('/user/coin')
   const coinRate = coin.data.message
-  console.log(coinRate)
   return {
     props: {
       coinRate,

@@ -65,8 +65,6 @@ function Id(props) {
       },
       method: "PUT",
     });
-    console.log(res);
-    // Router.reload(window.location.pathname);
   };
 
   return (

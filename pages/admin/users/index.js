@@ -21,7 +21,6 @@ import styles from "assets/jss/nextjs-material-dashboard/views/dashboardStyle.js
 function Users(props) {
   const useStyles = makeStyles(styles);
   const [data, setData] = React.useState(props.user);
-  console.log(data.is_verified);
   const classes = useStyles();
   const updateStatus = async (id, status) => {
     const res = await fetch("/api/user_status", {

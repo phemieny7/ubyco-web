@@ -28,7 +28,6 @@ import styles from "assets/jss/nextjs-material-dashboard/views/dashboardStyle.js
 
 function Crypto(props) {
   const useStyles = makeStyles(styles);
-  console.log(props.coin)
   const classes = useStyles();
   return (
     <div>
