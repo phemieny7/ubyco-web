@@ -97,10 +97,11 @@ function Users(props) {
                 {
                   icon: "visibility",
                   tooltip: "View User",
-                  onClick: (event, rowData) =>
-                    {rowData.is_verified ?
-                    Router.push(`/admin/users/${rowData.id}`): null
-                    }
+                  onClick: (rowData) => {
+                    rowData.is_verified
+                      ? Router.push(`/admin/users/${rowData.id}`)
+                      : null;
+                  },
                 },
               ]}
               options={{

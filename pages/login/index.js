@@ -150,7 +150,7 @@ export default function Login () {
             <input style={inputs} id='inputPassword' type='password' value={password} onChange={(e) => setPassword(e.target.value)} />
             <p style={forgot}>Forgot Password?</p>
             <button type='submit' disabled={isLoginStarted} style={loginbtn}>Login</button>
-            <hr></hr>
+            {/* <hr></hr> */}
             {/* <p style={signuptext}>Or Sign In with</p>
             <div style={flexdiv}>
             <button type='button' style={googlebtn}>Google</button>
