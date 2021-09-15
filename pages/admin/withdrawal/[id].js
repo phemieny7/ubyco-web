@@ -20,6 +20,8 @@ import CardFooter from "components/Card/CardFooter.js";
 import Table from "components/Table/Table.js";
 import moment from 'moment'
 
+import { getSession } from "next-auth/client";
+
 import styles from "assets/jss/nextjs-material-dashboard/views/dashboardStyle.js";
 
 import Server from "./../../api/lib/Server";
@@ -196,12 +198,42 @@ function WithDrawal(props) {
 
 WithDrawal.layout = Admin;
 
-export async function getServerSideProps(context) {
+export async function getServerSideProps(context){
+  const session = await getSession(context);
+  if (!session) {
+    return {
+      props: {},
+      redirect: {
+        destination: '/login',
+        permanent: false
+      }
+    };
+  }
+
+  if (session.user.role != 2){
+    return {
+      props: {},
+      redirect: {
+        destination: '/error',
+        permanent: false
+      }
+    };
+  }
+  const token = session?.accessToken;
   const id = context.params.id;
-  const userData = await Server.get(`/admin/withdrawal/${id}`);
+  const userData = await Server.get(`/admin/withdrawal/${id}`,{
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+  
   const withdrawal = await userData.data.message;
   const requestuserWithdrawal = await Server.get(
-    `/admin/user/${withdrawal.user_id}`
+    `/admin/user/${withdrawal.user_id}`,{
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    }
   );
   const user = await requestuserWithdrawal.data.message;
   return {

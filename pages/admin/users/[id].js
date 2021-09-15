@@ -249,9 +249,35 @@ function UserProfile(props) {
 
 UserProfile.layout = Admin;
 
-export async function getServerSideProps(context) {
+export async function getServerSideProps(context){
+  const session = await getSession(context);
+  if (!session) {
+    return {
+      props: {},
+      redirect: {
+        destination: '/login',
+        permanent: false
+      }
+    };
+  }
+
+  if (session.user.role != 2){
+    return {
+      props: {},
+      redirect: {
+        destination: '/error',
+        permanent: false
+      }
+    };
+  }
+  const token = session?.accessToken;
+  
   const id = context.params.id 
-  const userData = await Server.get(`/admin/user/${id}`);
+  const userData = await Server.get(`/admin/user/${id}`,{
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
   
   const user = await userData.data.message;
   return {

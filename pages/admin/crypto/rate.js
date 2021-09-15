@@ -150,6 +150,26 @@ Rate.layout = Admin;
 
 export async function getServerSideProps(context) {
   const session = await getSession(context);
+  if (!session) {
+    return {
+      props: {},
+      redirect: {
+        destination: '/login',
+        permanent: false
+      }
+    };
+  }
+
+  if (session.user.role != 2){
+    return {
+      props: {},
+      redirect: {
+        destination: '/error',
+        permanent: false
+      }
+    };
+  }
+  
   const token = session?.accessToken;
   const coin = await Server.get('/user/coin',{
     headers: {

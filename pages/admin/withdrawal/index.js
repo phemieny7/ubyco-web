@@ -19,7 +19,7 @@ import CardBody from "components/Card/CardBody.js";
 import CardFooter from "components/Card/CardFooter.js";
 
 import styles from "assets/jss/nextjs-material-dashboard/views/dashboardStyle.js";
-
+import { getSession } from "next-auth/client";
 import Server from "./../../api/lib/Server"
 import {useRouter} from 'next/router'
 function WithDrawal(props) {
@@ -74,17 +74,41 @@ function WithDrawal(props) {
 
 WithDrawal.layout = Admin;
 
-export async function getStaticProps() {
-  
-  const userData = await Server.get("/admin/withdrawal");
+export async function getServerSideProps(context){
+  const session = await getSession(context);
+  if (!session) {
+    return {
+      props: {},
+      redirect: {
+        destination: '/login',
+        permanent: false
+      }
+    };
+  }
+
+  if (session.user.role != 2){
+    return {
+      props: {},
+      redirect: {
+        destination: '/error',
+        permanent: false
+      }
+    };
+  }
+  const token = session?.accessToken;
+    
+  const userData = await Server.get("/admin/withdrawal",{
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
 
   const withdrawal = await userData.data.message;
 
   return {
     props: {
       withdrawal,
-    },
-    revalidate: 10,
+    }
   };
 }
 export default WithDrawal;

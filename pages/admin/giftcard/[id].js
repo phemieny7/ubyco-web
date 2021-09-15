@@ -25,6 +25,7 @@ import styles from "assets/jss/nextjs-material-dashboard/views/dashboardStyle.js
 import moment from "moment";
 import Server from "../../api/lib/Server";
 
+
 function Id(props) {
   const useStyles = makeStyles(styles);
   const classes = useStyles();
@@ -195,6 +196,25 @@ Id.layout = Admin;
 
 export async function getServerSideProps(context) {
   const session = await getSession(context);
+  if (!session) {
+    return {
+      props: {},
+      redirect: {
+        destination: '/login',
+        permanent: false
+      }
+    };
+  }
+
+  if (session.user.role != 2){
+    return {
+      props: {},
+      redirect: {
+        destination: '/error',
+        permanent: false
+      }
+    };
+  }
   const token = session?.accessToken;
   const id = context.params.id;
   const cardData = await Server.get(`/admin/card/${id}`, {

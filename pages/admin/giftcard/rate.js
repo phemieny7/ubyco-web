@@ -187,9 +187,40 @@ function Rate(props) {
 }
 
 Rate.layout = Admin;
-export async function getStaticProps(){
-  const card = await Server.get('/admin/card_rate')
-  const brand = await Server.get('/admin/all_card')
+export async function getServerSideProps(context){
+  const session = await getSession(context);
+  if (!session) {
+    return {
+      props: {},
+      redirect: {
+        destination: '/login',
+        permanent: false
+      }
+    };
+  }
+
+  if (session.user.role != 2){
+    return {
+      props: {},
+      redirect: {
+        destination: '/error',
+        permanent: false
+      }
+    };
+  }
+  const token = session?.accessToken;
+    
+  const card = await Server.get('/admin/card_rate',{
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  })
+
+  const brand = await Server.get('/admin/all_card',{
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  })
 
   const cardRate = card.data.message
   const cardBrand = brand.data.message
@@ -197,8 +228,7 @@ export async function getStaticProps(){
     props: {
       cardRate,
       cardBrand
-    },
-    revalidate: 10
+    }
   };
 }
 export default Rate;

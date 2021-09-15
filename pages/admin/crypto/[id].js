@@ -201,12 +201,36 @@ function Id(props) {
 Id.layout = Admin;
 
 export async function getServerSideProps(context) {
+  const session = await getSession(context);
+  if (!session) {
+    return {
+      props: {},
+      redirect: {
+        destination: '/login',
+        permanent: false
+      }
+    };
+  }
+
+  if (session.user.role != 2){
+    return {
+      props: {},
+      redirect: {
+        destination: '/error',
+        permanent: false
+      }
+    };
+  }
+  const token = session?.accessToken;
   const id = context.params.id;
-  const coinData = await Server.get(`/admin/coin/${id}`);
+  const coinData = await Server.get(`/admin/coin/${id}`,{
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
 
   const coin = await coinData.data.message;
-  // const image = await Server
-
+  
   return {
     props: {
       coin,

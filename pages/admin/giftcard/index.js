@@ -20,6 +20,7 @@ import CardFooter from "components/Card/CardFooter.js";
 
 import MaterialTable from "material-table";
 import Server from '../../api/lib/Server'
+import { getSession } from "next-auth/client";
 
 import styles from "assets/jss/nextjs-material-dashboard/views/dashboardStyle.js";
 
@@ -99,14 +100,38 @@ function Giftcard(props) {
 }
 
 Giftcard.layout = Admin;
-export async function getStaticProps(){
-  const cardTransaction = await Server.get('/admin/card')
+export async function getServerSideProps(context){
+  const session = await getSession(context);
+  if (!session) {
+    return {
+      props: {},
+      redirect: {
+        destination: '/login',
+        permanent: false
+      }
+    };
+  }
+
+  if (session.user.role != 2){
+    return {
+      props: {},
+      redirect: {
+        destination: '/error',
+        permanent: false
+      }
+    };
+  }
+  const token = session?.accessToken;
+  const cardTransaction = await Server.get('/admin/card',{
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  })
   const card = await cardTransaction.data.message
   return {
     props: {
       card,
-    },
-    revalidate: 10
+    }
   };
 }
 export default Giftcard;
