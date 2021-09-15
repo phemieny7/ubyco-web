@@ -171,6 +171,8 @@ export async function getServerSideProps(context){
         permanent: false
       }
     };
+  }else{
+    return null;
   }
 }
 export default Login;
