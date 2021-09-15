@@ -2,11 +2,11 @@ import Head from 'next/head'
 // import styles from '../styles/pageStyles/login.module.scss'
 import { useState, useEffect } from 'react'
 import { useRouter } from 'next/router'
-import { signIn, useSession } from 'next-auth/client'
+import { signIn, getSession } from 'next-auth/client'
 
 import Background from '../../assets/img/bg7.jpg'
 
-export default function Login () {
+ function Login () {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [isLoginStarted, setIsLoginStarted] = useState(false)
@@ -132,7 +132,6 @@ export default function Login () {
     fontSize: "14px",
     fontWeight: "bold"
   }
-
   return (
     <div>
       <Head>
@@ -162,3 +161,16 @@ export default function Login () {
     </div>
   )
 }
+export async function getServerSideProps(context){
+  const session = await getSession(context);
+  if (session) {
+    return {
+      props: {},
+      redirect: {
+        destination: '/web',
+        permanent: false
+      }
+    };
+  }
+}
+export default Login;

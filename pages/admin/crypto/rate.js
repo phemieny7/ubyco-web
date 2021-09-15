@@ -20,6 +20,7 @@ import CardFooter from "components/Card/CardFooter.js";
 import Server from '../../api/lib/Server'
 
 import avatar from "assets/img/faces/marc.jpg";
+import { getSession } from "next-auth/client";
 
 const styles = {
   cardCategoryWhite: {
@@ -147,14 +148,19 @@ function Rate(props) {
 
 Rate.layout = Admin;
 
-export async function getStaticProps(){
-  const coin = await Server.get('/user/coin')
+export async function getServerSideProps(context) {
+  const session = await getSession(context);
+  const token = session?.accessToken;
+  const coin = await Server.get('/user/coin',{
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  })
   const coinRate = coin.data.message
   return {
     props: {
       coinRate,
-    },
-    revalidate: 10
+    }
   };
 }
 export default Rate;

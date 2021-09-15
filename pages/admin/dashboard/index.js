@@ -29,6 +29,7 @@ import CardFooter from "components/Card/CardFooter.js";
 
 import Cookies from 'js-cookie'
 import Server from '../../api/lib/Server'
+import { getSession } from "next-auth/client";
 
 import { bugs, website, server } from "variables/general.js";
 
@@ -207,19 +208,63 @@ function Dashboard(props) {
 
 Dashboard.layout = Admin;
 
-export async function getStaticProps(){
-  
-  const userData = await Server.get('/admin/user');
+export async function getServerSideProps(context){
+  const session = await getSession(context);
+  if (!session) {
+    return {
+      props: {},
+      redirect: {
+        destination: '/login',
+        permanent: false
+      }
+    };
+  }
+
+  if (session.user.role != 2){
+    return {
+      props: {},
+      redirect: {
+        destination: '/error',
+        permanent: false
+      }
+    };
+  }
+  const token = session?.accessToken;
+  const userData = await Server.get('/admin/user',{
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
   //fetch revenue
-  const revenueData = await Server.get('/admin/revenue')
+  const revenueData = await Server.get('/admin/revenue',{
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  })
   //pending counter
-  const pendingData = await Server.get('/admin/pending-trade')
+  const pendingData = await Server.get('/admin/pending-trade',{
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  })
   //card  grapht data
-  const cardGraphData = await Server.get('/admin/weekly-card-exchange')
+  const cardGraphData = await Server.get('/admin/weekly-card-exchange',{
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  })
   //card rate data
-  const cardRateData = await Server.get('/admin/card_rate')
+  const cardRateData = await Server.get('/admin/card_rate',{
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  })
   //card rate data
-  const coinRateData = await Server.get('/admin/coin_rate')
+  const coinRateData = await Server.get('/admin/coin_rate',{
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  })
 
   const user = await userData.data.message
   const revenue = await revenueData.data.message
@@ -238,8 +283,7 @@ export async function getStaticProps(){
       cardGraph,
       cardRate,
       coinRate,
-    },
-    revalidate: 10
+    }
   };
 }
 

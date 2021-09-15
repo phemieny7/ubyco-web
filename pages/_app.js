@@ -62,7 +62,6 @@ export default class MyApp extends App {
             <Component {...pageProps} />
           </Layout>
           </Provider>
-        
       </React.Fragment>
     );
   }

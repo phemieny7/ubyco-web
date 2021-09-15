@@ -16,6 +16,7 @@ import CardHeader from "components/Card/CardHeader.js";
 import CardBody from "components/Card/CardBody.js";
 import CardFooter from "components/Card/CardFooter.js";
 import Server from "../../api/lib/Server";
+import { getSession } from "next-auth/client";
 
 import styles from "assets/jss/nextjs-material-dashboard/views/dashboardStyle.js";
 function Users(props) {
@@ -125,16 +126,19 @@ function Users(props) {
 }
 
 Users.layout = Admin;
-export async function getStaticProps() {
-  const userData = await Server.get("/admin/user");
-
+export async function getServerSideProps(context) {
+  const session = await getSession(context);
+  const token = session?.accessToken;
+  const userData = await Server.get("/admin/user",{
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
   const user = await userData.data.message;
-
   return {
     props: {
       user,
-    },
-    revalidate: 10,
+    }
   };
 }
 export default Users;

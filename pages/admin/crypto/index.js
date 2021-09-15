@@ -23,6 +23,7 @@ import CardFooter from "components/Card/CardFooter.js";
 
 import MaterialTable from "material-table";
 import Server from '../../api/lib/Server'
+import { getSession } from "next-auth/client";
 
 import styles from "assets/jss/nextjs-material-dashboard/views/dashboardStyle.js";
 
@@ -101,14 +102,39 @@ function Crypto(props) {
 }
 
 Crypto.layout = Admin;
-export async function getStaticProps(){
-  const coinTransaction = await Server.get('/admin/coin')
+export async function getServerSideProps(context){
+  const session = await getSession(context);
+  console.log(session)
+  if (!session) {
+    return {
+      props: {},
+      redirect: {
+        destination: '/login',
+        permanent: false
+      }
+    };
+  }
+
+  if (session.user.role != 2){
+    return {
+      props: {},
+      redirect: {
+        destination: '/error',
+        permanent: false
+      }
+    };
+  }
+  const token = session?.accessToken;
+  const coinTransaction = await Server.get('/admin/coin',{
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  })
   const coin = await coinTransaction.data.message
   return {
     props: {
       coin,
-    },
-    revalidate: 10
+    }
   };
 }
 export default Crypto;
