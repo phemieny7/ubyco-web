@@ -27,7 +27,6 @@ import CardIcon from "components/Card/CardIcon.js";
 import CardBody from "components/Card/CardBody.js";
 import CardFooter from "components/Card/CardFooter.js";
 
-import Cookies from 'js-cookie'
 import Server from '../../api/lib/Server'
 import { getSession } from "next-auth/client";
 
