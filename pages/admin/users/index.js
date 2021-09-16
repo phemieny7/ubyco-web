@@ -96,10 +96,11 @@ function Users(props) {
                 {
                   icon: "visibility",
                   tooltip: "View User",
-                  onClick: (rowData) => {
-                    rowData.is_verified
-                      ? Router.push(`/admin/users/${rowData.id}`)
-                      : null;
+                  onClick: (event, rowData) => {
+                    if (rowData.is_verified == true) {
+                      Router.push(`/admin/users/${rowData.id}`);
+                    }
+                    null
                   },
                 },
               ]}
@@ -128,7 +129,7 @@ Users.layout = Admin;
 export async function getServerSideProps(context) {
   const session = await getSession(context);
   const token = session?.accessToken;
-  const userData = await Server.get("/admin/user",{
+  const userData = await Server.get("/admin/user", {
     headers: {
       Authorization: `Bearer ${token}`,
     },
@@ -137,7 +138,7 @@ export async function getServerSideProps(context) {
   return {
     props: {
       user,
-    }
+    },
   };
 }
 export default Users;
