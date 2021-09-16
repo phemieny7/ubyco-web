@@ -1,41 +1,30 @@
 import React, { useState } from "react";
 import { useRouter } from "next/router";
 import Image from "next/image";
-// react plugin for creating charts
-import ChartistGraph from "react-chartist";
-// @material-ui/core
-import { makeStyles } from "@material-ui/core/styles";
-import Icon from "@material-ui/core/Icon";
-import Box from "@material-ui/core/Box";
-import GridList from "@material-ui/core/GridList";
-import GridListTile from "@material-ui/core/GridListTile";
-import ListSubheader from "@material-ui/core/ListSubheader";
-// import ImageList from '@material-ui/core/ImageList';
-// import ImageListItem from '@material-ui/core/ImageListItem';
+import { getSession } from "next-auth/client";
 
 // @material-ui/icons
+import { makeStyles } from "@material-ui/core/styles";
+import GridList from "@material-ui/core/GridList";
 
 // layout for this page
 import Admin from "layouts/Admin.js";
 // core components
 import GridItem from "components/Grid/GridItem.js";
 import GridContainer from "components/Grid/GridContainer.js";
-import Table from "components/Table/Table.js";
 import Button from "components/CustomButtons/Button";
-import Success from "components/Typography/Success.js";
 import Card from "components/Card/Card.js";
 
 import CardHeader from "components/Card/CardHeader.js";
-import CardIcon from "components/Card/CardIcon.js";
 import CardBody from "components/Card/CardBody.js";
 import CardFooter from "components/Card/CardFooter.js";
 import CardAvatar from "components/Card/CardAvatar.js";
-
 import avatar from "assets/img/faces/marc.jpg";
 
 import styles from "assets/jss/nextjs-material-dashboard/views/dashboardStyle.js";
 import moment from "moment";
 import Server from "../../api/lib/Server";
+
 
 function Id(props) {
   const useStyles = makeStyles(styles);
@@ -44,10 +33,11 @@ function Id(props) {
   const remove = image.substring(1, image.length - 1);
   const split = remove.split(",");
   const Router = useRouter();
-  const coins = ({ src, width, quality }) => {
+
+  const cards = ({ src, width, quality }) => {
     return `${
       process.env.NEXT_PUBLIC_SERVER_URL
-    }/get-picture/coins/${src}?w=${width}&q=${quality || 75}`;
+    }/get-picture/cards/${src}?w=${width}&q=${quality || 75}`;
   };
 
   const actionCoin = async (status) => {
@@ -64,19 +54,20 @@ function Id(props) {
     Router.reload(window.location.pathname);
   };
 
-  const confirmPayment = async()=>{
+  const confirmPayment = async () => {
     const res = await fetch("/api/confirm-coin", {
       body: JSON.stringify({
         id: props.coin.id,
         user_id: props.coin.user_id,
+        amount: props.coin.total,
       }),
       headers: {
-        "Content-Type":"application/json",
+        "Content-Type": "application/json",
       },
-      method: "PUT"
-    })
-    Router.reload(window.location.pathname);
-  }
+      method: "PUT",
+    });
+  };
+
   return (
     <>
       <GridContainer>
@@ -84,32 +75,33 @@ function Id(props) {
           <Card>
             <CardHeader color="primary">
               <h4 className={classes.cardTitleWhite}>Trade</h4>
-              <p className={classes.cardCategoryWhite}>
-                List of Gift Card Rate
-              </p>
+              <p className={classes.cardCategoryWhite}>Crypt's</p>
             </CardHeader>
             <CardBody>
               <GridItem xs={6} sm={6} md={4}>
-                <Image
-                  loader={coins}
-                  src={split[0].replace(
-                    /[`~!@#$%^&*()_|+\-=?;:'",<>\{\}\[\]\\\/]/gi,
-                    ""
-                  )}
-                  width={300}
-                  height={200}
-                />
+                {/* <img src={avatar}/> */}
               </GridItem>
               <GridItem xs={6} sm={6} md={4}>
-              <Image
-                  loader={coins}
-                  src={split[1].replace(
-                    /[`~!@#$%^&*()_|+\-=?;:'",<>\{\}\[\]\\\/]/gi,
-                    ""
-                  )}
-                  width={300}
-                  height={200}
-                />
+                <GridList>
+                  <Image
+                    loader={cards}
+                    src={split[0].replace(
+                      /[`~!@#$%^&*()_|+\-=?;:'",<>\{\}\[\]\\\/]/gi,
+                      ""
+                    )}
+                    width={300}
+                    height={200}
+                  />
+                  <Image
+                    loader={cards}
+                    src={split[1].replace(
+                      /[`~!@#$%^&*()_|+\-=?;:'",<>\{\}\[\]\\\/]/gi,
+                      ""
+                    )}
+                    width={300}
+                    height={200}
+                  />
+                </GridList>
               </GridItem>
             </CardBody>
 
@@ -142,14 +134,15 @@ function Id(props) {
                 </>
               ) : null}
 
-              {props.coin.status_name.name == "completed" &&  props.coin.completed == false ? (
+              {props.coin.status_name.name == "completed" &&
+              props.coin.completed == false ? (
                 <>
                   <GridItem xs={12} sm={12} md={3}>
                     <Button
                       color="success"
                       round
                       onClick={() => {
-                        confirmPayment()
+                        confirmPayment();
                       }}
                     >
                       Payout
@@ -158,12 +151,13 @@ function Id(props) {
                 </>
               ) : null}
 
-      {props.coin.completed == false ? (
+              {props.coin.completed == false ? (
                 <>
-                 <p>Incomplete Trade</p>
+                  <p>Incomplete Trade</p>
                 </>
-              ) : <p>complete Trade</p>}
-              
+              ) : (
+                <p>complete Trade</p>
+              )}
             </CardFooter>
           </Card>
         </GridItem>
@@ -223,14 +217,12 @@ export async function getServerSideProps(context) {
   }
   const token = session?.accessToken;
   const id = context.params.id;
-  const coinData = await Server.get(`/admin/coin/${id}`,{
+  const coinData = await Server.get(`/admin/coin/${id}`, {
     headers: {
       Authorization: `Bearer ${token}`,
     },
   });
-
   const coin = await coinData.data.message;
-  
   return {
     props: {
       coin,

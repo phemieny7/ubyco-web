@@ -34,7 +34,7 @@ function Users(props) {
       },
       method: "PUT",
     });
-    Router.reload(window.location.pathname);
+    // Router.reload(window.location.pathname);
   };
 
   return (
@@ -86,7 +86,6 @@ function Users(props) {
                       dataUpdate[index] = newData;
                       const id = dataUpdate[index].id;
                       const status = dataUpdate[index].banned;
-
                       setData([...dataUpdate]);
                       resolve();
                       updateStatus(id, status);

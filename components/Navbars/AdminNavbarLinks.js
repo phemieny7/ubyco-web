@@ -21,8 +21,10 @@ import Button from "components/CustomButtons/Button.js";
 import useWindowSize from "components/Hooks/useWindowSize.js";
 
 import styles from "assets/jss/nextjs-material-dashboard/components/headerLinksStyle.js";
+import { signIn, signOut, useSession } from 'next-auth/client'
 
 export default function AdminNavbarLinks() {
+  const [ session, loading ] = useSession()
   const size = useWindowSize();
   const useStyles = makeStyles(styles);
   const classes = useStyles();
@@ -208,7 +210,7 @@ export default function AdminNavbarLinks() {
                     </MenuItem>
                     <Divider light />
                     <MenuItem
-                      onClick={handleCloseProfile}
+                      onClick={() => signOut()}
                       className={classes.dropdownItem}
                     >
                       Logout

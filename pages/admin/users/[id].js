@@ -23,7 +23,7 @@ import moment from 'moment'
 
 import avatar from "assets/img/faces/marc.jpg";
 import Server from "../../api/lib/Server";
-
+import { getSession } from "next-auth/client";
 
 const styles = {
   cardCategoryWhite: {

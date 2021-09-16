@@ -1,11 +1,12 @@
+
 import Server from './lib/Server'
 import { getSession } from "next-auth/client";
 
 export default async (req, res) => {
   const session = await getSession({ req });
   const token = session?.accessToken;
-  const result = await Server.put('/admin/verify-withdrawal', {
-    id: req.body.id
+  const result = await Server.delete('/admin/delete_coin', {
+    id: req.body.id,
   },
   {
     headers: {

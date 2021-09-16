@@ -17,7 +17,7 @@ import CardAvatar from "components/Card/CardAvatar.js";
 import CardBody from "components/Card/CardBody.js";
 import CardFooter from "components/Card/CardFooter.js";
 
-import Server from '../../api/lib/Server'
+import Server from "../../api/lib/Server";
 
 import avatar from "assets/img/faces/marc.jpg";
 import { getSession } from "next-auth/client";
@@ -45,90 +45,107 @@ function Rate(props) {
   const useStyles = makeStyles(styles);
   const classes = useStyles();
   const [data, setData] = React.useState(props.coinRate);
+
+  const createCoin = async (name, wallet, rate) => {
+    const res = await fetch("/api/create-coin", {
+      body: JSON.stringify({
+        name,
+        wallet,
+        rate,
+      }),
+      headers: {
+        "Content-Type": "application/json",
+      },
+      method: "POST",
+    });
+  };
+
+  const updateCoin = async (id, wallet, rate, name) => {
+    const res = await fetch("/api/update-coin", {
+      body: JSON.stringify({
+        id,
+        name,
+        wallet,
+        rate,
+      }),
+      headers: {
+        "Content-Type": "application/json",
+      },
+      method: "PUT",
+    });
+  };
+
+  const deleteCoin = async (id) => {
+    const res = await fetch("/api/delete-coin", {
+      body: JSON.stringify({
+        id,
+      }),
+      headers: {
+        "Content-Type": "application/json",
+      },
+      method: "DELETE",
+    });
+  };
   return (
     <div>
       <GridContainer>
-        <GridItem xs={12} sm={12} md={6}>
+        <GridItem xs={12} sm={12} md={12}>
           <Card>
             <CardHeader color="primary">
               <h4 className={classes.cardTitleWhite}>Crypto Rate</h4>
               <p className={classes.cardCategoryWhite}>List of Crypto Rate</p>
             </CardHeader>
             <CardBody>
-            <MaterialTable
+              <MaterialTable
                 columns={[
                   {
                     title: "Coin Brand",
                     field: "name",
-                    editable: 'never',
                   },
                   {
                     title: "Rate",
                     field: "rate",
                   },
+                  {
+                    title: "Wallet",
+                    field: "wallet",
+                  },
                 ]}
                 data={data}
                 title=""
                 editable={{
+                  onRowAdd: (newData) =>
+                    new Promise((resolve, reject) => {
+                      setTimeout(() => {
+                        setData([...data, newData]);
+                        console.log(newData)
+                        const { name, wallet, rate } = newData;
+                        createCoin(name, wallet, rate);
+                        resolve();
+                      }, 1000);
+                    }),
+
                   onRowUpdate: (newData, oldData) =>
                     new Promise((resolve, reject) => {
                       setTimeout(() => {
                         const dataUpdate = [...data];
                         const index = oldData.tableData.id;
                         dataUpdate[index] = newData;
+                        const { id, name, wallet, rate } = newData;
+                        updateCoin(id, name, wallet, rate);
                         setData([...dataUpdate]);
                         resolve();
-                      }, 1000)
-                    })
-                }}
-                options={{
-                  actionsColumnIndex: -1,
-                }}
-              />
-            </CardBody>
-          </Card>
-        </GridItem>
-        <GridItem xs={12} sm={12} md={6}>
-          <Card>
-            <CardHeader color="warning">
-              <h4 className={classes.cardTitleWhite}>Crypto Brand</h4>
-              <p className={classes.cardCategoryWhite}>List of Crypto brands</p>
-            </CardHeader>
-            <CardBody>
-              <MaterialTable
-                columns={[
-                  {
-                    title: "Brand",
-                    field: "name",
-                  }
-                ]}
-                data={data}
-                title=""
-                editable={{
-                  onRowAdd: newData =>
-                    new Promise((resolve, reject) => {
-                      setTimeout(() => {
-                        setData([...data, newData]);
-                        resolve();
-                      }, 1000)
+                      }, 1000);
                     }),
-                  onRowUpdate: (newData, oldData) =>
-                    new Promise((resolve, reject) => {
-                      setTimeout(() => {
-                        const dataUpdate = [...brand];
-                        const index = oldData.tableData.id;
-                        dataUpdate[index] = newData;
-                        setBrand([...dataUpdate]);
-          
-                        resolve();
-                      }, 1000)
-                    }),
-                  onRowDelete: oldData =>
+
+                    onRowDelete: oldData =>
                     new Promise((resolve, reject) => {
                       setTimeout(() => {
                         const dataDelete = [...data];
                         const index = oldData.tableData.id;
-                        dataDelete.splice(index, 1);
+                        const pending = dataDelete.splice(index, 1);
+                        const {id} = pending[0];
+                        deleteCoin(id)
                         setData([...dataDelete]);
                         resolve()
                       }, 1000)
@@ -154,33 +171,33 @@ export async function getServerSideProps(context) {
     return {
       props: {},
       redirect: {
-        destination: '/login',
-        permanent: false
-      }
+        destination: "/login",
+        permanent: false,
+      },
     };
   }
 
-  if (session.user.role != 2){
+  if (session.user.role != 2) {
     return {
       props: {},
       redirect: {
-        destination: '/error',
-        permanent: false
-      }
+        destination: "/error",
+        permanent: false,
+      },
     };
   }
-  
+
   const token = session?.accessToken;
-  const coin = await Server.get('/user/coin',{
+  const coin = await Server.get("/user/coin", {
     headers: {
       Authorization: `Bearer ${token}`,
     },
-  })
-  const coinRate = coin.data.message
+  });
+  const coinRate = coin.data.message;
   return {
     props: {
       coinRate,
-    }
+    },
   };
 }
 export default Rate;

@@ -3,7 +3,8 @@ import Head from 'next/head'
 import { useState, useEffect } from 'react'
 import { useRouter } from 'next/router'
 import { signIn, getSession } from 'next-auth/client'
-
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import Background from '../../assets/img/bg7.jpg'
 
  function Login () {
@@ -24,6 +25,7 @@ import Background from '../../assets/img/bg7.jpg'
     e.preventDefault()
     setLoginError('')
     setIsLoginStarted(true)
+    toast.success("Login.....");
     signIn('credentials',
       {
         email,
@@ -161,18 +163,5 @@ import Background from '../../assets/img/bg7.jpg'
     </div>
   )
 }
-export async function getServerSideProps(context){
-  const session = await getSession(context);
-  if (session) {
-    return {
-      props: {},
-      redirect: {
-        destination: '/web',
-        permanent: false
-      }
-    };
-  }else{
-    return null;
-  }
-}
+
 export default Login;

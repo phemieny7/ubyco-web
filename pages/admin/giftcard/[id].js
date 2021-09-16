@@ -41,9 +41,9 @@ function Id(props) {
   };
 
   const actionCoin = async (status) => {
-    const res = await fetch("/api/update-cointransaction", {
+    const res = await fetch("/api/update-cardtransaction", {
       body: JSON.stringify({
-        id: props.coin.id,
+        id: props.card.id,
         status,
       }),
       headers: {

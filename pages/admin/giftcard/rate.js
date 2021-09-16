@@ -16,9 +16,9 @@ import CardHeader from "components/Card/CardHeader.js";
 import CardAvatar from "components/Card/CardAvatar.js";
 import CardBody from "components/Card/CardBody.js";
 import CardFooter from "components/Card/CardFooter.js";
-import Server from "../../api/lib/Server"
+import Server from "../../api/lib/Server";
 import avatar from "assets/img/faces/marc.jpg";
-import { createNamespaceExportDeclaration } from "typescript";
+import { getSession } from "next-auth/client";
 
 const styles = {
   cardCategoryWhite: {
@@ -43,43 +43,43 @@ function Rate(props) {
   const useStyles = makeStyles(styles);
   const classes = useStyles();
   const [brand, setBrand] = useState(props.cardBrand);
-  const [card, setCard] = useState(props.cardRate)
- const createCard = async(name) => {
-  const res = await fetch('/api/create-card',{
-    body: JSON.stringify({
-      name
-    }),
-    headers: {
-      'Content-Type': 'application/json'
-    },
-    method: 'POST'
-  })
- }
+  const [card, setCard] = useState(props.cardRate);
+  const createCard = async (name) => {
+    const res = await fetch("/api/create-card", {
+      body: JSON.stringify({
+        name,
+      }),
+      headers: {
+        "Content-Type": "application/json",
+      },
+      method: "POST",
+    });
+  };
 
- const updateCard = async(id, name) => {
-  const res = await fetch('/api/update-card',{
-    body: JSON.stringify({
-      id,
-      name
-    }),
-    headers: {
-      'Content-Type': 'application/json'
-    },
-    method: 'PUT'
-  })
- }
+  const updateCard = async (id, name) => {
+    const res = await fetch("/api/update-card", {
+      body: JSON.stringify({
+        id,
+        name,
+      }),
+      headers: {
+        "Content-Type": "application/json",
+      },
+      method: "PUT",
+    });
+  };
 
- const deleteCard = async(id) => {
-  const res = await fetch('/api/delete-card',{
-    body: JSON.stringify({
-      id
-    }),
-    headers: {
-      'Content-Type': 'application/json'
-    },
-    method: 'DELETE'
-  })
- }
+  const deleteCard = async (id) => {
+    const res = await fetch("/api/delete-card", {
+      body: JSON.stringify({
+        id,
+      }),
+      headers: {
+        "Content-Type": "application/json",
+      },
+      method: "DELETE",
+    });
+  };
   return (
     <div>
       <GridContainer>
@@ -87,7 +87,9 @@ function Rate(props) {
           <Card>
             <CardHeader color="primary">
               <h4 className={classes.cardTitleWhite}>Gift Card Rate</h4>
-              <p className={classes.cardCategoryWhite}>List of Gift Card Rate</p>
+              <p className={classes.cardCategoryWhite}>
+                List of Gift Card Rate
+              </p>
             </CardHeader>
             <CardBody>
               <MaterialTable
@@ -111,8 +113,8 @@ function Rate(props) {
                         dataUpdate[index] = newData;
                         setData([...dataUpdate]);
                         resolve();
-                      }, 1000)
-                    })
+                      }, 1000);
+                    }),
                 }}
                 options={{
                   actionsColumnIndex: -1,
@@ -139,15 +141,15 @@ function Rate(props) {
                 data={brand}
                 title=""
                 editable={{
-                  onRowAdd: newData =>
-                  new Promise((resolve, reject) => {
-                    setTimeout(() => {
-                      setBrand([...brand, newData]);
-                      const name = newData.name
-                      createCard(name)
-                      resolve();
-                    }, 1000)
-                  }),
+                  onRowAdd: (newData) =>
+                    new Promise((resolve, reject) => {
+                      setTimeout(() => {
+                        setBrand([...brand, newData]);
+                        const name = newData.name;
+                        createCard(name);
+                        resolve();
+                      }, 1000);
+                    }),
                   onRowUpdate: (newData, oldData) =>
                     new Promise((resolve, reject) => {
                       setTimeout(() => {
@@ -155,23 +157,23 @@ function Rate(props) {
                         const index = oldData.tableData.id;
                         dataUpdate[index] = newData;
                         setBrand([...dataUpdate]);
-                        const id = newData.id
-                        const name = newData.name
-                        updateCard(id, name)
+                        const id = newData.id;
+                        const name = newData.name;
+                        updateCard(id, name);
                         resolve();
-                      }, 1000)
+                      }, 1000);
                     }),
-                  onRowDelete: oldData =>
+                  onRowDelete: (oldData) =>
                     new Promise((resolve, reject) => {
                       setTimeout(() => {
                         const dataDelete = [...brand];
                         const index = oldData.tableData.id;
-                        dataDelete.splice(index, 1);
-                        setBrand([...dataDelete]);
-                        const id = oldData.id
+                        const pending = dataDelete.splice(index, 1);
+                        const {id} = pending[0];
                         deleteCard(id)
-                        resolve()
-                      }, 1000)
+                        setBrand([...dataDelete]);
+                        resolve();
+                      }, 1000);
                     }),
                 }}
                 options={{
@@ -187,48 +189,48 @@ function Rate(props) {
 }
 
 Rate.layout = Admin;
-export async function getServerSideProps(context){
+export async function getServerSideProps(context) {
   const session = await getSession(context);
   if (!session) {
     return {
       props: {},
       redirect: {
-        destination: '/login',
-        permanent: false
-      }
+        destination: "/login",
+        permanent: false,
+      },
     };
   }
 
-  if (session.user.role != 2){
+  if (session.user.role != 2) {
     return {
       props: {},
       redirect: {
-        destination: '/error',
-        permanent: false
-      }
+        destination: "/error",
+        permanent: false,
+      },
     };
   }
   const token = session?.accessToken;
-    
-  const card = await Server.get('/admin/card_rate',{
+
+  const card = await Server.get("/admin/card_rate", {
     headers: {
       Authorization: `Bearer ${token}`,
     },
-  })
+  });
 
-  const brand = await Server.get('/admin/all_card',{
+  const brand = await Server.get("/admin/all_card", {
     headers: {
       Authorization: `Bearer ${token}`,
     },
-  })
+  });
 
-  const cardRate = card.data.message
-  const cardBrand = brand.data.message
+  const cardRate = card.data.message;
+  const cardBrand = brand.data.message;
   return {
     props: {
       cardRate,
-      cardBrand
-    }
+      cardBrand,
+    },
   };
 }
 export default Rate;
