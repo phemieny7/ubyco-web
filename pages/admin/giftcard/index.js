@@ -30,7 +30,7 @@ function Giftcard(props) {
   return (
     <div>
       <GridContainer>
-        <GridItem xs={12} sm={6} md={6}>
+        <GridItem xs={12} sm={12} md={12}>
           <Card>
             <CardBody>
               <Button
@@ -39,19 +39,6 @@ function Giftcard(props) {
                 onClick={() => Router.push("/admin/giftcard/rate")}
               >
                 Rate
-              </Button>
-            </CardBody>
-           </Card>
-        </GridItem>
-        <GridItem xs={12} sm={6} md={6}>
-        <Card>
-            <CardBody color="warning">
-              <Button
-                fullWidth
-                color="warning"
-                // onClick={() => showNotification("tl")}
-              >
-               Histroy
               </Button>
             </CardBody>
            </Card>
@@ -93,9 +80,7 @@ function Giftcard(props) {
         </Card>
       </GridItem>
     </GridContainer>
-  
-
-    </div>
+  </div>
   );
 }
 
