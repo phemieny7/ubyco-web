@@ -367,17 +367,16 @@ export default function Index() {
                 <div className="featured-icon">
                   <i className="fas fa-spinner t-red"></i>
                 </div>
-                <h3 className="t-white">
-                  Take{" "}
+                <h4 className="t-white">
+                  Why{" "}
                   <mark>
                     <span className="t-red">.</span>Ubycohub
                   </mark>{" "}
-                  for a Spin
-                </h3>
-                <p className="t-white">
-                  We understand how overwhelming launching a business can be.
-                  This is why we've developed the easiest and fastest way to
-                  launch your product.
+                  you should choose us as your trading partner
+                </h4>
+                <p>
+                  We understand how overwhelming it can get when choosing a crypto and giftcard Exchange
+                  platform, we also know how quick it can get messy cause of lack of transparency .
                 </p>
                 <h4 className="t-red">Give us a try!</h4>
                 <p>
@@ -389,23 +388,19 @@ export default function Index() {
                   data-aos-anchor-placement="center-bottom"
                 >
                   <li>
-                    <i className="fas fa-check t-red"></i> Create unique
-                    websites
+                    <i className="fas fa-check t-red"></i>Transparency
                   </li>
                   <li>
-                    <i className="fas fa-check t-red"></i> Built in Boostrap 4
+                    <i className="fas fa-check t-red"></i> 24/7 Customer support
                   </li>
                   <li>
-                    <i className="fas fa-check t-red"></i> Stunning ready
-                    colors
+                    <i className="fas fa-check t-red"></i> Fast Payment
                   </li>
                   <li>
-                    <i className="fas fa-check t-red"></i> Limiteless
-                    variations
+                    <i className="fas fa-check t-red"></i> Experience 
                   </li>
                   <li>
-                    <i className="fas fa-check t-red"></i> Optimize all your
-                    efforts
+                    <i className="fas fa-check t-red"></i> Fast trading platform
                   </li>
                 </ul>
               </div>
@@ -421,7 +416,7 @@ export default function Index() {
               data-aos-anchor-placement="center-bottom"
             >
               <h3 className="t-white">
-                Want to know more about{" "}
+                Want to know what matters{" "}
                 <mark className="light-yellow t-dark">
                   <span className="t-red">.</span>Ubycohub
                 </mark>
@@ -470,7 +465,7 @@ export default function Index() {
             data-aos-anchor-placement="center-bottom"
           >
             <h1 className="t-white center">Join the community.</h1>
-            <h5 className="t-grey center">#applancio</h5>
+            <h5 className="t-grey center">#ubycohub</h5>
             <div className="cta-container center">
               <a href="#" className="primary-line-btn round b-red t-red">
                 <i className="fab fa-instagram"></i>Follow us on Instagram
