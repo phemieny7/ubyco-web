@@ -48,20 +48,19 @@ export default class MyApp extends App {
 
     return (
       <React.Fragment>
-       
-          <Head>
-            <meta
-              name="viewport"
-              content="width=device-width, initial-scale=1, shrink-to-fit=no"
-            />
-            <title>Ubyco Hub</title>
-            {/* <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_KEY_HERE"></script> */}
-          </Head>
-          <Provider session={pageProps.session}>
+        <Head>
+          <meta
+            name="viewport"
+            content="width=device-width, initial-scale=1, shrink-to-fit=no"
+          />
+          <title>Ubyco Hub</title>
+          <script>AOS.init();</script>
+        </Head>
+        <Provider session={pageProps.session}>
           <Layout>
             <Component {...pageProps} />
           </Layout>
-          </Provider>
+        </Provider>
       </React.Fragment>
     );
   }
