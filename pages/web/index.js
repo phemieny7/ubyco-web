@@ -87,7 +87,7 @@ export default function Index() {
               >
                 <h1 className="t-white">
                   Start trading your giftcards and crypto's with{" "}
-                  <span className="t-pink">reliable</span> partner.
+                  <span className="t-red">reliable</span> partner.
                 </h1>
                 <h5 className="t-white">
                   We offer the best and easiest way to trade your giftcards and
@@ -100,7 +100,7 @@ export default function Index() {
                   >
                     <i className="fab fa-apple"></i>Get it on Apple Store
                   </a>
-                  <a href="#" className="primary-line-btn round b-pink t-pink">
+                  <a href="#" className="primary-line-btn round b-red t-red">
                     <i className="fab fa-google-play"></i>Get it on Play Store
                   </a>
                 </div>
@@ -120,17 +120,17 @@ export default function Index() {
                       <li
                         data-target="#nav-item"
                         data-slide-to="0"
-                        className="active pink"
+                        className="active red"
                       ></li>
                       <li
                         data-target="#nav-item"
                         data-slide-to="1"
-                        className="pink"
+                        className="red"
                       ></li>
                       <li
                         data-target="#nav-item"
                         data-slide-to="2"
-                        className="pink"
+                        className="red"
                       ></li>
                     </ol>
                     <div className="carousel-inner">
@@ -191,13 +191,13 @@ export default function Index() {
                 data-aos="fade-up"
                 data-aos-anchor-placement="center-bottom"
               >
-                <div className="info-box border b-pink">
-                  <div className="t-pink">
+                <div className="info-box border b-red">
+                  <div className="t-red">
                     <i className="far fa-heart"></i>
                   </div>
                   <h4 className="t-white">Tested & Trusted</h4>
                   <p className="t-white">
-                    With over <span className="t-pink">7</span> years of experience, 
+                    With over <span className="t-red">7</span> years of experience, 
                     We have grown to become the best gift cards and cryptocurrencies trader
                   </p>
                 </div>
@@ -240,7 +240,7 @@ export default function Index() {
                 data-aos-anchor-placement="center-bottom"
               >
                 <h1 className="t-white">
-                  <span className="t-pink">Geting</span> started around the 
+                  <span className="t-red">Geting</span> started around the 
                   platform.
                 </h1>
                 <h5>
@@ -249,7 +249,7 @@ export default function Index() {
                    <br /> This 2 minute video can help.
                 </h5>
                 <div className="cta-container">
-                  <a href="#" className="primary-line-btn  round b-pink t-pink">
+                  <a href="#" className="primary-line-btn  round b-red t-red">
                     <i className="fas fa-tv"></i>Watch Video
                   </a>
                 </div>
@@ -365,12 +365,12 @@ export default function Index() {
                 data-aos-anchor-placement="center-bottom"
               >
                 <div className="featured-icon">
-                  <i className="fas fa-spinner t-pink"></i>
+                  <i className="fas fa-spinner t-red"></i>
                 </div>
                 <h3 className="t-white">
                   Take{" "}
                   <mark>
-                    <span className="t-pink">.</span>Ubycohub
+                    <span className="t-red">.</span>Ubycohub
                   </mark>{" "}
                   for a Spin
                 </h3>
@@ -379,7 +379,7 @@ export default function Index() {
                   This is why we've developed the easiest and fastest way to
                   launch your product.
                 </p>
-                <h4 className="t-pink">Give us a try!</h4>
+                <h4 className="t-red">Give us a try!</h4>
                 <p>
                   Take a quick look at the top features. <br />
                   We promise you won't regret it.
@@ -389,22 +389,22 @@ export default function Index() {
                   data-aos-anchor-placement="center-bottom"
                 >
                   <li>
-                    <i className="fas fa-check t-pink"></i> Create unique
+                    <i className="fas fa-check t-red"></i> Create unique
                     websites
                   </li>
                   <li>
-                    <i className="fas fa-check t-pink"></i> Built in Boostrap 4
+                    <i className="fas fa-check t-red"></i> Built in Boostrap 4
                   </li>
                   <li>
-                    <i className="fas fa-check t-pink"></i> Stunning ready
+                    <i className="fas fa-check t-red"></i> Stunning ready
                     colors
                   </li>
                   <li>
-                    <i className="fas fa-check t-pink"></i> Limiteless
+                    <i className="fas fa-check t-red"></i> Limiteless
                     variations
                   </li>
                   <li>
-                    <i className="fas fa-check t-pink"></i> Optimize all your
+                    <i className="fas fa-check t-red"></i> Optimize all your
                     efforts
                   </li>
                 </ul>
@@ -450,7 +450,7 @@ export default function Index() {
                         type="submit"
                         name="submit"
                         id="submit"
-                        className="primary-btn round pink"
+                        className="primary-btn round red"
                         value="Notify Me"
                       />
                       <div className="help-block with-errors"></div>
@@ -472,7 +472,7 @@ export default function Index() {
             <h1 className="t-white center">Join the community.</h1>
             <h5 className="t-grey center">#applancio</h5>
             <div className="cta-container center">
-              <a href="#" className="primary-line-btn round b-pink t-pink">
+              <a href="#" className="primary-line-btn round b-red t-red">
                 <i className="fab fa-instagram"></i>Follow us on Instagram
               </a>
               <a
