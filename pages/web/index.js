@@ -295,9 +295,9 @@ export default function Index() {
                         <i className="fas fa-quote-right"></i>
                       </div>
                       <div className="text t-white">
-                        Ubycohub is a must-have tool. Maybe one of the best
+                        {/* Ubycohub is a must-have tool. Maybe one of the best
                         product launch templates so far in the market.
-                        Recommended 100%.
+                        Recommended 100%. */}
                       </div>
                       <div className="name t-blue-vibrant">MARIA De ANDRE'</div>
                       <div className="role t-light-blue">Artist</div>
@@ -314,8 +314,8 @@ export default function Index() {
                         <i className="fas fa-quote-right"></i>
                       </div>
                       <div className="text t-white">
-                        Extremelly flexible and easy to use. Code is clean and
-                        all files well organized. Great job guys.
+                        {/* Extremelly flexible and easy to use. Code is clean and
+                        all files well organized. Great job guys. */}
                       </div>
                       <div className="name t-blue-vibrant">JOHN E. PERRY</div>
                       <div className="role t-light-blue">
@@ -334,8 +334,8 @@ export default function Index() {
                         <i className="fas fa-quote-right"></i>
                       </div>
                       <div className="text t-white">
-                        Fast, easy, reliable, fun, flexible, modern. Many
-                        options, colors, widgets. +++
+                        {/* Fast, easy, reliable, fun, flexible, modern. Many
+                        options, colors, widgets. +++ */}
                       </div>
                       <div className="name t-blue-vibrant">LINDA FALANGY</div>
                       <div className="role t-light-blue">Graphic Designer</div>
