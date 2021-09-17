@@ -38,9 +38,6 @@ export default function Index() {
   });
   return (
     <>
-      <Head>
-
-      </Head>
       <body className="dark">
         <header className="">
           <div className="container">
@@ -390,7 +387,7 @@ export default function Index() {
                     <p className="center">Subscribe our newsletter for occasional updates.</p>
                     <div id="fields">
                         {/* <!-- CONTACT Form--> */}
-                        <form id="contact-form" method="POST" action="http://www.schintudesign.com/envato/lancio/php/contact.php" role="form">
+                        <form id="contact-form" method="POST" role="form">
                             <div id="note" className="messages t-snow"></div>
                             <div className="controls center">
                                 {/* <!-- form-group--> */}
@@ -399,7 +396,6 @@ export default function Index() {
                                     <input type="submit" name="submit" id="submit" className="primary-btn round pink" value="Notify Me"/>
                                     <div className="help-block with-errors"></div>
                                 </div>
-                                
                             </div>
                         </form>
                         {/* <!-- END CONTACT Form--> */}

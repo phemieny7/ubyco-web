@@ -54,7 +54,6 @@ export default class MyApp extends App {
             content="width=device-width, initial-scale=1, shrink-to-fit=no"
           />
           <title>Ubyco Hub</title>
-          <script>AOS.init();</script>
         </Head>
         <Provider session={pageProps.session}>
           <Layout>
