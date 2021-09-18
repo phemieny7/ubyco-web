@@ -57,7 +57,7 @@ export default function Index() {
                     className="primary-btn small round light-blue t-blue-vibrant"
                     onClick={() => signIn()}
                   >
-                    Sign in
+                   Sign in
                   </button>
                 </>
               )}
