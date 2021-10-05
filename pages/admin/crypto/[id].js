@@ -30,14 +30,12 @@ function Id(props) {
   const useStyles = makeStyles(styles);
   const classes = useStyles();
   const image = props.coin.receipt;
-  const remove = image.substring(1, image.length - 1);
-  const split = remove.split(",");
+  // const remove = image.substring(1, image.length - 1);
+  // const split = remove.split(",");
   const Router = useRouter();
 
   const cards = ({ src, width, quality }) => {
-    return `${
-      process.env.NEXT_PUBLIC_SERVER_URL
-    }/get-picture/cards/${src}?w=${width}&q=${quality || 75}`;
+    return `http://res.cloudinary.com/phemieny7/${src}.jpg?w=${width}&q=${quality || 75}`;
   };
 
   const actionCoin = async (status) => {
@@ -78,31 +76,19 @@ function Id(props) {
               <p className={classes.cardCategoryWhite}>Crypt's</p>
             </CardHeader>
             <CardBody>
+            {/* {split.map((src, index) => ( */}
               <GridItem xs={6} sm={6} md={4}>
-                {/* <img src={avatar}/> */}
-              </GridItem>
-              <GridItem xs={6} sm={6} md={4}>
-                <GridList>
                   <Image
-                    loader={cards}
-                    src={split[0].replace(
-                      /[`~!@#$%^&*()_|+\-=?;:'",<>\{\}\[\]\\\/]/gi,
-                      ""
-                    )}
-                    width={300}
-                    height={200}
-                  />
-                  <Image
-                    loader={cards}
-                    src={split[1].replace(
-                      /[`~!@#$%^&*()_|+\-=?;:'",<>\{\}\[\]\\\/]/gi,
-                      ""
-                    )}
-                    width={300}
-                    height={200}
-                  />
-                </GridList>
+                  loader={cards}
+                  src={image.replace(
+                    /[`~!@#$%^&*()|+\-=?;:'",<>\{\}\[\]\\\/]/gi,
+                    ""
+                  )}
+                  width={400}
+                  height={700}
+                />
               </GridItem>
+            {/* ))}  */}
             </CardBody>
 
             <CardFooter>

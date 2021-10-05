@@ -21,6 +21,8 @@ import CardFooter from "components/Card/CardFooter.js";
 import MaterialTable from "material-table";
 import Server from '../../api/lib/Server'
 import { getSession } from "next-auth/client";
+import moment from "moment";
+
 
 import styles from "assets/jss/nextjs-material-dashboard/views/dashboardStyle.js";
 
@@ -62,6 +64,8 @@ function Giftcard(props) {
                 { title: "Status", field: "status_name.name"},
                 { title: "Amount", field: "amount"},
                 { title: "Total", field: "total"},
+                { title: 'Created', field: 'created_at', render: rowData => moment(rowData.created_at).fromNow }
+
               ]}
               data={props.card}
               title=""
