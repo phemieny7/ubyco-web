@@ -50,10 +50,26 @@ function Rate(props) {
     const { id, name } = option;
     cardOptions[id]  = name
 })
+// console.log(cardOptions)
+
   const createCard = async (name) => {
     const res = await fetch("/api/create-card", {
       body: JSON.stringify({
         name,
+      }),
+      headers: {
+        "Content-Type": "application/json",
+      },
+      method: "POST",
+    });
+  };
+
+  const createCardRate = async (id, name, rate) => {
+    const res = await fetch("/api/create-card-rate", {
+      body: JSON.stringify({
+        id,
+        name,
+        rate
       }),
       headers: {
         "Content-Type": "application/json",
@@ -102,8 +118,8 @@ function Rate(props) {
                 columns={[
                   {
                     title: "Card Brand",
-                    field: "card.name",
-                    lookup: {cardOptions}
+                    field: "card.id",
+                    lookup: cardOptions,
                   },
                   { title: "Card", field: "name" },
                   { title: "Rate", field: "rate" },
@@ -111,6 +127,17 @@ function Rate(props) {
                 data={card}
                 title=""
                 editable={{
+                  
+                  onRowAdd: (newData) =>
+                  new Promise((resolve, reject) => {
+                    setTimeout(() => {
+                      setCard([...card, newData]);
+                      const id = newData.card.id                     
+                      const{name ,rate}= newData
+                      createCardRate(id, name, rate);
+                      resolve();
+                    }, 1000);
+                  }),
                   onRowUpdate: (newData, oldData) =>
                     new Promise((resolve, reject) => {
                       setTimeout(() => {
@@ -118,16 +145,6 @@ function Rate(props) {
                         const index = oldData.tableData.id;
                         dataUpdate[index] = newData;
                         setData([...dataUpdate]);
-                        resolve();
-                      }, 1000);
-                    }),
-
-                    onRowAdd: (newData) =>
-                    new Promise((resolve, reject) => {
-                      setTimeout(() => {
-                        setBrand([...card, newData]);
-                        const name = newData.name;
-                        createCardRate(name);
                         resolve();
                       }, 1000);
                     }),
