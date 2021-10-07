@@ -28,6 +28,12 @@ import styles from "assets/jss/nextjs-material-dashboard/views/dashboardStyle.js
 
 function Giftcard(props) {
   const useStyles = makeStyles(styles);
+  const cardOptions = {};
+  props.brand.map(option => {
+    const { id, name } = option;
+    cardOptions[id]  = name
+})
+ 
   const classes = useStyles();
   return (
     <div>
@@ -59,7 +65,8 @@ function Giftcard(props) {
             <MaterialTable
               columns={[
                 { title: "Customer ID", field: "user.customer_id" },
-                { title: "Brand", field: "card.name"},
+                { title: "Brand", field: "card.card_id", lookup: cardOptions},
+                { title: "Card", field: "card.name"},
                 { title: "Rate", field: "card.rate"},
                 { title: "Status", field: "status_name.name"},
                 { title: "Amount", field: "amount"},
@@ -116,10 +123,19 @@ export async function getServerSideProps(context){
       Authorization: `Bearer ${token}`,
     },
   })
+
+  const fetchBrand = await Server.get("/admin/all_card", {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+
   const card = await cardTransaction.data.message
+  const brand = await fetchBrand.data.message
   return {
     props: {
       card,
+      brand
     }
   };
 }

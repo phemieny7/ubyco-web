@@ -4,13 +4,11 @@ import { getSession } from "next-auth/client";
 export default async (req, res) => {
   const session = await getSession({ req });
   const token = session?.accessToken;
-  const {id,  name, rate} = req.body
+  const {id} = req.body
   const result = await Server.post(
-    "/admin/create_card_rate",
+    "/admin/delete_card_rate",
     {
       id,
-      rate,
-      name
     },
     {
       headers: {

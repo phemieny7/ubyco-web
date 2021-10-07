@@ -78,6 +78,33 @@ function Rate(props) {
     });
   };
 
+  const updateCardRate = async (id, card_id, name, rate) => {
+    const res = await fetch("/api/update-card-rate", {
+      body: JSON.stringify({
+        id,
+        card_id,
+        name,
+        rate
+      }),
+      headers: {
+        "Content-Type": "application/json",
+      },
+      method: "PUT",
+    });
+  };
+
+  const deleteCardRate = async (id) => {
+    const res = await fetch("/api/delete-card-rate", {
+      body: JSON.stringify({
+        id,
+      }),
+      headers: {
+        "Content-Type": "application/json",
+      },
+      method: "POST",
+    });
+  };
+
   const updateCard = async (id, name) => {
     const res = await fetch("/api/update-card", {
       body: JSON.stringify({
@@ -142,9 +169,25 @@ function Rate(props) {
                     new Promise((resolve, reject) => {
                       setTimeout(() => {
                         const dataUpdate = [...card];
+                        const id= oldData.tableData.id;
+                        dataUpdate[id] = newData;
+                        const card_id = newData.card.id
+                        const {name, rate} = newData
+                        setCard([...dataUpdate]);
+                        updateCardRate(id, card_id, name, rate);
+                        resolve();
+                      }, 1000);
+                    }),
+
+                    onRowDelete: (oldData) =>
+                    new Promise((resolve, reject) => {
+                      setTimeout(() => {
+                        const dataDelete = [...card];
                         const index = oldData.tableData.id;
-                        dataUpdate[index] = newData;
-                        setData([...dataUpdate]);
+                        const pending = dataDelete.splice(index, 1);
+                        const {id} = pending[0];
+                        deleteCardRate(id)
+                        setCard([...dataDelete]);
                         resolve();
                       }, 1000);
                     }),

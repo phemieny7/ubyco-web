@@ -4,11 +4,12 @@ import { getSession } from "next-auth/client";
 export default async (req, res) => {
   const session = await getSession({ req });
   const token = session?.accessToken;
-  const {id,  name, rate} = req.body
-  const result = await Server.post(
-    "/admin/create_card_rate",
+  const {id, card_id, name, rate} = req.body
+  const result = await Server.put(
+    "/admin/update_card_rate",
     {
       id,
+      card_id,
       rate,
       name
     },
