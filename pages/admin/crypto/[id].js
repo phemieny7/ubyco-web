@@ -35,7 +35,7 @@ function Id(props) {
   const Router = useRouter();
 
   const cards = ({ src, width, quality }) => {
-    return `http://res.cloudinary.com/phemieny7/${src}.jpg?w=${width}&q=${quality || 75}`;
+    return `http://res.cloudinary.com/ubycohub/${src}.jpg?w=${width}&q=${quality || 75}`;
   };
 
   const actionCoin = async (status) => {

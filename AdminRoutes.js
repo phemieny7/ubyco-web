@@ -25,7 +25,7 @@ import LocationOn from "@material-ui/icons/LocationOn";
 import Notifications from "@material-ui/icons/Notifications";
 import{ BiBitcoin, BiEnvelope }from 'react-icons/bi';
 import {FaBank, FaBitcoin, FaPiggyBank} from 'react-icons/fa';
-import {FiMessageCircle, FiSettings} from 'react-icons/fi'
+import {FiMessageCircle, FiSettings, FiUserPlus} from 'react-icons/fi'
 import Language from "@material-ui/icons/Language";
 
 const dashboardRoutes = [
@@ -61,6 +61,13 @@ const dashboardRoutes = [
     path: "/withdrawal",
     name: "Withdrawal",
     icon: FaPiggyBank,
+    layout: "/admin",
+  },
+
+  {
+    path: "/adminusers",
+    name: "Admin Users",
+    icon: FiUserPlus,
     layout: "/admin",
   },
   {

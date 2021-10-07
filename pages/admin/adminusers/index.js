@@ -23,18 +23,40 @@ function Users(props) {
   const useStyles = makeStyles(styles);
   const [data, setData] = React.useState(props.user);
   const classes = useStyles();
-  const updateStatus = async (id, status) => {
-    const res = await fetch("/api/user_status", {
-      body: JSON.stringify({
-        id,
-        status,
-      }),
+
+  const updateAdmin = async (id, email, phone, fullname, banned) => {
+    const data = {id, email, phone, fullname, banned}
+    const res = await fetch("/api/update-admin", {
+      body: JSON.stringify(data),
       headers: {
         "Content-Type": "application/json",
       },
       method: "PUT",
     });
-    // Router.reload(window.location.pathname);
+  };
+
+  const createAdmin = async (email, phone, fullname) => {
+    const data = {email, phone, fullname}
+    const res = await fetch("/api/create-admin", {
+      body: JSON.stringify(data),
+      headers: {
+        "Content-Type": "application/json",
+      },
+      method: "POST",
+    });
+  };
+
+  
+  const deleteAdmin = async (id) => {
+    const res = await fetch("/api/delete-admin", {
+      body: JSON.stringify({
+        id
+      }),
+      headers: {
+        "Content-Type": "application/json",
+      },
+      method: "POST",
+    });
   };
 
   return (
@@ -42,8 +64,8 @@ function Users(props) {
       <GridItem xs={12} sm={12} md={12}>
         <Card>
           <CardHeader color="danger">
-            <h4 className={classes.cardTitleWhite}>Users</h4>
-            <p className={classes.cardCategoryWhite}>Last Updated 2 days ago</p>
+            <h4 className={classes.cardTitleWhite}>Admin Users</h4>
+            <p className={classes.cardCategoryWhite}></p>
           </CardHeader>
           <CardBody>
             <MaterialTable
@@ -51,60 +73,58 @@ function Users(props) {
                 {
                   title: "Name",
                   field: "fullname",
-                  editable: "never",
                 },
-                {
-                  title: "Customer ID",
-                  field: "customer_id",
-                  editable: "never",
-                },
-                { title: "Phone", field: "phone", editable: "never" },
+                { title: "Phone", field: "phone" },
                 {
                   title: "Status",
                   field: "banned",
                   lookup: { false: "Active", true: "Banned" },
                 },
                 {
-                  title: "Verified",
-                  field: "is_verified",
-                  lookup: { false: "Not Verified", true: "Confirmed" },
-                  editable: "never",
-                },
-                {
-                  title: "Available Amount",
-                  field: "userAmount.amount",
-                  editable: "never",
+                  title: "Email",
+                  field: "email",
                 },
               ]}
               data={data}
               title=""
               editable={{
+                onRowAdd: (newData) =>
+                    new Promise((resolve, reject) => {
+                      setTimeout(() => {
+                        setData([...data, newData]);
+                        const { email, phone, fullname } = newData;
+                        createAdmin(email, phone, fullname);
+                        resolve();
+                      }, 1000);
+                    }),
+
                 onRowUpdate: (newData, oldData) =>
                   new Promise((resolve, reject) => {
                     setTimeout(async () => {
                       const dataUpdate = [...data];
                       const index = oldData.tableData.id;
                       dataUpdate[index] = newData;
-                      const id = dataUpdate[index].id;
-                      const status = dataUpdate[index].banned;
+                      const{id, banned, email,phone,fullname} = dataUpdate[index]
                       setData([...dataUpdate]);
                       resolve();
-                      updateStatus(id, status);
+                      updateAdmin(id, email, phone, fullname, banned);
                     }, 1000);
                   }),
+
+                  onRowDelete: oldData =>
+                  new Promise((resolve, reject) => {
+                    setTimeout(() => {
+                      const dataDelete = [...data];
+                      const index = oldData.tableData.id;
+                      const pending = dataDelete.splice(index, 1);
+                      const {id} = pending[0];
+                      deleteAdmin(id)
+                      setData([...dataDelete]);
+                      resolve()
+                    }, 1000)
+                  }),
               }}
-              actions={[
-                {
-                  icon: "visibility",
-                  tooltip: "View User",
-                  onClick: (event, rowData) => {
-                    if (rowData.is_verified == true) {
-                      Router.push(`/admin/users/${rowData.id}`);
-                    }
-                    null
-                  },
-                },
-              ]}
+             
               options={{
                 actionsColumnIndex: -1,
               }}
@@ -130,7 +150,7 @@ Users.layout = Admin;
 export async function getServerSideProps(context) {
   const session = await getSession(context);
   const token = session?.accessToken;
-  const userData = await Server.get("/admin/user", {
+  const userData = await Server.get("/admin/adminuser", {
     headers: {
       Authorization: `Bearer ${token}`,
     },
