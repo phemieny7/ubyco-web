@@ -64,8 +64,8 @@ function Giftcard(props) {
                 { title: "Status", field: "status_name.name"},
                 { title: "Amount", field: "amount"},
                 { title: "Total", field: "total"},
-                { title: 'Created', field: 'created_at', render: rowData => moment(rowData.created_at).fromNow }
-
+                { title: "Date", field: `created_at`, render: rowData => moment(rowData.created_at).fromNow()},
+                
               ]}
               data={props.card}
               title=""

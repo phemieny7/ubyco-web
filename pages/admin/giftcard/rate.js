@@ -44,6 +44,12 @@ function Rate(props) {
   const classes = useStyles();
   const [brand, setBrand] = useState(props.cardBrand);
   const [card, setCard] = useState(props.cardRate);
+
+  const cardOptions = {};
+  brand.map(option => {
+    const { id, name } = option;
+    cardOptions[id]  = name
+})
   const createCard = async (name) => {
     const res = await fetch("/api/create-card", {
       body: JSON.stringify({
@@ -77,7 +83,7 @@ function Rate(props) {
       headers: {
         "Content-Type": "application/json",
       },
-      method: "DELETE",
+      method: "POST",
     });
   };
   return (
@@ -97,7 +103,7 @@ function Rate(props) {
                   {
                     title: "Card Brand",
                     field: "card.name",
-                    // lookup: { 1: 'Apple', 2: 'Vanilla'}
+                    lookup: {cardOptions}
                   },
                   { title: "Card", field: "name" },
                   { title: "Rate", field: "rate" },
@@ -112,6 +118,16 @@ function Rate(props) {
                         const index = oldData.tableData.id;
                         dataUpdate[index] = newData;
                         setData([...dataUpdate]);
+                        resolve();
+                      }, 1000);
+                    }),
+
+                    onRowAdd: (newData) =>
+                    new Promise((resolve, reject) => {
+                      setTimeout(() => {
+                        setBrand([...card, newData]);
+                        const name = newData.name;
+                        createCardRate(name);
                         resolve();
                       }, 1000);
                     }),
