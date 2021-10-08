@@ -83,7 +83,7 @@ function Rate(props) {
       headers: {
         "Content-Type": "application/json",
       },
-      method: "DELETE",
+      method: "POST",
     });
   };
   return (
