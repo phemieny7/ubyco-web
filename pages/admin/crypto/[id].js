@@ -19,7 +19,7 @@ import CardHeader from "components/Card/CardHeader.js";
 import CardBody from "components/Card/CardBody.js";
 import CardFooter from "components/Card/CardFooter.js";
 import CardAvatar from "components/Card/CardAvatar.js";
-import avatar from "assets/img/faces/marc.jpg";
+import avatar from "assets/img/faces/user.png";
 
 import styles from "assets/jss/nextjs-material-dashboard/views/dashboardStyle.js";
 import moment from "moment";
@@ -34,7 +34,7 @@ function Id(props) {
   // const split = remove.split(",");
   const Router = useRouter();
 
-  const cards = ({ src, width, quality }) => {
+  const imageLoader = ({ src, width, quality }) => {
     return `http://res.cloudinary.com/ubycohub/${src}.jpg?w=${width}&q=${quality || 75}`;
   };
 
@@ -79,7 +79,7 @@ function Id(props) {
             {/* {split.map((src, index) => ( */}
               <GridItem xs={6} sm={6} md={4}>
                   <Image
-                  loader={cards}
+                  loader={imageLoader}
                   src={image.replace(
                     /[`~!@#$%^&*()|+\-=?;:'",<>\{\}\[\]\\\/]/gi,
                     ""
@@ -154,7 +154,15 @@ function Id(props) {
           <Card profile>
             <CardAvatar profile>
               <a href="#pablo" onClick={(e) => e.preventDefault()}>
-                <img src={avatar} alt="..." />
+              {
+                  props.coin.user.picture ==! null ? 
+                  <Image
+                  loader={imageLoader}
+                  src={props.coin.user.picture}
+                  width={400}
+                  height={700}
+                /> : <img src={avatar} alt="..." />
+                }
               </a>
             </CardAvatar>
             <CardBody profile>

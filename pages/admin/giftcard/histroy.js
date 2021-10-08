@@ -43,27 +43,14 @@ function Giftcard(props) {
               <Button
                 fullWidth
                 color="info"
-                onClick={() => Router.push("/admin/giftcard/rate")}
+                onClick={() => Router.push("/admin/giftcard")}
               >
-                Rate
+                Go Back
               </Button>
             </CardBody>
           </Card>
         </GridItem>
-        <GridItem xs={12} sm={6} md={6}>
-          <Card>
-            <CardBody color="warning">
-              <Button
-                fullWidth
-                color="warning"
-                onClick={() => Router.push("/admin/giftcard/histroy")}
-              >
-                Histroy
-              </Button>
-            </CardBody>
-          </Card>
-        </GridItem>
-      </GridContainer>
+       </GridContainer>
 
       {/* Crypto Cards Trade */}
 
@@ -141,7 +128,7 @@ export async function getServerSideProps(context) {
     };
   }
   const token = session?.accessToken;
-  const cardTransaction = await Server.get("/admin/card", {
+  const cardTransaction = await Server.get("/admin/cardhistroy", {
     headers: {
       Authorization: `Bearer ${token}`,
     },

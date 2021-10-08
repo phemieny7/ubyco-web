@@ -58,7 +58,7 @@ function UserProfile(props) {
       },
       method: 'PUT'
     })
-    Router.reload(window.location.pathname);
+    // Router.reload(window.location.pathname);
   }
 
   return (

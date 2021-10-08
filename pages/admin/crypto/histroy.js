@@ -39,24 +39,10 @@ function Crypto(props) {
             <CardBody>
               <Button
                 fullWidth
-                color="info"
-                onClick={() => Router.push("/admin/crypto/rate")}
+                color="danger"
+                onClick={() => Router.push("/admin/crypto")}
               >
-                Rate
-              </Button>
-            </CardBody>
-           </Card>
-        </GridItem>
-        <GridItem xs={12} sm={6} md={6}>
-        <Card>
-            <CardBody color="warning">
-              <Button
-                fullWidth
-                color="warning"
-                onClick={() => Router.push("/admin/crypto/histroy")}
-                
-              >
-               Histroy
+                Go Back
               </Button>
             </CardBody>
            </Card>
@@ -69,7 +55,7 @@ function Crypto(props) {
       <GridItem xs={12} sm={12} md={12}>
         <Card>
           <CardHeader color="danger">
-            <h4 className={classes.cardTitleWhite}>Crypto Trade Transaction</h4>
+            <h4 className={classes.cardTitleWhite}>Completed Crypto Transaction</h4>
           </CardHeader>
           <CardBody>
             <MaterialTable
@@ -128,7 +114,7 @@ export async function getServerSideProps(context){
     };
   }
   const token = session?.accessToken;
-  const coinTransaction = await Server.get('/admin/coin',{
+  const coinTransaction = await Server.get('/admin/coinhistroy',{
     headers: {
       Authorization: `Bearer ${token}`,
     },
