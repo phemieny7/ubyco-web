@@ -21,7 +21,7 @@ import CardFooter from "components/Card/CardFooter.js";
 import MaterialTable from "material-table";
 import moment from 'moment'
 
-import avatar from "assets/img/faces/marc.jpg";
+import avatar from "assets/img/faces/user.png";
 import Server from "../../api/lib/Server";
 import { getSession } from "next-auth/client";
 
@@ -45,6 +45,10 @@ const styles = {
 };
 
 function UserProfile(props) {
+  const imageLoader = ({ src, width, quality }) => {
+    return `https://res.cloudinary.com/ubycohub/${src}.jpg?w=${width}&q=${quality || 75}`;
+  };
+
   const useStyles = makeStyles(styles);
   const classes = useStyles();
   const unbanned = async()=> {
@@ -217,7 +221,15 @@ function UserProfile(props) {
           <Card profile>
             <CardAvatar profile>
               <a href="#pablo" onClick={(e) => e.preventDefault()}>
-                <img src={avatar} alt="..." />
+                 {
+                  props.user.picture ==! null ? 
+                  <Image
+                  loader={imageLoader}
+                  src={props.user.picture}
+                  width={400}
+                  height={700}
+                /> : <img src={avatar} alt="..." />
+                }
               </a>
             </CardAvatar>
             <CardBody profile>
