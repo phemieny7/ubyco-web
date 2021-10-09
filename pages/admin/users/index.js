@@ -58,6 +58,11 @@ function Users(props) {
                   field: "customer_id",
                   editable: "never",
                 },
+                {
+                  title: "Email",
+                  field: "email",
+                  editable: "never",
+                },
                 { title: "Phone", field: "phone", editable: "never" },
                 {
                   title: "Status",
