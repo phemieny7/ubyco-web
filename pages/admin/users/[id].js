@@ -117,7 +117,7 @@ function UserProfile(props) {
               <GridContainer>
                 <GridItem xs={12} sm={12} md={12}>
                   <CustomInput
-                    labelText="Customer Id"
+                    labelText="Customer email"
                     id="email-address"
                     formControlProps={{
                       fullWidth: true,
