@@ -112,6 +112,25 @@ function UserProfile(props) {
                   />
                 </GridItem>
               </GridContainer>
+              
+
+              <GridContainer>
+                <GridItem xs={12} sm={12} md={12}>
+                  <CustomInput
+                    labelText="Customer Id"
+                    id="email-address"
+                    formControlProps={{
+                      fullWidth: true,
+                    }}
+                    inputProps={{
+                      disabled: true,
+                      value: props.user.email,                     
+                    }}
+                  />
+                </GridItem>
+              </GridContainer>
+              
+              
               <GridContainer>
                 <GridItem xs={12} sm={12} md={12}>
                 <MaterialTable
