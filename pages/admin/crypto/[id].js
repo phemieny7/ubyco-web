@@ -30,8 +30,8 @@ function Id(props) {
   const useStyles = makeStyles(styles);
   const classes = useStyles();
   const image = props.coin.receipt;
-  // const remove = image.substring(1, image.length - 1);
-  // const split = remove.split(",");
+  const remove = image.substring(1, image.length - 1);
+  const split = remove.split(",");
   const Router = useRouter();
 
   const imageLoader = ({ src, width, quality }) => {
@@ -162,7 +162,7 @@ function Id(props) {
                   width={400}
                   height={700}
                 /> : <img src={avatar} alt="..." />
-                }
+              }
               </a>
             </CardAvatar>
             <CardBody profile>
