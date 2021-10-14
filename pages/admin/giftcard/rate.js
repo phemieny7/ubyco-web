@@ -147,6 +147,7 @@ function Rate(props) {
                     title: "Card Brand",
                     field: "card.id",
                     lookup: cardOptions,
+                    editable:false
                   },
                   { title: "Card", field: "name" },
                   { title: "Rate", field: "rate" },

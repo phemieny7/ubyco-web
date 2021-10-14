@@ -27,12 +27,27 @@ import styles from "assets/jss/nextjs-material-dashboard/views/dashboardStyle.js
 
 function Giftcard(props) {
   const useStyles = makeStyles(styles);
+  const [transaction, setTransaction] = React.useState(props.card)
   const cardOptions = {};
   props.brand.map((option) => {
     const { id, name } = option;
     cardOptions[id] = name;
   });
 
+  const updateRate = async(id, rate) => {
+    console.log(rate)
+    const res = await fetch("/api/change-rate", {
+      body: JSON.stringify({
+        id,
+        rate
+      }),
+      headers: {
+        "Content-Type": "application/json"
+      },
+      method: "PUT"
+    })
+
+  }
   const classes = useStyles();
   return (
     <div>
@@ -78,24 +93,27 @@ function Giftcard(props) {
             <CardBody>
               <MaterialTable
                 columns={[
-                  { title: "Customer ID", field: "user.customer_id" },
+                  { title: "Customer ID", field: "user.customer_id", editable: false },
                   {
                     title: "Brand",
                     field: "card.card_id",
                     lookup: cardOptions,
+                    editable: false
                   },
-                  { title: "Card", field: "card.name" },
-                  { title: "Rate", field: "card.rate" },
-                  { title: "Status", field: "status_name.name" },
-                  { title: "Amount", field: "amount" },
-                  { title: "Total", field: "total" },
+                  { title: "Card", field: "card.name", editable: false },
+                  { title: "Rate", field: "rate"},
+                  { title: "Status", field: "status_name.name", editable: false },
+                  { title: "Amount", field: "amount", editable: false },
+                  { title: "Total", field: "total" , editable: false},
                   {
                     title: "Date",
                     field: `created_at`,
+                    editable: false,
                     render: (rowData) => moment(rowData.created_at).fromNow(),
+
                   },
                 ]}
-                data={props.card}
+                data={transaction}
                 title=""
                 actions={[
                   {
@@ -106,6 +124,23 @@ function Giftcard(props) {
                     },
                   },
                 ]}
+                editable={{
+                  onRowUpdate: (newData, oldData) =>
+                    new Promise((resolve, reject) => {
+                      setTimeout(async () => {
+          
+                        const dataUpdate = [...transaction];
+                        const index = oldData.tableData.id;
+                        dataUpdate[index] = newData;
+                        console.log(newData)
+                        const id = dataUpdate[index].id;
+                        const rate = dataUpdate[index].rate;
+                        updateRate(id, rate);
+                        setTransaction([...dataUpdate]);
+                        resolve();
+                      }, 1000);
+                    }),
+                }}
                 options={{
                   actionsColumnIndex: -1,
                 }}

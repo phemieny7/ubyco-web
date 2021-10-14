@@ -96,7 +96,7 @@ function Users(props) {
                       resolve();
                       updateStatus(id, status);
                     }, 1000);
-                  }),
+                  })
               }}
               actions={[
                 {
