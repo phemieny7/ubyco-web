@@ -32,7 +32,6 @@ function Id(props) {
   const remove = image.substring(1, image.length - 1);
   const split = remove.split(",");
   const Router = useRouter();
-
   const imageLoader = ({ src, width, quality }) => {
     return `https://res.cloudinary.com/ubycohub/${src}.jpg?w=${width}&q=${quality || 75}`;
   };
@@ -153,7 +152,7 @@ function Id(props) {
             <CardAvatar profile>
               <a href="#pablo" onClick={(e) => e.preventDefault()}>
                 {
-                  props.card.user.picture ==! null ? 
+                  props.card.user.picture !== null ? 
                   <Image
                   loader={imageLoader}
                   src={props.card.user.picture}
@@ -168,6 +167,11 @@ function Id(props) {
               <h4 className={classes.cardTitle}>
                 {" "}
                 Total amount: {props.card.total}
+              </h4>
+
+              <h4>
+              {" "}
+              Comment: {props.card.comments}
               </h4>
               <Button
                 color="primary"

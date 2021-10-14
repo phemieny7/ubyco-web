@@ -20,6 +20,7 @@ import Table from "components/Table/Table.js";
 import CardFooter from "components/Card/CardFooter.js";
 import MaterialTable from "material-table";
 import moment from 'moment'
+import Image from "next/image";
 
 import avatar from "assets/img/faces/user.png";
 import Server from "../../api/lib/Server";
@@ -48,6 +49,7 @@ function UserProfile(props) {
   const imageLoader = ({ src, width, quality }) => {
     return `https://res.cloudinary.com/ubycohub/${src}.jpg?w=${width}&q=${quality || 75}`;
   };
+
 
   const useStyles = makeStyles(styles);
   const classes = useStyles();
@@ -222,7 +224,7 @@ function UserProfile(props) {
             <CardAvatar profile>
               <a href="#pablo" onClick={(e) => e.preventDefault()}>
                  {
-                  props.user.picture ==! null ? 
+                  props.user.picture !== null ? 
                   <Image
                   loader={imageLoader}
                   src={props.user.picture}

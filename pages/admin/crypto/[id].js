@@ -155,7 +155,7 @@ function Id(props) {
             <CardAvatar profile>
               <a href="#pablo" onClick={(e) => e.preventDefault()}>
               {
-                  props.coin.user.picture ==! null ? 
+                  props.coin.user.picture !== null ? 
                   <Image
                   loader={imageLoader}
                   src={props.coin.user.picture}
@@ -170,6 +170,10 @@ function Id(props) {
               <h4 className={classes.cardTitle}>
                 {" "}
                 Total amount: {props.coin.total}
+              </h4>
+              <h4>
+              {" "}
+              Comment: {props.coin.comments}
               </h4>
               <Button
                 color="primary"
