@@ -5,7 +5,7 @@ export default async (req, res) => {
   const session = await getSession({ req });
   const token = session?.accessToken;
   const result = await Server.post(
-    "/admin/delete_card_rate",
+    "/admin/delete_card",
     {
       id: req.body.id,
     },

@@ -21,6 +21,8 @@ import App_5 from "../../src/assets/img/app-5.png";
 import User_1 from "../../src/assets/img/user1.jpg";
 import User_2 from "../../src/assets/img/user2.jpg";
 import User_3 from "../../src/assets/img/user3.jpg";
+import Logo from "../../src/assets/logo.png";
+
 
 import "../../src/css/bootstrap.min.css";
 import "../../src/css/style.css";
@@ -39,26 +41,30 @@ export default function Index() {
   return (
     <>
       <body className="dark">
-        <header className="">
+        <header className="header">
           <div className="container">
-            {/* <!-- Change path logo here --> */}
+
             <div className="logo left">
               <a href="#">
+                <img src={Logo} alt="Ubycohub" height={70}/>
+
                 <mark className="light-blue">
-                  <span className="t-red">.</span>Ubycohub
+                {/* <img src={Logo} alt="Ubycohub" height={70}/> */}
+                  {/* <span className="t-red">.</span>Ubycohub */}
                 </mark>
               </a>
             </div>
             <div className="menu right">
+               
               {!session && (
                 <>
                   Not signed in 
-                  <button
+                  <a
                     className="primary-btn small round light-blue t-blue-vibrant"
                     onClick={() => signIn()}
                   >
                    Sign in
-                  </button>
+                  </a>
                 </>
               )}
               {session && (

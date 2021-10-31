@@ -159,7 +159,8 @@ function Rate(props) {
                   new Promise((resolve, reject) => {
                     setTimeout(() => {
                       setCard([...card, newData]);
-                      const id = newData.card.id                     
+                      const id = newData.card.id   
+                      console.log(id)     
                       const{name ,rate}= newData
                       createCardRate(id, name, rate);
                       resolve();

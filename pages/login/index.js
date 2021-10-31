@@ -5,7 +5,8 @@ import { useRouter } from 'next/router'
 import { signIn, getSession } from 'next-auth/client'
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import Background from '../../assets/img/bg7.jpg'
+import Logo from '../../assets/img/logo.png'
+import styles from '../../assets/css/login.module.css'
 
  function Login () {
   const [email, setEmail] = useState('')
@@ -16,10 +17,14 @@ import Background from '../../assets/img/bg7.jpg'
 
   useEffect(() => {
     if (router.query.error) {
-      setLoginError(router.query.error)
+      setLoginError(router.query.error.message)
       setEmail(router.query.email)
     } 
   }, [router])
+  
+  useEffect(() => {
+    import("bootstrap/dist/js/bootstrap");
+}, []);
 
   const handleLogin = (e) => {
     e.preventDefault()
@@ -40,106 +45,13 @@ import Background from '../../assets/img/bg7.jpg'
       });
   }
 
-  const container = {
-    width: "100%",
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-    minHeight: "100vh",
-    // background: "#333",
-    backgroundImage: `url(${Background})`,
-    backgroundSize: "cover"
-  }
-  const heading = {
-    color: "#111",
-    fontWeight: "bold",
-    fontSize: "28px",
-    color: "green",
-    margin: "0"
-  }
-  const headtext = {
-    fontSize: "14px",
-    color: "#333",
-    // fontWeight: "bold",
-  }
-  const formBg = {
-    margin: "0",
-    padding: "40px",
-    background: "#fff",
-    borderRadius: "4px",
-    maxWidth: "400px"
-  }
-  const formdiv = {
-    width: "320px"
-  }
-  const label = {
-    display: "block",
-    fontSize: "14px",
-    fontWeight: "bold",
-    color: "green",
-    margin: "10px 0 5px"
-  }
-  const loginbtn = {
-    display: "block",
-    width: "100%",
-    margin: "20px 0",
-    padding: "12px 24px",
-    background: "green",
-    border: "none",
-    color: "#fff",
-    borderRadius: "30px",
-    fontSize: "14px",
-    fontWeight: "bold",
-    textTransform: "uppercase"
-  }
-  const inputs = {
-    margin: "5px 0",
-    padding: "12px 15px",
-    // paddingLeft: "15px",
-    width: "100%",
-    borderRadius: "30px",
-    border: "1px solid #888",
-    display: "inline-block",
-    fontSize: "14px"
-  }
-  const forgot = {
-    fontSize: "14px",
-    fontWeight: "bold"
-  }
-  const flexdiv = {
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "space-between"
-  }
-  const signuptext = {
-    textAlign: "center",
-    fontSize: "12px",
-    color: "#333",
-  }
-  const googlebtn = {
-    padding: "12px 40px",
-    background: "red",
-    border: "0",
-    borderRadius: "24px",
-    color: "#fff",
-    fontSize: "14px",
-    fontWeight: "bold"
-  }
-  const facebookbtn = {
-    padding: "12px 40px",
-    background: "blue",
-    border: "0",
-    borderRadius: "24px",
-    color: "#fff",
-    fontSize: "14px",
-    fontWeight: "bold"
-  }
+ 
   return (
     <div>
       <Head>
         <title>Ubyco Login</title>
       </Head>
-      <main style={container}>
+      {/* <main style={container}>
         <div style={formBg}>
           <h1 style={heading}>Hello.</h1>
           <p style={headtext}>Kindly enter your details below.</p>
@@ -157,9 +69,96 @@ import Background from '../../assets/img/bg7.jpg'
             <button type='button' style={googlebtn}>Google</button>
             <button type='button' style={facebookbtn}>Facebook</button>
             </div> */}
-          </form>
+          {/* </form> */}
+        {/* </div> */}
+      {/* </main> */} 
+
+      <div className="page-container">
+        <div className="page-content">
+            <div className="form_box">
+                <div className="container">
+                    <div className="row justify-content-center">
+                        <div className="col-lg-9 text-center">
+                            <div className="section-logo">
+                                <img src={Logo} alt="logo" className="col-5"/>
+                            </div>
+                            <div className="section-title pb-10 mt-4">
+                                <h4 className="title">Welcome Back :)</h4>
+                            </div>
+                             {/* <!-- section title --> */}
+                        </div>
+                    </div>
+                    <div className="row justify-content-center">
+                        <div className="col-lg-12">
+                            <div className="contact-form">
+                                <form id="contact-form" onSubmit={(e) => handleLogin(e)} data-toggle="validator">
+                                    <div className="row">
+                                        <div className="col-md-12">
+                                            <div className="single-form form-group">
+                                                <label>Email</label>
+                                                <input type="email" type='email' value={email} onChange={(e) => setEmail(e.target.value)} className="form-control" data-error="Email is required."
+                                                    required="required"/>
+                                                <div className="help-block with-errors"></div>
+                                            </div>
+                                             {/* <!-- single form --> */}
+                                        </div>
+                                        <div className="col-md-12">
+                                            <div className="single-form form-group">
+                                                <label>Password</label>
+                                                <input type="password" type='password' value={password} onChange={(e) => setPassword(e.target.value)} className="form-control" data-error="Password is required."
+                                                    required="required"/>
+                                                <div className="help-block with-errors"></div>
+                                            </div> 
+                                            {/* <!-- single form --> */}
+                                        </div>
+                                        <div className="col-md-9">
+                                            <p>Not a member? <a href="signup.html">Sign Up Now.</a></p>
+                                        </div>
+                                        <p className="form-message"></p>
+                                        <div className="col-md-12">
+                                            <div className="single-form form-group text-center">
+                                                <button type="submit" disabled={isLoginStarted}  className="btn_1">Login</button>
+                                            </div>
+                                             {/* <!-- single form --> */}
+                                            <hr/>
+                                        </div>
+                                        <div className="text-center">
+                                            <h6><a href="reset.html">Forgotten Password?</a></h6>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            {/* <div className="form_box">
+                <div className="row justify-content-center">
+                    <div className="col-lg-9">
+                        <div className="section-title text-center pb-10">
+                            <h6>Login With</h6>
+                        </div>
+                    </div>
+                </div>
+
+                <div className="d-flex mt-4 align-items-center justify-content-around">
+                    <div className="icon facebook d-flex align-items-center flex-column">
+                        <i className="lni lni-facebook-filled"></i>
+                    </div>
+
+                    <div className="icon google d-flex align-items-center flex-column">
+                        <i className="lni lni-google"></i>
+                    </div>
+
+                    <div className="icon linkedin d-flex align-items-center flex-column">
+                        <i className="lni lni-linkedin"></i>
+                    </div>
+                </div>
+            </div> */}
         </div>
-      </main>
+    </div>
+
     </div>
   )
 }
