@@ -92,7 +92,7 @@ const initiateWithdrawal = async () => {
                                     <div className="row">
                                     <div className="col-md-12">
                                             <div className="single-form form-group">
-                                                <label>Fullname</label>
+                                                <label style={{display: "block"}}>Fullname</label>
                                                 <input type='text' value={name} onChange={(e) => setName(e.target.value)} className="form-control" data-error="Fullname  is required."
                                                     required="required"/>
                                                 <div className="help-block with-errors"></div>
@@ -101,7 +101,7 @@ const initiateWithdrawal = async () => {
                                         </div>
                                         <div className="col-md-12">
                                             <div className="single-form form-group">
-                                                <label>Email</label>
+                                                <label style={{display: "block"}}>Email</label>
                                                 <input type="email"  value={email} onChange={(e) => setEmail(e.target.value)} className="form-control" data-error="Email is required."
                                                     required="required"/>
                                                 <div className="help-block with-errors"></div>
@@ -109,7 +109,7 @@ const initiateWithdrawal = async () => {
                                              {/* <!-- single form --> */}
                                         </div> <div className="col-md-12">
                                             <div className="single-form form-group">
-                                                <label>Phone</label>
+                                                <label style={{display: "block"}}>Phone</label>
                                                 <input type="text"  value={phone} onChange={(e) => setPhone(e.target.value)} className="form-control" data-error="Phone is required."
                                                    placeholder="080*******" required="required"/>
                                                 <div className="help-block with-errors"></div>
@@ -120,7 +120,7 @@ const initiateWithdrawal = async () => {
 
                                         <div className="col-md-12">
                                             <div className="single-form form-group">
-                                                <label>Password</label>
+                                                <label style={{display: "block"}}>Password</label>
                                                 <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} className="form-control" data-error="Password is required."
                                                     required="required"/>
                                                 <div className="help-block with-errors"></div>
