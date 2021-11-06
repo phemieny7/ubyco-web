@@ -1,5 +1,4 @@
 import Head from 'next/head'
-// import styles from '../styles/pageStyles/login.module.scss'
 import { useState, useEffect } from 'react'
 import { useRouter } from 'next/router'
 import { signIn, getSession } from 'next-auth/client'
@@ -23,10 +22,6 @@ import Link from 'next/link'
     } 
   }, [router])
   
-  useEffect(() => {
-    import("bootstrap/dist/js/bootstrap");
-    import("../../assets/css/login.module.css")
-}, []);
 
   const handleLogin = (e) => {
     e.preventDefault()

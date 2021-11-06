@@ -24,10 +24,6 @@ import Link from 'next/link'
       setEmail(router.query.email)
     } 
   }, [router])
-  
-  useEffect(() => {
-    import("bootstrap/dist/js/bootstrap");
-}, []);
 
 
 const initiateWithdrawal = async () => {
