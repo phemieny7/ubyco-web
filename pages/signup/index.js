@@ -6,7 +6,7 @@ import { signIn, getSession } from 'next-auth/client'
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Logo from '../../assets/img/logo.png'
-import styles from '../../assets/css/login.module.css'
+// import styles from '../../assets/css/login.module.css
 import Link from 'next/link'
 
  function SignUp () {
