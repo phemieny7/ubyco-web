@@ -11,7 +11,7 @@ export default async (req, res) => {
     email,
     phone
   }= req.body
-  console.log(req.body)
+
   const result = await Server.put(
     "/admin/update-admin",
     {

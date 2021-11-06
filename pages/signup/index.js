@@ -1,205 +1,155 @@
-import Head from "next/head";
+import Head from 'next/head'
 // import styles from '../styles/pageStyles/login.module.scss'
-import { useState, useEffect } from "react";
-import { useRouter } from "next/router";
-import { signIn, useSession } from "next-auth/client";
+import { useState, useEffect } from 'react'
+import { useRouter } from 'next/router'
+import { signIn, getSession } from 'next-auth/client'
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import Logo from '../../assets/img/logo.png'
+import styles from '../../assets/css/login.module.css'
+import Link from 'next/link'
 
-import Background from "../../assets/img/bg7.jpg";
-
-export default function Login() {
-  const [email, setEmail] = useState("");
-  const [phone, setPhone] = useState("");
-  const [password, setPassword] = useState("");
-  const [fullname, setFullname] = useState("");
-  const [Error, setError] = useState({});
-  const router = useRouter();
+ function SignUp () {
+  const [name, setName] = useState('')
+  const [phone, setPhone] = useState('')
+  const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('')
+  const [isLoginStarted, setIsLoginStarted] = useState(false)
+  const [loginError, setLoginError] = useState('')
+  const router = useRouter()
 
   useEffect(() => {
     if (router.query.error) {
-      setLoginError(router.query.error);
-      setEmail(router.query.email);
-    }
-  }, [router]);
+      setLoginError(router.query.error.message)
+      setEmail(router.query.email)
+    } 
+  }, [router])
+  
+  useEffect(() => {
+    import("bootstrap/dist/js/bootstrap");
+}, []);
 
 
-  const doSignUp = async (fullname, phone, email, password,) => {
-    setError({})
-    const res = await fetch("/api/signup", {
-      body: JSON.stringify({
-        fullname, phone, email, password,
-      }),
-      headers: {
-        "Content-Type": "application/json",
-      },
-      method: "POST",
-    });
+const initiateWithdrawal = async () => {
+  const res = await fetch("/api/signup", {
+    body: JSON.stringify({
+     name,
+     email,
+     phone,
+     password
+    }),
+    headers: {
+      "Content-Type": "application/json",
+    },
+    method: "PUT",
+  });
 };
 
-  const container = {
-    width: "100%",
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-    minHeight: "100vh",
-    // background: "#333",
-    backgroundImage: `url(${Background})`,
-    backgroundSize: "cover",
-  };
-  const heading = {
-    color: "#111",
-    fontWeight: "bold",
-    fontSize: "28px",
-    color: "green",
-    margin: "0",
-  };
-  const headtext = {
-    fontSize: "14px",
-    color: "#333",
-    // fontWeight: "bold",
-  };
-  const formBg = {
-    margin: "0",
-    padding: "40px",
-    background: "#fff",
-    borderRadius: "4px",
-    boxShadow: "0 .3rem .9rem rgba(0,0,0, .3)",
-  };
-  const formdiv = {
-    width: "320px",
-  };
-  const label = {
-    display: "block",
-    fontSize: "14px",
-    fontWeight: "bold",
-    color: "green",
-    margin: "10px 0 5px",
-  };
-  const loginbtn = {
-    display: "block",
-    width: "100%",
-    margin: "20px 0",
-    padding: "12px 24px",
-    background: "green",
-    border: "none",
-    color: "#fff",
-    borderRadius: "30px",
-    fontSize: "14px",
-    fontWeight: "bold",
-    textTransform: "uppercase",
-  };
-  const inputs = {
-    margin: "5px 0",
-    padding: "12px 15px",
-    width: "100%",
-    borderRadius: "30px",
-    border: "1px solid #888",
-    // display: "inline-block",
-    fontSize: "14px",
-  };
-  const forgot = {
-    fontSize: "14px",
-    fontWeight: "bold",
-  };
-  const flexdiv = {
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "space-between",
-  };
-  const signuptext = {
-    textAlign: "center",
-    fontSize: "12px",
-    color: "#333",
-  };
-  const googlebtn = {
-    padding: "12px 40px",
-    background: "red",
-    border: "0",
-    borderRadius: "24px",
-    color: "#fff",
-    fontSize: "14px",
-    fontWeight: "bold",
-  };
-  const facebookbtn = {
-    padding: "12px 40px",
-    background: "blue",
-    border: "0",
-    borderRadius: "24px",
-    color: "#fff",
-    fontSize: "14px",
-    fontWeight: "bold",
-  };
+  const handleSignup = (e) => {
+    e.preventDefault()
+    setLoginError('')
+    setIsLoginStarted(true)
+    toast.success("Login.....");
+    signIn('credentials',
+      {
+        email,
+        password,
+        callbackUrl: `${window.location.origin}/admin/dashboard`
+      }
+    ).then((res) => {
+        console.log('I did login');
+      })
+      .catch((e) => {
+        setError('login error');
+      });
+  }
 
+ 
   return (
     <div>
       <Head>
-        <title>Ubyco Sign Up</title>
+        <title>Ubyco Register</title>
       </Head>
-      <main style={container}>
-        <div style={formBg}>
-          <h1 style={heading}>Welcome.</h1>
-          <p style={headtext}>Kindly enter your details below.</p>
-          <form onSubmit={(e) => doSignUp(e)} style={formdiv}>
-            <label style={label} htmlFor="inputName">
-              Full Name
-            </label>
-            <input
-              style={inputs}
-              id="inputName"
-              type="text"
-              value={fullname}
-              onChange={(e) => setName(e.target.value)}
-            />
-            <span>{Error.fullname}</span>
-            <label style={label} htmlFor="loginEmail">
-              Email
-            </label>
-            <input
-              style={inputs}
-              id="loginEmail"
-              type="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-            />
-            <span>{Error.email}</span>
+      <div className="page-container">
+        <div className="page-content">
+            <div className="form_box">
+                <div className={styles.container}>
+                    <div className="row justify-content-center">
+                        <div className="col-lg-9 text-center">
+                            <div className="section-logo">
+                                <img src={Logo} alt="logo" className="col-5"/>
+                            </div>
+                            <div className="section-title pb-10 mt-4">
+                                <h4 className="title">Sign Up</h4>
+                            </div>
+                             {/* <!-- section title --> */}
+                        </div>
+                    </div>
+                    <div className="row justify-content-center">
+                        <div className="col-lg-12">
+                            <div className="contact-form">
+                                <form id="contact-form" onSubmit={(e) => handleSignup(e)} data-toggle="validator">
+                                    <div className="row">
+                                    <div className="col-md-12">
+                                            <div className="single-form form-group">
+                                                <label>Fullname</label>
+                                                <input type='text' value={name} onChange={(e) => setName(e.target.value)} className="form-control" data-error="Fullname  is required."
+                                                    required="required"/>
+                                                <div className="help-block with-errors"></div>
+                                            </div>
+                                            
+                                        </div>
+                                        <div className="col-md-12">
+                                            <div className="single-form form-group">
+                                                <label>Email</label>
+                                                <input type="email"  value={email} onChange={(e) => setEmail(e.target.value)} className="form-control" data-error="Email is required."
+                                                    required="required"/>
+                                                <div className="help-block with-errors"></div>
+                                            </div>
+                                             {/* <!-- single form --> */}
+                                        </div> <div className="col-md-12">
+                                            <div className="single-form form-group">
+                                                <label>Phone</label>
+                                                <input type="text"  value={phone} onChange={(e) => setPhone(e.target.value)} className="form-control" data-error="Phone is required."
+                                                   placeholder="080*******" required="required"/>
+                                                <div className="help-block with-errors"></div>
+                                            </div>
+                                             {/* <!-- single form --> */}
+                                        </div>
 
-            <label style={label} htmlFor="loginEmail">
-              Phone
-            </label>
-            <input
-              style={inputs}
-              id="loginEmail"
-              type="phone"
-              value={phone}
-              onChange={(e) => setPhone(e.target.value)}
-            />
-            <span>{Error.email}</span>
-            <label style={label} htmlFor="inputPassword">
-              Password
-            </label>
-            <input
-              style={inputs}
-              id="inputPassword"
-              type="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-            />
-             <span>{Error.password}</span>
-            <button type="submit" style={loginbtn}>
-              signup
-            </button>
-            <hr></hr>
-            <p style={signuptext}>Or Sign In with</p>
-            <div style={flexdiv}>
-              <button type="button" style={googlebtn}>
-                Google
-              </button>
-              <button type="button" style={facebookbtn}>
-                Facebook
-              </button>
+
+                                        <div className="col-md-12">
+                                            <div className="single-form form-group">
+                                                <label>Password</label>
+                                                <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} className="form-control" data-error="Password is required."
+                                                    required="required"/>
+                                                <div className="help-block with-errors"></div>
+                                            </div> 
+                                            {/* <!-- single form --> */}
+                                        </div>
+                                        <div className="col-md-9">
+                                            <p>Already a member? <Link href="/login">Sign Up Now.</Link></p>
+                                        </div>
+                                        <p className="form-message"></p>
+                                        <div className="col-md-12">
+                                            <div className="single-form form-group text-center">
+                                                <button type="submit" disabled={isLoginStarted}  className="btn_1">Sign Up</button>
+                                            </div>
+                                             {/* <!-- single form --> */}
+                                            <hr/>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
-          </form>
         </div>
-      </main>
     </div>
-  );
+
+    </div>
+  )
 }
+
+export default SignUp;

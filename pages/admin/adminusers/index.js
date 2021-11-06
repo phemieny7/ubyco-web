@@ -130,16 +130,6 @@ function Users(props) {
               }}
             />
           </CardBody>
-          {/* <CardFooter stats>
-              <div className={classes.stats}>
-                <Success>
-                  <ArrowUpward />
-                </Success>
-                <a href="#pablo" onClick={(e) => e.preventDefault()}>
-                  up by 5% today
-                </a>
-              </div>
-            </CardFooter> */}
         </Card>
       </GridItem>
     </GridContainer>
