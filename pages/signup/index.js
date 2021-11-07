@@ -69,7 +69,7 @@ const initiateWithdrawal = async () => {
       <div className="page-container">
         <div className="page-content">
             <div className="form_box">
-                <div className={styles.container}>
+                <div className="container">
                     <div className="row justify-content-center">
                         <div className="col-lg-9 text-center">
                             <div className="section-logo">
