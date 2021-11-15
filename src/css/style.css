@@ -374,6 +374,7 @@ footer .copyright{
 .section{
     padding: 100px 0;
     width: 100%;
+    margin-top: 20px;
 }
 .section.half-padding{
     padding-top: 40px;
@@ -418,6 +419,10 @@ footer .copyright{
 .content ul li i{
     font-size: 12px;
     margin-right: 10px;
+}
+
+.container .privacy p {
+    color : 'white';
 }
 .featured-icon i{
     font-size: 40px;

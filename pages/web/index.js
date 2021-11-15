@@ -1,16 +1,4 @@
-// export default function Index() {
-//   const [ session, loading ] = useSession()
-//   return <>
-//     {!session && <>
-//       Not signed in <br/>
-//       <button onClick={() => signIn()}>Sign in</button>
-//     </>}
-//     {session && <>
-//       Signed in as {session.user.email} <br/>
-//       <button onClick={() => signOut()}>Sign out</button>
-//     </>}
-//   </>
-// }
+
 import React from "react";
 import { signIn, signOut, useSession } from "next-auth/client";
 import App_1 from "../../src/assets/img/app-1.png";
@@ -47,11 +35,6 @@ export default function Index() {
             <div className="logo left">
               <a href="#">
                 <img src={Logo} alt="Ubycohub" height={70}/>
-
-                <mark className="light-blue">
-                {/* <img src={Logo} alt="Ubycohub" height={70}/> */}
-                  {/* <span className="t-red">.</span>Ubycohub */}
-                </mark>
               </a>
             </div>
             <div className="menu right">
@@ -491,6 +474,7 @@ export default function Index() {
             </div>
           </footer>
         </div>
+        
       </body>
     </>
   );
