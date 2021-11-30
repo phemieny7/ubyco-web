@@ -83,6 +83,7 @@ const options = {
     session: (session, token) => {
       session.accessToken = token.accessToken;
       session.user = token.user;
+      session.role = token.user.role;
       // console.log(session);
       return session;
     },

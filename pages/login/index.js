@@ -5,8 +5,10 @@ import { signIn, getSession } from 'next-auth/client'
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Logo from '../../assets/img/logo.png'
+// import styles from '../../assets/css/login.module.css'
 
 import Link from 'next/link'
+import Server from '../api/lib/Server';
 
  function Login () {
   const [email, setEmail] = useState('')
@@ -21,35 +23,50 @@ import Link from 'next/link'
       setEmail(router.query.email)
     } 
   }, [router])
+
+// const resolveAfter3Sec = new Promise(resolve => setTimeout(resolve, 8000));
+// toast.promise(
+//     resolveAfter3Sec,
+//     {
+//       pending: 'Processing auth',
+//       success: 'User Authenticated ',
+//       error: 'Something went wrong 🤯'
+//     }
+// )
   
 
   const handleLogin = (e) => {
     e.preventDefault()
     setLoginError('')
     setIsLoginStarted(true)
-    toast.success("Login.....");
+    toast.info("Processing request");
     signIn('credentials',
       {
         email,
         password,
-        callbackUrl: `${window.location.origin}/admin/dashboard`
+        callbackUrl: `${window.location.origin}/web`
       }
     ).then((res) => {
-        console.log('I did login');
+        toast.success("Login Successful 👌");
       })
       .catch((e) => {
-        setError('login error');
+        toast.danger("Login Failed");
       });
   }
+
 
  
   return (
     <div>
+        {/* <style jsx>
+            
+        </style> */}
       <Head>
         <title>Ubyco Login</title>
       </Head>
-      <div className="page-container">
-        <div className="page-content">
+      <ToastContainer/>
+      <div className="page_container">
+        <div className="page_content">
             <div className="form_box">
                 <div className="container">
                     <div className="row justify-content-center">
@@ -114,4 +131,44 @@ import Link from 'next/link'
   )
 }
 
+// export async function getServerSideProps(context) {
+//     const session = await getSession(context);
+//     if (session){
+        
+//       return{
+//         props: {},
+//         redirect: {
+//           destination: '/web',
+//           permanent: false
+//         }
+//       };
+//     }
+//   }
+
+//   export const getServerSideProps = async (context) => {
+//     try {
+//         const session = await getSession(context);
+        
+//         if (!session) throw new Error('Missing auth token')
+
+//         // await Server.get('/', { headers: { Authorization: `Bearer ${token}`} })
+
+//         return{
+//             props: {},
+//             redirect: {
+//               destination: '/web',
+//               permanent: false
+//             }
+//           };
+//     } catch (err) {
+//         // Handle error
+
+//         return {
+//             redirect: {
+//                 destination: '',
+//                 statusCode: 307
+//             }
+//         }
+//     }
+// }
 export default Login;

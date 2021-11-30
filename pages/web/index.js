@@ -10,7 +10,7 @@ import User_1 from "../../src/assets/img/user1.jpg";
 import User_2 from "../../src/assets/img/user2.jpg";
 import User_3 from "../../src/assets/img/user3.jpg";
 import Logo from "../../src/assets/logo.png";
-
+import Link from "next/link";
 
 import "../../src/css/bootstrap.min.css";
 import "../../src/css/style.css";
@@ -20,10 +20,12 @@ import Aos from "aos";
 // import validator from 'bootstrap-validator'
 
 import Head from "next/head";
+import { Button } from "@material-ui/core";
 
 export default function Index() {
   const [session, loading] = useSession();
   React.useEffect(() => {
+    console.log(session?.role)
     Aos.init();
   });
   return (
@@ -42,26 +44,54 @@ export default function Index() {
               {!session && (
                 <>
                   Not signed in 
-                  <a
+                  <Link
                     className="primary-btn small round light-blue t-blue-vibrant"
-                    onClick={() => signIn()}
+                    href="/login"
                   >
                    Sign in
-                  </a>
+                  </Link>
                 </>
               )}
-              {session && (
-                <>
-                  {" "}
-                  Signed in as {session.user.email}
-                  <button
-                    className="primary-btn small round light-blue t-blue-vibrant"
-                    onClick={() => signOut()}
-                  >
-                    Sign out
-                  </button>
-                </>
-              )}
+            
+            {session?.role == 2 && (
+                   <>
+                   <ul>
+                     <li>
+                     <button variant="contained" color="primary" onClick={()=>signOut()}>
+                       sign Out
+                      </button>
+                     
+                     </li>
+                     <li>
+                     <Link
+                     className="primary-btn small round light-blue t-blue-vibrant"
+                     href="/admin/dashboard"
+                   >
+                   Dashboard
+                 </Link>
+                 </li>
+               </ul>
+               </>
+                )}
+            {session?.role == 1 && (
+              <>
+                <ul>
+                  <li>
+                 <button  variant="contained" color="primary" onClick={()=>signOut()}>
+                       sign Out
+                      </button>
+                  </li>
+                  <li>
+                  <Link
+                  className="primary-btn small round light-blue t-blue-vibrant"
+                  href="/user/dashboard"
+                >
+                Dashboard
+              </Link>
+              </li>
+            </ul>
+            </>
+                ) }
             </div>
           </div>
         </header>

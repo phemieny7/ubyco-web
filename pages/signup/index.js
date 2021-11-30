@@ -66,8 +66,8 @@ const initiateWithdrawal = async () => {
       <Head>
         <title>Ubyco Register</title>
       </Head>
-      <div className="page-container">
-        <div className="page-content">
+      <div className="page_container">
+        <div className="page_content">
             <div className="form_box">
                 <div className="container">
                     <div className="row justify-content-center">
@@ -124,7 +124,7 @@ const initiateWithdrawal = async () => {
                                             {/* <!-- single form --> */}
                                         </div>
                                         <div className="col-md-9">
-                                            <p>Already a member? <Link href="/login">Sign Up Now.</Link></p>
+                                            <p>Already a member? <Link href="/login">Login Now.</Link></p>
                                         </div>
                                         <p className="form-message"></p>
                                         <div className="col-md-12">

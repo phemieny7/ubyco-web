@@ -1,9 +1,11 @@
 import React from "react";
 import Document, { Html, Head, Main, NextScript } from "next/document";
+// import { useRouter } from "next/router";
 import { ServerStyleSheets } from "@material-ui/styles";
 
 class MyDocument extends Document {
   render() {
+    // const router = useRouter()
     return (
       <Html lang="en">
         <Head>
@@ -21,18 +23,18 @@ class MyDocument extends Document {
             href="//cdn.jsdelivr.net/chartist.js/latest/chartist.min.css"
           />
           <script src="//cdn.jsdelivr.net/chartist.js/latest/chartist.min.js"></script>
-          <script src="https://kit.fontawesome.com/747940bb1c.js"></script>
+          <script src="//kit.fontawesome.com/747940bb1c.js"></script>
           <link
             rel="stylesheet"
-            href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Material+Icons"
+            href="//fonts.googleapis.com/css?family=Roboto:300,400,500,700|Material+Icons"
           />
           <link
-            href="https://fonts.googleapis.com/icon?family=Material+Icons"
+            href="//fonts.googleapis.com/icon?family=Material+Icons"
             rel="stylesheet"
           />
           <link
             rel="stylesheet"
-            href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"
+            href="//maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"
           />
         </Head>
         <body>
