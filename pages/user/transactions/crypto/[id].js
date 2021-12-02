@@ -73,7 +73,7 @@ function Id(props) {
 
           <Card>
             <CardHeader color="success">
-              <h4 className={classes.cardTitleWhite}>Update Coin Transaction/h4>
+              <h4 className={classes.cardTitleWhite}>Update Coin Transaction</h4>
               <p className={classes.cardCategoryWhite}>Kindly select all required</p>
             </CardHeader>
             <form onSubmit={(e) => handleLogin(e)} data-toggle="validator" enctype="multipart/form-data">
