@@ -99,6 +99,7 @@ function Giftcard(props) {
   const [total, setTotal] = React.useState(0)
   const [id, setId] = React.useState(null)
   const [image, setImage] = React.useState(null);
+  import Server from '../../api/lib/Server'
 
  
 

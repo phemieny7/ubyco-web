@@ -23,7 +23,7 @@ import avatar from "assets/img/faces/user.png";
 
 import styles from "assets/jss/nextjs-material-dashboard/views/dashboardStyle.js";
 import moment from "moment";
-import Server from "../../api/lib/Server";
+import Server from "../../../api/lib/Server";
 
 
 function Id(props) {
