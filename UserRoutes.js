@@ -23,6 +23,7 @@ import Notifications from "@material-ui/icons/Notifications";
 import { BiBitcoin } from 'react-icons/bi';
 import {MdCardGiftcard} from 'react-icons/md'
 import {BiMessageAltDetail} from 'react-icons/bi'
+import { BiHistory } from "react-icons/bi";
 
 const dashboardRoutes = [
   {
@@ -42,6 +43,12 @@ const dashboardRoutes = [
     path: "/crypto",
     name: "Crypto",
     icon:  BiBitcoin,
+    layout: "/user",
+  },
+  {
+    path: "/transaction",
+    name: "Transaction",
+    icon:  BiHistory,
     layout: "/user",
   },
   

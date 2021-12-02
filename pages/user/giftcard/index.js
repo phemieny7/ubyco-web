@@ -128,7 +128,7 @@ function Giftcard(props) {
               <h4 className={classes.cardTitleWhite}>Trade Gift Cards</h4>
               <p className={classes.cardCategoryWhite}>Kindly select all required</p>
             </CardHeader>
-            <form onSubmit={(e) => handleLogin(e)} data-toggle="validator" multipath>
+            <form onSubmit={(e) => handleLogin(e)} data-toggle="validator" enctype="multipart/form-data">
             <CardBody>
               <GridContainer>
                 <GridItem xs={12} sm={12} md={6}>
@@ -209,7 +209,7 @@ function Giftcard(props) {
               
               </GridContainer>
               <GridContainer>
-                <GridItem xs={12} sm={12} md={12}>
+                <GridItem xs={12} sm={12} md={6}>
                   <InputLabel style={{ color: "#AAAAAA" }}>Comments</InputLabel>
                   <CustomInput
                     id="comment"
@@ -224,30 +224,18 @@ function Giftcard(props) {
                     onChange={(e) => setComment(event.target.value)}
                   />
                 </GridItem>
+                <GridItem xs={12} sm={6} md={6}>
+                <label for="formFileMultiple" class="form-label">Upload GiftCard</label>
+                  <input class="form-control" type="file" id="formFileMultiple" multiple />
+               
+              </GridItem>
+
               </GridContainer>
             </CardBody>
             <CardFooter>
-              <GridItem xs={12} sm={12} md={6}>
-              <CustomInput
-                   
-                    formControlProps={{
-                      fullWidth: true,
-                    }}
-                    inputProps={{
-                    type: "button",
-                    onChange: (e) => setImage(e.target.files[0]),
-                    accept:"*"
-
-                    }}
-                    value={comment}
-                  />
-              </GridItem>
-
-              <GridItem xs={12} sm={12} md={6}>
-                <Button color="primary" type="submit" disabled={loading}>
+              <Button color="primary" type="submit" disabled={loading}>
                   Trade Card
                 </Button>
-              </GridItem>
             </CardFooter>
           </form>
           </Card>

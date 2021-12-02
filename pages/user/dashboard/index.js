@@ -294,47 +294,9 @@ export async function getServerSideProps(context) {
       Authorization: `Bearer ${token}`,
     },
   });
-  //fetch revenue
-  // const revenueData = await Server.get('/admin/revenue',{
-  //   headers: {
-  //     Authorization: `Bearer ${token}`,
-  //   },
-  // })
-  // //pending counter
-  // const pendingData = await Server.get('/admin/pending-trade',{
-  //   headers: {
-  //     Authorization: `Bearer ${token}`,
-  //   },
-  // })
-  // //card  grapht data
-  // const cardGraphData = await Server.get('/admin/weekly-card-exchange',{
-  //   headers: {
-  //     Authorization: `Bearer ${token}`,
-  //   },
-  // })
-  // //card rate data
-  // const cardRateData = await Server.get('/admin/card_rate',{
-  //   headers: {
-  //     Authorization: `Bearer ${token}`,
-  //   },
-  // })
-  // //card rate data
-  // const coinRateData = await Server.get('/admin/coin_rate',{
-  //   headers: {
-  //     Authorization: `Bearer ${token}`,
-  //   },
-  // })
 
   const user = await userData.data.message;
-  // const revenue = await revenueData.data.message
-  // const pending = await pendingData.data.message
-  // const cardGraph = await cardGraphData.data.message
-  // const cardRate = await cardRateData.data.message
-  // const coinRate = await coinRateData.data.message
 
-  // const cardGraphString= JSON.stringify(cardGraph)
-
-  console.log();
 
   return {
     props: {
