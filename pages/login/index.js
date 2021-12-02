@@ -208,7 +208,7 @@ export const getServerSideProps = async (context) => {
             }
         }
     } catch (err) {
-        res.writeHead(307, { Location: '/login' }).end()
+        // res.writeHead(307, { Location: '/login' }).end()
         return {
             props: {
             redirect: {
