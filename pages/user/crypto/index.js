@@ -16,7 +16,7 @@ import MenuItem from '@material-ui/core/MenuItem';
 // @material-ui/icons
 import Store from "@material-ui/icons/Store";
 import {BiBitcoin} from 'react-icons/bi'
-import {MdCardGiftcard} from 'react-icons/md'
+import {MdBitcoin} from 'react-icons/md'
 
 import DateRange from "@material-ui/icons/DateRange";
 import LocalOffer from "@material-ui/icons/LocalOffer";
@@ -40,6 +40,7 @@ import CardHeader from "components/Card/CardHeader.js";
 import CardIcon from "components/Card/CardIcon.js";
 import CardBody from "components/Card/CardBody.js";
 import CardFooter from "components/Card/CardFooter.js";
+import Image from 'next/image'
 
 import MaterialTable from "material-table";
 import {GiBanknote} from 'react-icons/gi'
@@ -84,7 +85,7 @@ const styles = {
   }
 };
 
-function Giftcard(props) {
+function Crypto(props) {
   const useStyles = makeStyles(styles);
   const classes = useStyles();
    //card and type selected value
@@ -92,6 +93,8 @@ function Giftcard(props) {
   const [typeValue, setTypeValue] = React.useState("");
   const [type, setType] = React.useState([]);
   const [loading, setLoading] = React.useState(false)
+  const [wallet, setWallet] = React.useState("null")
+
  
   //amount state
   const [amount, setAmount] = React.useState('');
@@ -105,8 +108,13 @@ function Giftcard(props) {
    //when brand is selected
   const onBrandSelect = async (event) => {
     setBrandValue(event.target.value);
-    const res = props.cards.find(card => card.id === event.target.value)
-    setType(res.cardTypes)
+    const res = props.coins.find(card => card.id === event.target.value)
+    setType(res)
+    setWallet(res.wallet)
+  }
+
+  const btc = ({ src, width, quality }) => {
+    return `https://www.bitcoinqrcodemaker.com/api/?style=bitcoin&prefix=on&address=${src}`
   }
   //when price changes multiply the amount by the rate
   const priceChange = async (event) => {
@@ -124,16 +132,16 @@ function Giftcard(props) {
         <GridItem xs={12} sm={12} md={12}>
 
           <Card>
-            <CardHeader color="primary">
-              <h4 className={classes.cardTitleWhite}>Trade Gift Cards</h4>
+            <CardHeader color="success">
+              <h4 className={classes.cardTitleWhite}>Trade Coin</h4>
               <p className={classes.cardCategoryWhite}>Kindly select all required</p>
             </CardHeader>
-            <form onSubmit={(e) => handleLogin(e)} data-toggle="validator" multipath>
+            <form onSubmit={(e) => handleLogin(e)} data-toggle="validator">
             <CardBody>
               <GridContainer>
-                <GridItem xs={12} sm={12} md={6}>
+                <GridItem xs={12} sm={12} md={12}>
                   <FormControl className={classes.formControl}>
-                    <InputLabel id="demo-simple-select-label" className={classes.formTitle}>Brand</InputLabel>
+                    <InputLabel id="demo-simple-select-label" className={classes.formTitle}>Coin</InputLabel>
                     <Select
                       labelId="demo-simple-select-label"
                       id="demo-simple-select"
@@ -141,34 +149,15 @@ function Giftcard(props) {
                       onChange={(e) => onBrandSelect(e)}
                       required
                     >
-                        {props.cards.length > 0 ? props.cards.map(card => (
-                        <MenuItem value={card.id} key={card.id}>
-                          <p>{card.name}</p>
+                        {props.coins.length > 0 ? props.coins.map(coin => (
+                        <MenuItem value={coin.id} key={coin.id}>
+                          <p>{coin.name}</p>
                         </MenuItem>
                       )) : 0}
                     </Select>
                   </FormControl>
                 </GridItem>
-                <GridItem xs={12} sm={12} md={6}>
-                  <FormControl className={classes.formControl}>
-                    <InputLabel id="demo-simple-select-label" className={classes.formTitle}>Card Type</InputLabel>
-                    <Select
-                      labelId="demo-simple-select-label"
-                      id="demo-simple-select"
-                      value={typeValue}
-                      onChange={(e) => setTypeValue(e.target.value)}
-                      required
-                    >
-                      {type.length > 0 ? type.map(card => (
-                        <MenuItem value={card.id} key={card.id}>
-                          <p>{card.name}</p>
-                        </MenuItem>
-                      )) : <MenuItem>
-                      <p>Not Available</p>
-                    </MenuItem>}
-                    </Select>
-                  </FormControl>
-                </GridItem>
+                
               </GridContainer>
               <GridContainer>
                 <GridItem xs={12} sm={12} md={6}>
@@ -209,10 +198,10 @@ function Giftcard(props) {
               
               </GridContainer>
               <GridContainer>
-                <GridItem xs={12} sm={12} md={12}>
+                <GridItem xs={12} sm={12} md={6}>
                   <InputLabel style={{ color: "#AAAAAA" }}>Comments</InputLabel>
                   <CustomInput
-                    id="comment"
+                    id="about-me"
                     formControlProps={{
                       fullWidth: true,
                     }}
@@ -220,34 +209,25 @@ function Giftcard(props) {
                       multiline: true,
                       rows: 3,
                     }}
-                    value={comment}
-                    onChange={(e) => setComment(event.target.value)}
                   />
+                </GridItem>
+
+                <GridItem xs={12} sm={12} md={6}>
+                  <InputLabel style={{ color: "#AAAAAA" }}>Adress</InputLabel>
+                  <Image
+                    loader={btc}
+                    src={wallet}
+                    alt={"address"}
+                    width={200}
+                    height={200}
+                  />
+                  {wallet !== "null" ? <p>{wallet}</p> : <p>Select a Coin to generate address</p>}
+                  
                 </GridItem>
               </GridContainer>
             </CardBody>
             <CardFooter>
-              <GridItem xs={12} sm={12} md={6}>
-              <CustomInput
-                   
-                    formControlProps={{
-                      fullWidth: true,
-                    }}
-                    inputProps={{
-                    type: "button",
-                    onChange: (e) => setImage(e.target.files[0]),
-                    accept:"*"
-
-                    }}
-                    value={comment}
-                  />
-              </GridItem>
-
-              <GridItem xs={12} sm={12} md={6}>
-                <Button color="primary" type="submit" disabled={loading}>
-                  Trade Card
-                </Button>
-              </GridItem>
+              <Button color="success">Trade Coin</Button>
             </CardFooter>
           </form>
           </Card>
@@ -256,7 +236,7 @@ function Giftcard(props) {
     </div>
   );
 }
-Giftcard.layout = User;
+Crypto.layout = User;
 
 export async function getServerSideProps(context) {
   const session = await getSession(context);
@@ -271,18 +251,18 @@ export async function getServerSideProps(context) {
   }
 
   const token = session?.accessToken;
-  const card = await Server.get("/user/card", {
+  const coin = await Server.get("/user/coin", {
     headers: {
       Authorization: `Bearer ${token}`,
     },
   });
-  const cards = card.data.message;
+  const coins = coin.data.message;
 
   return {
     props: {
-      cards,
+      coins,
     },
   };
 }
-export default Giftcard;
+export default Crypto;
 
