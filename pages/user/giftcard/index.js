@@ -33,6 +33,8 @@ import Select from '@material-ui/core/Select';
 import Table from "components/Table/Table.js";
 import Success from "components/Typography/Success.js"
 import Card from "components/Card/Card.js";
+import { getSession } from "next-auth/client";
+import Server from '../../api/lib/Server'
 
 import CardHeader from "components/Card/CardHeader.js";
 import CardIcon from "components/Card/CardIcon.js";
@@ -40,7 +42,6 @@ import CardBody from "components/Card/CardBody.js";
 import CardFooter from "components/Card/CardFooter.js";
 
 import MaterialTable from "material-table";
-
 import {GiBanknote} from 'react-icons/gi'
 
 // import styling from "assets/jss/nextjs-material-dashboard/views/dashboardStyle.js";
@@ -83,53 +84,88 @@ const styles = {
   }
 };
 
-function Giftcard() {
+function Giftcard(props) {
   const useStyles = makeStyles(styles);
   const classes = useStyles();
-  const [age, setAge] = React.useState('');
+   //card and type selected value
+  const [brandValue, setBrandValue] = React.useState("");
+  const [typeValue, setTypeValue] = React.useState("");
+  const [type, setType] = React.useState([]);
+  const [loading, setLoading] = React.useState(false)
+ 
+  //amount state
+  const [amount, setAmount] = React.useState('');
+  const [comment, setComment] = React.useState(null);
+  const [total, setTotal] = React.useState(0)
+  const [id, setId] = React.useState(null)
+  const [image, setImage] = React.useState(null);
 
-  const handleChange = (event) => {
-    setAge(event.target.value);
-  };
+ 
+
+   //when brand is selected
+  const onBrandSelect = async (event) => {
+    setBrandValue(event.target.value);
+    const res = props.cards.find(card => card.id === event.target.value)
+    setType(res.cardTypes)
+  }
+  //when price changes multiply the amount by the rate
+  const priceChange = async (event) => {
+    console.log("i am triggered")
+    // setAmount(event.target.value)
+    const value = type.find(card => card.id === typeValue)
+    const sum  = Number(event.target.value * value.rate)
+    console.log(sum)
+    setTotal(sum)
+  }
 
   return (
     <div>
       <GridContainer>
         <GridItem xs={12} sm={12} md={12}>
+
           <Card>
             <CardHeader color="primary">
               <h4 className={classes.cardTitleWhite}>Trade Gift Cards</h4>
-              <p className={classes.cardCategoryWhite}>Kindly Enter your Details</p>
+              <p className={classes.cardCategoryWhite}>Kindly select all required</p>
             </CardHeader>
+            <form onSubmit={(e) => handleLogin(e)} data-toggle="validator">
             <CardBody>
               <GridContainer>
                 <GridItem xs={12} sm={12} md={6}>
                   <FormControl className={classes.formControl}>
-                    <InputLabel id="demo-simple-select-label" className={classes.formTitle}>Category</InputLabel>
+                    <InputLabel id="demo-simple-select-label" className={classes.formTitle}>Brand</InputLabel>
                     <Select
                       labelId="demo-simple-select-label"
                       id="demo-simple-select"
-                      value={age}
-                      onChange={handleChange}
+                      value={brandValue}
+                      onChange={(e) => onBrandSelect(e)}
+                      required
                     >
-                      <MenuItem value={10}>Ten</MenuItem>
-                      <MenuItem value={20}>Twenty</MenuItem>
-                      <MenuItem value={30}>Thirty</MenuItem>
+                        {props.cards.length > 0 ? props.cards.map(card => (
+                        <MenuItem value={card.id} key={card.id}>
+                          <p>{card.name}</p>
+                        </MenuItem>
+                      )) : 0}
                     </Select>
                   </FormControl>
                 </GridItem>
                 <GridItem xs={12} sm={12} md={6}>
                   <FormControl className={classes.formControl}>
-                    <InputLabel id="demo-simple-select-label" className={classes.formTitle}>Sub-Category</InputLabel>
+                    <InputLabel id="demo-simple-select-label" className={classes.formTitle}>Card Type</InputLabel>
                     <Select
                       labelId="demo-simple-select-label"
                       id="demo-simple-select"
-                      value={age}
-                      onChange={handleChange}
+                      value={typeValue}
+                      onChange={(e) => setTypeValue(e.target.value)}
+                      required
                     >
-                      <MenuItem value={10}>Ten</MenuItem>
-                      <MenuItem value={20}>Twenty</MenuItem>
-                      <MenuItem value={30}>Thirty</MenuItem>
+                      {type.length > 0 ? type.map(card => (
+                        <MenuItem value={card.id} key={card.id}>
+                          <p>{card.name}</p>
+                        </MenuItem>
+                      )) : <MenuItem>
+                      <p>Not Available</p>
+                    </MenuItem>}
                     </Select>
                   </FormControl>
                 </GridItem>
@@ -142,23 +178,35 @@ function Giftcard() {
                     formControlProps={{
                       fullWidth: true,
                     }}
+                    inputProps={{
+                      type: "number",
+                      
+                    }}
+                    value={amount}
+                    onChange={(e) => priceChange(e)}
+                    required
                   />
                 </GridItem>
+
                 <GridItem xs={12} sm={12} md={6}>
-                  <FormControl className={classes.formControl}>
-                    <InputLabel id="demo-simple-select-label" className={classes.formTitle}>Select Payment Method</InputLabel>
-                    <Select
-                      labelId="demo-simple-select-label"
-                      id="demo-simple-select"
-                      value={age}
-                      onChange={handleChange}
-                    >
-                      <MenuItem value={10}>Ten</MenuItem>
-                      <MenuItem value={20}>Twenty</MenuItem>
-                      <MenuItem value={30}>Thirty</MenuItem>
-                    </Select>
-                  </FormControl>
+                  <CustomInput
+                    labelText="Total"
+                    id="total"
+                    placeholder="0"
+                    onChange ={setTotal}
+                    formControlProps={{
+                      fullWidth: true,
+                    }}
+                    value={total}
+                    inputProps={{
+                      type: "number",
+                      disabled: true,
+                    }}
+                    disabled
+                
+                  />
                 </GridItem>
+              
               </GridContainer>
               <GridContainer>
                 <GridItem xs={12} sm={12} md={12}>
@@ -170,15 +218,16 @@ function Giftcard() {
                     }}
                     inputProps={{
                       multiline: true,
-                      rows: 5,
+                      rows: 3,
                     }}
                   />
                 </GridItem>
               </GridContainer>
             </CardBody>
             <CardFooter>
-              <Button color="primary">Update Profile</Button>
+              <Button color="primary">Trade Card</Button>
             </CardFooter>
+          </form>
           </Card>
         </GridItem>
       </GridContainer>
@@ -187,5 +236,31 @@ function Giftcard() {
 }
 Giftcard.layout = User;
 
+export async function getServerSideProps(context) {
+  const session = await getSession(context);
+  if (!session) {
+    return {
+      props: {},
+      redirect: {
+        destination: "/login",
+        permanent: false,
+      },
+    };
+  }
+
+  const token = session?.accessToken;
+  const card = await Server.get("/user/card", {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+  const cards = card.data.message;
+
+  return {
+    props: {
+      cards,
+    },
+  };
+}
 export default Giftcard;
 
