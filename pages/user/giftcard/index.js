@@ -35,7 +35,6 @@ import Success from "components/Typography/Success.js"
 import Card from "components/Card/Card.js";
 import { getSession } from "next-auth/client";
 import Server from '../../api/lib/Server'
-
 import CardHeader from "components/Card/CardHeader.js";
 import CardIcon from "components/Card/CardIcon.js";
 import CardBody from "components/Card/CardBody.js";
@@ -99,7 +98,6 @@ function Giftcard(props) {
   const [total, setTotal] = React.useState(0)
   const [id, setId] = React.useState(null)
   const [image, setImage] = React.useState(null);
-  import Server from '../../api/lib/Server'
 
  
 
