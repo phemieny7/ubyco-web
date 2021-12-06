@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, {useState,useEffect} from "react";
 
 // @material-ui/core
 import { makeStyles, withStyles } from "@material-ui/core/styles";
@@ -39,14 +39,6 @@ import CardHeader from "components/Card/CardHeader.js";
 import CardIcon from "components/Card/CardIcon.js";
 import CardBody from "components/Card/CardBody.js";
 import CardFooter from "components/Card/CardFooter.js";
-
-import MaterialTable from "material-table";
-import {GiBanknote} from 'react-icons/gi'
-
-// import styling from "assets/jss/nextjs-material-dashboard/views/dashboardStyle.js";
-
-import avatar from "assets/img/faces/marc.jpg";
-
 // import Button from "@material-ui/core/Button";
 import Button from "components/CustomButtons/Button.js";
 
@@ -97,25 +89,43 @@ function Giftcard(props) {
   const [comment, setComment] = React.useState(null);
   const [total, setTotal] = React.useState(0)
   const [id, setId] = React.useState(null)
-  const [image, setImage] = React.useState(null);
+  const [images, setImage] = React.useState([]);
+  const [imageUrl, setImageUrl] = React.useState([]);
 
- 
+  // useEffect(() => {
+  //   if(images.length < 1 ) return;
+  //   const newImageUrl = [];
+  //   images.forEach(item => {
+  //     setImageUrl.push(URL.createObjectURL(item))
+  //   })
+  // } , [])
 
    //when brand is selected
   const onBrandSelect = async (event) => {
     setBrandValue(event.target.value);
+    setAmount('')
+    setTotal(0)
     const res = props.cards.find(card => card.id === event.target.value)
     setType(res.cardTypes)
   }
   //when price changes multiply the amount by the rate
   const priceChange = async (event) => {
-    console.log("i am triggered")
-    // setAmount(event.target.value)
+    setAmount(event.target.value)
+    if(type.length == 0 || typeValue == ""){
+      alert("Please select a Brand and card type")
+    }else{
     const value = type.find(card => card.id === typeValue)
     const sum  = Number(event.target.value * value.rate)
     console.log(sum)
     setTotal(sum)
+    }
   }
+
+  const onImageChange = async (event) => {
+    setImage(...event.target.files)
+
+  }
+
 
   return (
     <div>
@@ -179,11 +189,10 @@ function Giftcard(props) {
                     }}
                     inputProps={{
                       type: "number",
-                      
+                      onChange: (e) => priceChange(e),
+                      value: amount,
+                      required: true,
                     }}
-                    value={amount}
-                    onChange={(e) => priceChange(e)}
-                    required
                   />
                 </GridItem>
 
@@ -191,18 +200,16 @@ function Giftcard(props) {
                   <CustomInput
                     labelText="Total"
                     id="total"
-                    placeholder="0"
-                    onChange ={setTotal}
                     formControlProps={{
                       fullWidth: true,
                     }}
-                    value={total}
                     inputProps={{
                       type: "number",
+                      value: total,
                       disabled: true,
+
                     }}
                     disabled
-                
                   />
                 </GridItem>
               
@@ -220,13 +227,20 @@ function Giftcard(props) {
                       rows: 3,
                     }}
                     value={comment}
-                    onChange={(e) => setComment(event.target.value)}
+                    onChange={(e) => setComment(e.target.value)}
                   />
                 </GridItem>
                 <GridItem xs={12} sm={6} md={6}>
                 <label for="formFileMultiple" class="form-label">Upload GiftCard</label>
-                  <input class="form-control" type="file" id="formFileMultiple" multiple />
-               
+                  <input class="form-control" type="file" id="formFileMultiple" multiple accept="image/*" onChange={onImageChange} />
+                    <GridContainer>
+                      {images.length > 0 ? images.map(item => (
+                     <GridItem xs={12} sm={12} md={12}>
+                       <p>{item}</p>
+                      {/* <img src={item} alt="..." className={classes.img} /> */}
+                      </GridItem>
+                      )) : null}
+                    </GridContainer>
               </GridItem>
 
               </GridContainer>

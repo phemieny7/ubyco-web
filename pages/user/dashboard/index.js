@@ -38,6 +38,17 @@ import styles from "assets/jss/nextjs-material-dashboard/views/dashboardStyle.js
 
 function Dashboard(props) {
   const useStyles = makeStyles(styles);
+  const coinOptions = {};
+  props.coinBrand.map((option) => {
+    const { id, name } = option;
+    coinOptions[id] = name;
+  });
+
+  const cardOptions = {};
+  props.cardBrand.map((option) => {
+    const { id, name } = option;
+    cardOptions[id] = name;
+  });
   const classes = useStyles();
   return (
     <div>
@@ -50,7 +61,7 @@ function Dashboard(props) {
               </CardIcon>
               <p className={classes.cardCategory}>Available Balance</p>
               <h3 className={classes.cardTitle}>
-                &#8358;{props.user.userAmount.amount}
+                &#8358;{props.user.userAmount !== null ? props.user.userAmount.amount: 0}
               </h3>
             </CardHeader>
             <CardFooter stats>
@@ -117,6 +128,7 @@ function Dashboard(props) {
                     title: "Card",
                     field: "card_type_id",
                     editable: "never",
+                    lookup: cardOptions,
                   },
 
                   { title: "Amount", field: "amount", editable: "never" },
@@ -170,7 +182,8 @@ function Dashboard(props) {
                 columns={[
                   {
                     title: "Coin",
-                    field: "card_type_id",
+                    field: "id",
+                    lookup: coinOptions,
                     editable: "never",
                   },
 
@@ -203,7 +216,7 @@ function Dashboard(props) {
                     icon: "visibility",
                     tooltip: "View Trade",
                     onClick: (event, rowData) => {
-                      Router.push(`/coin/${rowData.id}`);
+                      Router.push(`/user/transaction/crypto/${rowData.id}`);
                     },
                   },
                 ]}
@@ -278,34 +291,35 @@ export async function getServerSideProps(context) {
       },
     };
   }
-
-  // if (session.user.role != 2){
-  //   return {
-  //     props: {},
-  //     redirect: {
-  //       destination: '/error',
-  //       permanent: false
-  //     }
-  //   };
-  // }
   const token = session?.accessToken;
   const userData = await Server.get("/user", {
     headers: {
       Authorization: `Bearer ${token}`,
     },
   });
-
   const user = await userData.data.message;
 
+  const fetchBrand = await Server.get("/user/coin", {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+
+  const coinBrand = await fetchBrand.data.message;
+
+  const fetchCard = await Server.get("/user/card", {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+  const cardBrand = await fetchCard.data.message;
+  // console.log(cardBrand.);
 
   return {
     props: {
       user,
-      // revenue,
-      // pending,
-      // cardGraph,
-      // cardRate,
-      // coinRate,
+      coinBrand,
+      cardBrand
     },
   };
 }

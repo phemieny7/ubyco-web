@@ -160,7 +160,6 @@ export async function getServerSideProps(context){
     },
   });
   const brand = await fetchBrand.data.message;
-  console.log(user.coinTransaction)
   return {
     props: {
       user,
