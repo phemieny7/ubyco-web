@@ -7,21 +7,12 @@ import Icon from "@material-ui/core/Icon";
 //form input
 import TextField from '@material-ui/core/TextField';
 import InputLabel from '@material-ui/core/InputLabel';
-import NativeSelect from '@material-ui/core/NativeSelect';
-import InputBase from '@material-ui/core/InputBase';
+
 import CustomInput from "components/CustomInput/CustomInput.js";
 import MenuItem from '@material-ui/core/MenuItem';
 
 
 // @material-ui/icons
-import Store from "@material-ui/icons/Store";
-import {BiBitcoin} from 'react-icons/bi'
-import {MdCardGiftcard} from 'react-icons/md'
-
-import DateRange from "@material-ui/icons/DateRange";
-import LocalOffer from "@material-ui/icons/LocalOffer";
-
-import ArrowUpward from "@material-ui/icons/ArrowUpward";
 
 // layout for this page
 import User from "layouts/User.js";
@@ -41,8 +32,6 @@ import CardBody from "components/Card/CardBody.js";
 import CardFooter from "components/Card/CardFooter.js";
 // import Button from "@material-ui/core/Button";
 import Button from "components/CustomButtons/Button.js";
-
-
 
 const styles = {
   cardCategoryWhite: {
@@ -89,18 +78,15 @@ function Giftcard(props) {
   const [comment, setComment] = React.useState(null);
   const [total, setTotal] = React.useState(0)
   const [id, setId] = React.useState(null)
-  const [images, setImage] = React.useState([]);
-  const [imageUrl, setImageUrl] = React.useState([]);
+  const [images, setImage] = React.useState(null);
+  const [imageUrl, setImageUrl] = React.useState(null);
 
-  // useEffect(() => {
-  //   if(images.length < 1 ) return;
-  //   const newImageUrl = [];
-  //   images.forEach(item => {
-  //     setImageUrl.push(URL.createObjectURL(item))
-  //   })
-  // } , [])
+  const onImageChange = e => {
+          setImage(...e.target.files)
 
-   //when brand is selected
+  }
+
+   //when brand selected
   const onBrandSelect = async (event) => {
     setBrandValue(event.target.value);
     setAmount('')
@@ -121,9 +107,15 @@ function Giftcard(props) {
     }
   }
 
-  const onImageChange = async (event) => {
-    setImage(...event.target.files)
+  //on image upload
+  // const onImageChange = async (event) => {
+  //   setImage(...event.target.files)
+  // }
 
+  const onTypeSelect = async (event) => {
+    setTypeValue(event.target.value)
+    setAmount('')
+    setTotal(0)
   }
 
 
@@ -131,13 +123,12 @@ function Giftcard(props) {
     <div>
       <GridContainer>
         <GridItem xs={12} sm={12} md={12}>
-
           <Card>
             <CardHeader color="primary">
               <h4 className={classes.cardTitleWhite}>Trade Gift Cards</h4>
               <p className={classes.cardCategoryWhite}>Kindly select all required</p>
             </CardHeader>
-            <form onSubmit={(e) => handleLogin(e)} data-toggle="validator" enctype="multipart/form-data">
+            <form onSubmit={(e) => handleLogin(e)} data-toggle="validator" encType="multipart/form-data">
             <CardBody>
               <GridContainer>
                 <GridItem xs={12} sm={12} md={6}>
@@ -165,7 +156,7 @@ function Giftcard(props) {
                       labelId="demo-simple-select-label"
                       id="demo-simple-select"
                       value={typeValue}
-                      onChange={(e) => setTypeValue(e.target.value)}
+                      onChange={(e) => onTypeSelect(e)}
                       required
                     >
                       {type.length > 0 ? type.map(card => (
@@ -195,7 +186,6 @@ function Giftcard(props) {
                     }}
                   />
                 </GridItem>
-
                 <GridItem xs={12} sm={12} md={6}>
                   <CustomInput
                     labelText="Total"
@@ -207,17 +197,14 @@ function Giftcard(props) {
                       type: "number",
                       value: total,
                       disabled: true,
-
                     }}
-                    disabled
                   />
                 </GridItem>
-              
               </GridContainer>
               <GridContainer>
                 <GridItem xs={12} sm={12} md={6}>
-                  <InputLabel style={{ color: "#AAAAAA" }}>Comments</InputLabel>
                   <CustomInput
+                    labelText="Comment"
                     id="comment"
                     formControlProps={{
                       fullWidth: true,
@@ -225,21 +212,24 @@ function Giftcard(props) {
                     inputProps={{
                       multiline: true,
                       rows: 3,
+                      value: comment,
+                      onChange: (e) => setComment(e.target.value),
                     }}
-                    value={comment}
-                    onChange={(e) => setComment(e.target.value)}
                   />
                 </GridItem>
                 <GridItem xs={12} sm={6} md={6}>
-                <label for="formFileMultiple" class="form-label">Upload GiftCard</label>
-                  <input class="form-control" type="file" id="formFileMultiple" multiple accept="image/*" onChange={onImageChange} />
+                 <InputLabel style={{ color: "#AAAAAA" }}>Upload Giftcard</InputLabel>
+                 <br/>
+                  <input className="form-control" type="file" id="formFileMultiple" multiple accept="image/*" onChange={onImageChange} />
                     <GridContainer>
-                      {images.length > 0 ? images.map(item => (
-                     <GridItem xs={12} sm={12} md={12}>
-                       <p>{item}</p>
-                      {/* <img src={item} alt="..." className={classes.img} /> */}
-                      </GridItem>
-                      )) : null}
+                    {
+                      <div className="form-group multi-preview">
+                    {imageUrl !== null ? imageUrl.map(res => (
+                        <img src={res} alt="..." />
+                    )) : null}
+                </div>
+
+                    }
                     </GridContainer>
               </GridItem>
 

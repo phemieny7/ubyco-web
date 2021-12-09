@@ -89,26 +89,24 @@ function Crypto(props) {
   const useStyles = makeStyles(styles);
   const classes = useStyles();
    //card and type selected value
-  const [brandValue, setBrandValue] = React.useState("");
-  const [typeValue, setTypeValue] = React.useState("");
-  const [type, setType] = React.useState([]);
-  const [loading, setLoading] = React.useState(false)
+  const [brandValue, setBrandValue] = React.useState("")
+  const [rate, setRate] = React.useState(0)
   const [wallet, setWallet] = React.useState("null")
 
- 
   //amount state
-  const [amount, setAmount] = React.useState('');
+  const [amount, setAmount] = React.useState(0);
   const [comment, setComment] = React.useState(null);
   const [total, setTotal] = React.useState(0)
-  const [id, setId] = React.useState(null)
   const [image, setImage] = React.useState(null);
 
   //when brand is selected
   const onBrandSelect = async (event) => {
     setBrandValue(event.target.value);
-    const res = props.coins.find(card => card.id === event.target.value)
-    setType(res)
+    setAmount('')
+    setTotal(0)
+    const res = props.coins.find(coin => coin.id === event.target.value)
     setWallet(res.wallet)
+    setRate(res.rate)
   }
 
   const btc = ({ src, width, quality }) => {
@@ -116,11 +114,8 @@ function Crypto(props) {
   }
   //when price changes multiply the amount by the rate
   const priceChange = async (event) => {
-    console.log("i am triggered")
-    // setAmount(event.target.value)
-    const value = type.find(card => card.id === typeValue)
-    const sum  = Number(event.target.value * value.rate)
-    console.log(sum)
+    setAmount(event.target.value)
+    const sum  = Number(event.target.value * rate)
     setTotal(sum)
   }
 
@@ -134,7 +129,7 @@ function Crypto(props) {
               <h4 className={classes.cardTitleWhite}>Trade Coin</h4>
               <p className={classes.cardCategoryWhite}>Kindly select all required</p>
             </CardHeader>
-            <form onSubmit={(e) => handleLogin(e)} data-toggle="validator" enctype="multipart/form-data">
+            <form onSubmit={(e) => handleLogin(e)} data-toggle="validator" encType="multipart/form-data">
             <CardBody>
               <GridContainer>
                 <GridItem xs={12} sm={12} md={12}>
@@ -167,11 +162,10 @@ function Crypto(props) {
                     }}
                     inputProps={{
                       type: "number",
-                      
+                      onChange: (e) => priceChange(e),
+                      value: amount,
+                      required: true,
                     }}
-                    value={amount}
-                    onChange={(e) => priceChange(e)}
-                    required
                   />
                 </GridItem>
 
@@ -180,16 +174,16 @@ function Crypto(props) {
                     labelText="Total"
                     id="total"
                     placeholder="0"
-                    onChange ={setTotal}
                     formControlProps={{
                       fullWidth: true,
                     }}
                     value={total}
                     inputProps={{
                       type: "number",
+                      value: total,
                       disabled: true,
                     }}
-                    disabled
+                    
                 
                   />
                 </GridItem>
@@ -257,7 +251,6 @@ export async function getServerSideProps(context) {
 
   
   const coins = coin.data.message;
-
   return {
     props: {
       coins,
