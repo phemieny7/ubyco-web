@@ -82,6 +82,12 @@ const styles = {
   textInput: {
     fontSize: "16px",
     paddingBottom: "4px"
+  },
+  img:{
+    width: "120px",
+    height: "60px",
+    objectFit: "cover",
+    padding: "0.75rem"
   }
 };
 
@@ -97,7 +103,9 @@ function Crypto(props) {
   const [amount, setAmount] = React.useState(0);
   const [comment, setComment] = React.useState(null);
   const [total, setTotal] = React.useState(0)
-  const [image, setImage] = React.useState(null);
+  const [image, setImage] = React.useState(null)
+  const [imageUrl, setImageUrl] = React.useState(null)
+
 
   //when brand is selected
   const onBrandSelect = async (event) => {
@@ -119,6 +127,21 @@ function Crypto(props) {
     setTotal(sum)
   }
 
+  const onImageChange = e => {
+    setImage(e.target.file)
+    if(e.target.file){
+      const reader = new FileReader()
+      reader.onload = () => {
+        setImageUrl(reader.result)
+      }
+      reader.readAsDataURL(e.target.file)
+    }
+}
+
+const renderPhotos = (source) => {
+    return <img src={source} style={styles.img} alt=""/>;
+};
+
   return (
     <div>
       <GridContainer>
@@ -132,10 +155,11 @@ function Crypto(props) {
             <form onSubmit={(e) => handleLogin(e)} data-toggle="validator" encType="multipart/form-data">
             <CardBody>
               <GridContainer>
-                <GridItem xs={12} sm={12} md={12}>
+                <GridItem xs={12} sm={12} md={6}>
                   <FormControl className={classes.formControl}>
                     <InputLabel id="demo-simple-select-label" className={classes.formTitle}>Coin</InputLabel>
                     <Select
+                    label="Coin"
                       labelId="demo-simple-select-label"
                       id="demo-simple-select"
                       value={brandValue}
@@ -150,9 +174,7 @@ function Crypto(props) {
                     </Select>
                   </FormControl>
                 </GridItem>
-                
-              </GridContainer>
-              <GridContainer>
+
                 <GridItem xs={12} sm={12} md={6}>
                   <CustomInput
                     labelText="Amount"
@@ -168,7 +190,9 @@ function Crypto(props) {
                     }}
                   />
                 </GridItem>
-
+                
+              </GridContainer>
+              <GridContainer>
                 <GridItem xs={12} sm={12} md={6}>
                   <CustomInput
                     labelText="Total"
@@ -187,13 +211,21 @@ function Crypto(props) {
                 
                   />
                 </GridItem>
+
+                <GridItem xs={12} sm={6} md={6}>
+                 <InputLabel style={{ color: "#AAAAAA" }}>Upload Giftcard</InputLabel>
+                 <br/>
+                  <input className="form-control" type="file" id="formFileMultiple" accept="image/*" onChange={onImageChange} />
+                   
+              </GridItem>
               
               </GridContainer>
+
               <GridContainer>
                 <GridItem xs={12} sm={12} md={6}>
-                  <InputLabel style={{ color: "#AAAAAA" }}>Comments</InputLabel>
+                  <InputLabel style={{ color: "#AAAAAA", marginTop:"5px"}}>Comments</InputLabel>
                   <CustomInput
-                    id="about-me"
+                    id="comment"
                     formControlProps={{
                       fullWidth: true,
                     }}
@@ -215,7 +247,7 @@ function Crypto(props) {
                   />
                   {wallet !== "null" ? <p>{wallet}</p> : <p>Select a Coin to generate address</p>}
                 </GridItem>
-              </GridContainer>
+            </GridContainer>
             </CardBody>
             <CardFooter>
               <Button color="success">Trade Coin</Button>
