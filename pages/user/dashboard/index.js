@@ -151,6 +151,7 @@ function Dashboard(props) {
                   {
                     title: "Total",
                     field: "total",
+                    render: (rowData) => rowData.amount * rowData.rate,
                   },
                 ]}
                 data={props.user.cardTransaction}
@@ -182,7 +183,7 @@ function Dashboard(props) {
                 columns={[
                   {
                     title: "Coin",
-                    field: "id",
+                    field: "coin_id",
                     lookup: coinOptions,
                     editable: "never",
                   },

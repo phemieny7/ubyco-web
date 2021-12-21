@@ -20,6 +20,7 @@ import Server from "../../api/lib/Server";
 import avatar from "assets/img/faces/marc.jpg";
 import { getSession } from "next-auth/client";
 
+
 const styles = {
   cardCategoryWhite: {
     color: "rgba(255,255,255,.62)",

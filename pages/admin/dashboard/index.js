@@ -73,7 +73,7 @@ function Dashboard(props) {
                 <Store />
               </CardIcon>
               <p className={classes.cardCategory}>Revenue</p>
-              <h3 className={classes.cardTitle}>&#8358; {props.revenue}</h3>
+              <h3 className={classes.cardTitle}>&#8358; {props.revenue !== null ? props.revenue : 0}</h3>
             </CardHeader>
             <CardFooter stats>
               <div className={classes.stats}>
