@@ -5,9 +5,10 @@ import Head from "next/head";
 import Router from "next/router";
 
 import PageChange from "components/PageChange/PageChange.js";
-import 'bootstrap/dist/css/bootstrap.css'
-import "assets/css/nextjs-material-dashboard.css?v=1.1.0";
-import 'assets/css/login.css'
+import  "assets/css/nextjs-material-dashboard.css?v=1.1.0";
+import  'assets/css/login.css'
+import  "../src/css/style.css";
+import  "../src/css/animate.css";
 import { Provider } from "next-auth/client";
 
 Router.events.on("routeChangeStart", (url) => {

@@ -20,14 +20,16 @@
 
 /* Reset CSS
  * --------------------------------------- */
+ @import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,400;0,600;0,700;1,400;1,600;1,700&display=swap');
 body, div, dl, dt, dd, ul, ol, li, h1, h2, h3, h4, h5, h6, pre, form, fieldset, input, textarea, p, blockquote, th, td {
 	padding: 0;
 	margin: 0;
 }
-body, html{
+div.light-grey {
+    display: inline-block;
     width: 100%;
     margin: 0;
-    padding: 0;
+    /* margin-top: 1.5rem; */
     overflow-x: hidden;
 }
 a {
@@ -75,7 +77,7 @@ q:before, q:after {
 
 /*------ MAIN STYLES -----*/
 body {
-	font-family: 'Raleway', sans-serif!important;
+	font-family: 'Poppins', sans-serif;
 	color: #051b35;
 	font-weight: 300;
     text-rendering: optimizeLegibility;
@@ -84,19 +86,19 @@ html {
   scroll-behavior: smooth;
 }
 .container h1 {
-	font-size: 60px;
+	font-size: 45px;
     color: #051b35;
 	font-weight: 700;
     display: inline-block;
 }
 .container h2 {
-	font-size: 40px;
+	font-size: 35px;
     color: #051b35;
 	font-weight: 700;
     display: inline-block;
 }
 .container h3 {
-	font-size: 32px;
+	font-size: 28px;
     color: #051b35;
 	font-weight: 700;
     margin: 20px 0;
@@ -374,7 +376,6 @@ footer .copyright{
 .section{
     padding: 100px 0;
     width: 100%;
-    margin-top: 20px;
 }
 .section.half-padding{
     padding-top: 40px;
@@ -407,7 +408,7 @@ footer .copyright{
     margin-bottom: 50px;
 }
 .app-container img{
-    max-width: 300px;
+    max-width: 225px;
 }
 .content ul {
 	margin:10px 0;
@@ -419,10 +420,6 @@ footer .copyright{
 .content ul li i{
     font-size: 12px;
     margin-right: 10px;
-}
-
-.container .privacy p {
-    color : 'white';
 }
 .featured-icon i{
     font-size: 40px;
@@ -752,6 +749,11 @@ label {
 .primary-line-btn.square, .primary-btn.square {
     border-radius: 0;
 }
+/* .primary-btn.blue-vibrant.t-white:hover {
+    background: #fff;
+    border: 1px solid #434bdf;
+    color: #434bdf;
+} */
 .border{
     border: 1px solid #fff;
 }
