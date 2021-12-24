@@ -24,6 +24,7 @@
 body, div, dl, dt, dd, ul, ol, li, h1, h2, h3, h4, h5, h6, pre, form, fieldset, input, textarea, p, blockquote, th, td {
 	padding: 0;
 	margin: 0;
+    box-sizing: border-box;
 }
 div.light-grey {
     display: inline-block;
@@ -76,11 +77,15 @@ q:before, q:after {
 
 
 /*------ MAIN STYLES -----*/
-body {
-	font-family: 'Poppins', sans-serif;
+body,
+div.light-grey {
+	font-family: 'Poppins', sans-serif !important;
 	color: #051b35;
 	font-weight: 300;
     text-rendering: optimizeLegibility;
+}
+img {
+    max-width: 100%;
 }
 html {
   scroll-behavior: smooth;
@@ -91,9 +96,15 @@ html {
 	font-weight: 700;
     display: inline-block;
 }
+.top-h1 {
+    color: #e74181 !important;
+}
+.top-h1 mark {
+    color: #05172b;
+}
 .container h2 {
 	font-size: 35px;
-    color: #051b35;
+    /* color: #051b35; */
 	font-weight: 700;
     display: inline-block;
 }
@@ -159,6 +170,10 @@ html {
 }
 .light-red{
     background-color: #ffeded!important;
+}
+.text-red{
+    background-color: #f38686;
+    color: #fff;
 }
 .light-green{
     background-color: #ebeee5!important;
@@ -321,7 +336,7 @@ html {
 /*------ CONTENT STYLES -----*/
 /* Header*/
 header{
-    padding: 20px 0;
+    padding: 8px 0;
     width: 100%;
     position: fixed;
     z-index: 999999;
@@ -343,7 +358,14 @@ html:not([data-scroll='0']) header {
 }
 
 header .logo img{
-    width: 150px;
+    /* width: 150px; */
+}
+.d-flex.ml-auto {
+    flex-direction: row-reverse;
+    align-items: center;
+}
+.d-flex.ml-auto li {
+    margin: 0 3px;
 }
 header .logo{
     font-size: 26px;
@@ -403,6 +425,10 @@ footer .copyright{
     text-align: center;
 }
 /* Miscellaneous Styles */
+.logo-navbar {
+    display: inline-block;
+    height: 65px
+}
 .app-container{
     text-align: center;
     margin-bottom: 50px;
@@ -617,17 +643,17 @@ mark {
 }
 /* Contact Form */
 #contact-form{
-    width: 500px;
+    /* width: 500px; */
     margin: 20px auto;
 }
 #start #contact-form{
     margin: 20px 0;
 }
 #contact-form .form-control{
-    width: 70%;
-    padding: 20px;
-    height: 58px;
-    border: none;
+    /* width: 70%; */
+    padding: 15px;
+    /* height: 58px; */
+    border:  1px solid #ddd !important;
     background: #ffffff;
     color: #282828;
     font-size: 14px;
@@ -749,6 +775,10 @@ label {
 .primary-line-btn.square, .primary-btn.square {
     border-radius: 0;
 }
+.primary-line-btn.b-blue-vibrant.t-blue-vibrant:hover {
+    background: #434bdf;
+    color: #fff !important;
+}
 /* .primary-btn.blue-vibrant.t-white:hover {
     background: #fff;
     border: 1px solid #434bdf;
@@ -839,4 +869,15 @@ label {
     .carousel-indicators {
     bottom: -30px;
     }
+}
+
+/* Calculator Section */
+.calculator-section input,
+.calculator-section select {
+    margin: 15px 0;
+    border-radius: 8px
+}
+
+.calculator-section select {
+    color: #000
 }
