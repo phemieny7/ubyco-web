@@ -68,7 +68,7 @@ export default function Reset () {
                     <img src={Logo} alt="logo" className="col-5" />
                   </div>
                   <div className="section-title pb-10 mt-4">
-                    <h4 className="title">Welcome Back :)</h4>
+                    <h4 className="title">Enter details below to Reset Password.</h4>
                   </div>
                   {/* <!-- section title --> */}
                 </div>
@@ -100,30 +100,6 @@ export default function Reset () {
                           </div>
                           {/* <!-- single form --> */}
                         </div>
-                        <div className="col-md-12">
-                          <div className="single-form form-group">
-                            <label style={{ display: "block" }}>Password</label>
-                            <input
-                              type="password"
-                              type="password"
-                              value={password}
-                              onChange={(e) => setPassword(e.target.value)}
-                              className="form-control"
-                              data-error="Password is required."
-                              required="required"
-                            />
-                            <div className="help-block with-errors">
-                              {loginError}
-                            </div>
-                          </div>
-                          {/* <!-- single form --> */}
-                        </div>
-                        <div className="col-md-9">
-                          <p>
-                            Not a member?{" "}
-                            <Link href="/signup">Sign Up Now.</Link>
-                          </p>
-                        </div>
                         <p className="form-message"></p>
                         <div className="col-md-12">
                           <div className="single-form form-group text-center">
@@ -132,7 +108,7 @@ export default function Reset () {
                               disabled={isLoginStarted}
                               className="btn_1"
                             >
-                              Login
+                              Reset Password
                             </button>
                           </div>
                           {/* <!-- single form --> */}
@@ -140,7 +116,7 @@ export default function Reset () {
                         </div>
                         <div className="text-center">
                           <h6>
-                            <Link href="/reset">Forgotten Password?</Link>
+                            <Link href="/login">Back to Login</Link>
                           </h6>
                         </div>
                       </div>
