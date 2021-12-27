@@ -44,11 +44,11 @@ export default function Index() {
             </ul>
           </div> */}
 
-          <nav className="navbar navbar-expand-lg navbar-light px-4">
+          <nav className="navbar navbar-expand-lg navbar-light px-4 py-0">
             {/* <a className="navbar-brand" href="#">Navbar</a> */}
             <img src={Logo} alt="Ubyco" className="logo-navbar" />
             <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-              <span className="navbar-toggler-icon"></span>
+              <span className="fa fa-bars"></span>
             </button>
 
             <div className="collapse navbar-collapse" id="navbarSupportedContent">
@@ -212,11 +212,11 @@ export default function Index() {
                 <h4 className="t-blue-vibrant">Give us a try!</h4>
                 <p>Take a quick look at the top features. <br/>We promise you won't regret it.</p>
                 <ul data-aos="fade-down" data-aos-anchor-placement="center-bottom">
-                  <li><i className="fas fa-check t-blue-vibrant"></i> Create unique websites</li>
-                  <li><i className="fas fa-check t-blue-vibrant"></i> Built in Boostrap 4</li>
-                  <li><i className="fas fa-check t-blue-vibrant"></i> Stunning ready colors</li>
-                  <li><i className="fas fa-check t-blue-vibrant"></i> Limiteless variations</li>
-                  <li><i className="fas fa-check t-blue-vibrant"></i> Optimize all your efforts</li>
+                  <li><i className="fas fa-check t-blue-vibrant"></i> Transparency</li>
+                  <li><i className="fas fa-check t-blue-vibrant"></i> 24/7 Support</li>
+                  <li><i className="fas fa-check t-blue-vibrant"></i> Fast Payment</li>
+                  <li><i className="fas fa-check t-blue-vibrant"></i> Experience</li>
+                  <li><i className="fas fa-check t-blue-vibrant"></i> Fast Trading Platform</li>
                 </ul>
               </div>
             </div>
@@ -229,7 +229,7 @@ export default function Index() {
           <div className="container">
             <div className="banner white" data-aos="fade-up" data-aos-anchor-placement="center-bottom">
               <h3>Want to know more about  <mark className="light-yellow t-dark"><span className="t-red">.</span>Ubyco</mark>?</h3>
-              <p className="center">Subscribe our newsletter for occasional updates.</p>
+              <p className="center">Reach out to us.</p>
               <div id="fields">
 
                 {/* <!-- CONTACT Form--> */}
@@ -239,8 +239,25 @@ export default function Index() {
 
                     {/* <!-- form-group--> */}
                     <div className="form-group">
-                      <input id="form_email" type="email" name="email" className="form-control light-grey" placeholder="Email address*" required="required" data-error="Valid email is required."/>
-                        <input type="submit" name="submit" id="submit" className="primary-btn blue-vibrant" value="Notify Me"/>
+                      {/* <input  type="text" name="email" className="form-control light-grey" placeholder="Email address*" required="required" data-error="Valid email is required."/> */}
+                      <div className="row">
+                        <div className="col-md-6">
+                          <input type="text" placeholder="First Name" className="form-control" />
+                        </div>
+
+                        <div className="col-md-6">
+                          <input type="text" placeholder="Last Name" className="form-control" />
+                        </div>
+
+                        <div className="col-md-12">
+                          <input type="email" placeholder="Email Address" className="form-control" />
+                        </div>
+
+                        <div className="col-md-12">
+                          <textarea className="form-control" placeholder="Your Message"></textarea>
+                        </div>
+                      </div>
+                        <input type="submit" name="submit" id="submit" className="primary-btn blue-vibrant" value="Send Message"/>
                           <div className="help-block with-errors"></div>
                         </div>
                     </div>

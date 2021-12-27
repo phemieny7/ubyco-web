@@ -659,10 +659,14 @@ mark {
     font-size: 14px;
     font-weight: 500;
     float: left;
-    border-bottom-left-radius: 6px;
-    border-top-left-radius: 6px;
-    border-bottom-right-radius: 0;
-    border-top-right-radius: 0;
+    border-radius: 6px;
+    margin: 5px 0;
+}
+#contact-from textarea {
+    height: 250px;
+    width: 100%;
+    resize: none;
+    border-radius: 6px;
 }
 #contact-form .form-control::placeholder{
     color: #282828;
@@ -670,8 +674,7 @@ mark {
     font-weight: 500;
 }
 #contact-form .primary-btn, #contact-form .primary-line-btn{
-    border-bottom-left-radius: 0;
-    border-top-left-radius: 0;
+    
     width: 30%;
     display: block;
     padding: 19px 25px;
