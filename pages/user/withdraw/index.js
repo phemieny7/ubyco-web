@@ -37,14 +37,6 @@ import CardHeader from "components/Card/CardHeader.js";
 import CardIcon from "components/Card/CardIcon.js";
 import CardBody from "components/Card/CardBody.js";
 import CardFooter from "components/Card/CardFooter.js";
-
-import MaterialTable from "material-table";
-
-import { GiBanknote } from "react-icons/gi";
-
-// import styling from "assets/jss/nextjs-material-dashboard/views/dashboardStyle.js";
-
-import avatar from "assets/img/faces/marc.jpg";
 import Server from "../../api/lib/Server";
 import Danger from "components/Typography/Danger.js";
 
@@ -145,7 +137,7 @@ function Withdraw(props) {
 
   return (
     <div>
-      <GridContainer>
+     <GridContainer>
         <GridItem xs={12} sm={6} md={4}>
           <Card>
             <CardHeader color="success" stats icon>
@@ -282,7 +274,7 @@ function Withdraw(props) {
             <CardFooter>
               <Button color="danger">Request Withdrawal</Button>
               {
-                props.userData.userAccounts.length === 0 ? <Button color="info">Add Account</Button>
+                props.userData.userAccounts.length === 0 ? <Button type="button" color="info" data-toggle="modal" data-target="#exampleModal">Add Account</Button>
                 : null
               }
             </CardFooter>

@@ -73,7 +73,7 @@ function Dashboard(props) {
                 <Store />
               </CardIcon>
               <p className={classes.cardCategory}>Revenue</p>
-              <h3 className={classes.cardTitle}>&#8358; {props.revenue !== null ? props.revenue : 0}</h3>
+              <h3 className={classes.cardTitle}>&#8358; {props.revenue.length !== 0 ? props.revenue : 0}</h3>
             </CardHeader>
             <CardFooter stats>
               <div className={classes.stats}>
@@ -240,6 +240,7 @@ export async function getServerSideProps(context){
       Authorization: `Bearer ${token}`,
     },
   })
+  console.log(revenueData.data.message.length)
   //pending counter
   const pendingData = await Server.get('/admin/pending-trade',{
     headers: {

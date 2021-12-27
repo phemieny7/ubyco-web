@@ -25,15 +25,18 @@ import styles from "assets/jss/nextjs-material-dashboard/views/dashboardStyle.js
 import Server from "../../api/lib/Server";
 
 
+
+
 function Id(props) {
+  const [split, setSplit] = React.useState([])
   const useStyles = makeStyles(styles);
   const classes = useStyles();
-  const image = props.card.cards;
-  const remove = image.substring(1, image.length - 1);
-  const split = remove.split(",");
+  const data = props.card.cards;
+  const image = Object.values(data);  
+  console.log(image)
   const Router = useRouter();
   const imageLoader = ({ src, width, quality }) => {
-    return `https://res.cloudinary.com/ubycohub/${src}.jpg?w=${width}&q=${quality || 75}`;
+    return `https://res.cloudinary.com/ubycohub/${src}?w=${width}&q=${quality || 75}`;
   };
 
   const actionCoin = async (status) => {
@@ -74,20 +77,23 @@ function Id(props) {
               <p className={classes.cardCategoryWhite}>Giftcards</p>
             </CardHeader>
             <CardBody>
-            {split.map((src, index) => (
-              <GridItem xs={6} sm={6} md={4}>
-                  <Image
-                  loader={imageLoader}
-                  src={src.replace(
-                    /[`~!@#$%^&*()|+\-=?;:'",<>\{\}\[\]\\\/]/gi,
-                    ""
-                  )}
-                  width={400}
-                  height={700}
-                  key={index}
-                />
-              </GridItem>
-            ))} 
+              
+            <GridContainer>
+              {image.map(function(name, index){
+                return (
+                  <GridItem xs={6} sm={6} md={4}>
+                    <Image
+                    loader={imageLoader}
+                    src={name}
+                    width={400}
+                    height={700}
+                    key={index}
+                  />
+                 </GridItem>
+                );
+              })}
+              </GridContainer>
+
             </CardBody>
 
             <CardFooter>
@@ -138,10 +144,10 @@ function Id(props) {
 
               {props.card.completed == false ? (
                 <>
-                  <p>Incomplete Trade</p>
+                  <p><strong>Status</strong>: Incomplete Trade</p>
                 </>
               ) : (
-                <p>complete Trade</p>
+                <p><strong>Status</strong>: Complete Trade</p>
               )}
             </CardFooter>
           </Card>
