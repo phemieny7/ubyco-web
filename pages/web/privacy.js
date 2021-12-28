@@ -107,7 +107,7 @@ export default function Privacy() {
         {/* <!-- Section --> */}
         <div className="section light-grey back two">
           <div className="container">
-            <div class="privacy">
+            <div className="privacy">
               <p>
                 This Privacy policy between UBYCOHUB Enterprises (hereinafter
                 referred to as UBYCOHUB) and you, constitutes our commitment to
