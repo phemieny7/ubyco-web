@@ -37,7 +37,7 @@ export default function Index() {
             <div className="logo left"><img src={Logo} alt="Ubyco" className="logo-navbar"/></div>
             
             <ul className="d-flex ml-auto">
-              <li><a className="primary-btn small light-grey t-blue-vibrant" href="#about">LOGIN</a></li>
+              <li><a className="primary-btn small light-grey t-red" href="#about">LOGIN</a></li>
               <li>Home</li>
               <li>Contacts</li>
               
@@ -54,12 +54,47 @@ export default function Index() {
             <div className="collapse navbar-collapse" id="navbarSupportedContent">
               <ul className="navbar-nav ml-auto">
                 <li className="nav-item mx-2 active">
-                  <a className="nav-link" href="#">Contact Us</a>
+                  <a className="nav-link" href="#contact">Contact Us</a>
                 </li>
-                <li className="nav-item mx-2">
-                  <a className="nav-link" href="#">Sign In</a>
+
+                <li className="nav-item mx-2 active">
+                  <a className="nav-link" href="#rate-calculator">Rate Calculator</a>
                 </li>
-                <li className="nav-item mx-2"><a className="primary-btn small light-grey t-blue-vibrant" href="#about">LOGIN</a></li>
+                {!session && (
+                  <li className="nav-item mx-2">
+                    <a className="nav-link" href="/login">Sign In</a>
+                  </li>
+                )}
+
+                {session?.role == 2 && (
+                   <>
+                  
+                     
+                     <li className="nav-item mx-2 active">
+                        <a className="nav-link" href="/admin/dashboard">Admin Dashboard</a>
+                      </li>
+                      <button variant="contained" color="primary" onClick={()=>signOut()}>
+                       sign Out
+                      </button>
+               </>
+                )}
+
+          {session?.role == 1 && (
+              <>
+               
+                  
+                  
+                  <li className="nav-item mx-2 active">
+                     <a className="nav-link" href="/user/dashboard">Dashboard</a>
+                  </li>
+                  <li className="nav-item mx-2">
+                  <button variant="contained" color="primary" onClick={()=>signOut()}>
+                    sign Out
+                   </button>
+                   </li>
+            </>
+                ) }
+                
                
               </ul>
             </div>
@@ -71,11 +106,11 @@ export default function Index() {
           <div className="container">
             <div className="content row">
               <div className="col-lg-6" data-aos="fade-right" data-aos-anchor-placement="center-bottom">
-                <h1 className="top-h1">Launch your app with a <mark className="f">reliable</mark> partner.</h1>
-                <h5>The best and easiest way to get your business up and running. Save money and time!</h5>
+                <h1 className="top-h1">Start exchanging <mark className="f">giftcards and crypto's</mark> with reliable partner..</h1>
+                <h5>We offer the best and easiest way to trade your giftcards and crypto for cash.</h5>
                 <div className="cta-container">
                   <a href="#" className="primary-btn red t-white"><i className="fab fa-apple"></i>Get it on Apple Store</a>
-                  <a href="#" className="primary-line-btn b-blue-vibrant t-blue-vibrant"><i className="fab fa-google-play"></i>Get it on Play Store</a>
+                  <a href="#" className="primary-line-btn b-blue-vibrant t-red"><i className="fab fa-google-play"></i>Get it on Play Store</a>
                 </div>
               </div>
               <div className="col-lg-6" data-aos="fade-left" data-aos-anchor-placement="center-bottom">
@@ -105,21 +140,21 @@ export default function Index() {
             <div className="content row center">
               <div className="col-lg-4" data-aos="fade-down" data-aos-anchor-placement="center-bottom">
                 <div className="info-box">
-                  <div className="t-blue-vibrant"><i className="far fa-clone"></i></div>
+                  <div className="t-red"><i className="far fa-user"></i></div>
                   <h4>Cross-Platform Availiability</h4>
                   <p>Ubyco is available for users on both the Android and iOS platforms.</p>
                 </div>
               </div>
               <div className="col-lg-4" data-aos="fade-up" data-aos-anchor-placement="center-bottom">
                 <div className="info-box white">
-                  <div className="t-blue-vibrant"><i className="fas fa-code"></i></div>
+                  <div className="t-red"><i className="fas fa-money"></i></div>
                   <h4>Trusted and Secure</h4>
                   <p>With over 7 years of experience, We have grown to become the best gift cards and cryptocurrencies trader</p>
                 </div>
               </div>
               <div className="col-lg-4" data-aos="fade-down" data-aos-anchor-placement="center-bottom">
                 <div className="info-box">
-                  <div className="t-blue-vibrant"><i className="fas fa-fill-drip"></i></div>
+                  <div className="t-red"><i className="far fa-circle"></i></div>
                   <h4>Flexible and Versatile</h4>
                   <p>We offer the best giftcard and crypo acceptance rate that suit the value</p>
                 </div>
@@ -137,7 +172,7 @@ export default function Index() {
                 <span className="align-middle"><img src={App_4} alt="Ubyco" className="img-fluid"/></span>
               </div>
               <div className="col-lg-6" data-aos="fade-down" data-aos-anchor-placement="center-bottom">
-                <h1>Getting started around the <span className="t-blue-vibrant">platform?</span></h1>
+                <h1>Getting started around the <span className="t-red">platform?</span></h1>
                 <h5>We offer both in-app and web app(next update) transaction for our users this allows a flow of purpose for our users.
                   This 2 minute video can help.</h5>
                 <div className="cta-container">
@@ -150,7 +185,7 @@ export default function Index() {
         {/* <!-- Section Ends --> */}
 
         {/* <!-- Section --> */}
-        <div className="section dark back five half-padding">
+        <div className="section dark back five half-padding" id="rate-calculator">
           <div className="container">
 
             <div className="calculator-section" data-aos="fade-down" data-aos-anchor-placement="center-bottom">
@@ -203,20 +238,20 @@ export default function Index() {
           <div className="container">
             <div className="content row">
               <div className="col-lg-6">
-                <span className="align-middle"><img src={App_5} alt="Ubyco" className="img-fluid"/></span>
+                <span className="align-middle"><img src={App_2} alt="Ubyco" className="img-fluid" width={300} height={500}/></span>
               </div>
               <div className="col-lg-6" data-aos="fade-left" data-aos-anchor-placement="center-bottom">
-                <div className="featured-icon"><i className="fas fa-spinner t-blue-vibrant"></i></div>
-                <h3>Take <mark><span className="t-red">.</span>Ubyco</mark> for a Spin</h3>
-                <p>We understand how overwhelming launching a business can be. This is why we've developed the easiest and fastest way to launch your product.</p>
-                <h4 className="t-blue-vibrant">Give us a try!</h4>
+                <div className="featured-icon"><i className="fas fa-spinner t-red"></i></div>
+                <h3>Why to choose<mark><span className="t-red">.</span>Ubyco</mark> as your trading partner</h3>
+                <p>We understand how overwhelming it can get when choosing a crypto and giftcard Exchange platform, we also know how quick it can get messy cause of lack of transparency.</p>
+                <h4 className="t-red">Give us a try!</h4>
                 <p>Take a quick look at the top features. <br/>We promise you won't regret it.</p>
                 <ul data-aos="fade-down" data-aos-anchor-placement="center-bottom">
-                  <li><i className="fas fa-check t-blue-vibrant"></i> Transparency</li>
-                  <li><i className="fas fa-check t-blue-vibrant"></i> 24/7 Support</li>
-                  <li><i className="fas fa-check t-blue-vibrant"></i> Fast Payment</li>
-                  <li><i className="fas fa-check t-blue-vibrant"></i> Experience</li>
-                  <li><i className="fas fa-check t-blue-vibrant"></i> Fast Trading Platform</li>
+                  <li><i className="fas fa-check t-red"></i> Transparency</li>
+                  <li><i className="fas fa-check t-red"></i> 24/7 Support</li>
+                  <li><i className="fas fa-check t-red"></i> Fast Payment</li>
+                  <li><i className="fas fa-check t-red"></i> Experience</li>
+                  <li><i className="fas fa-check t-red"></i> Fast Trading Platform</li>
                 </ul>
               </div>
             </div>
@@ -225,7 +260,7 @@ export default function Index() {
         {/* <!-- Section Ends --> */}
 
         {/* <!-- Section --> */}
-        <div className="section half-padding light-grey">
+        <div className="section half-padding light-grey" id="contact">
           <div className="container">
             <div className="banner white" data-aos="fade-up" data-aos-anchor-placement="center-bottom">
               <h3>Want to know more about  <mark className="light-yellow t-dark"><span className="t-red">.</span>Ubyco</mark>?</h3>
@@ -274,7 +309,7 @@ export default function Index() {
             <h5 className="t-grey center">#appUbyco</h5>
             <div className="cta-container center">
               <a href="#" className="primary-line-btn b-pink t-pink"><i className="fab fa-instagram"></i>Follow us on Instagram</a>
-              <a href="#" className="primary-line-btn b-blue-vibrant t-blue-vibrant"><i className="fab fa-facebook"></i>Follow us on Facebook</a>
+              <a href="#" className="primary-line-btn b-blue-vibrant t-red"><i className="fab fa-facebook"></i>Follow us on Facebook</a>
             </div>
           </div>
           {/* <!-- Footer --> */}
