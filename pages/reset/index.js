@@ -4,6 +4,14 @@ import { useState, useEffect } from 'react'
 import { useRouter } from 'next/router'
 import { signIn, useSession } from 'next-auth/client'
 
+import { ToastContainer, toast } from "react-toastify";
+// import "react-toastify/dist/ReactToastify.css";
+import Logo from "../../assets/img/logo.png";
+// import styles from '../../assets/css/login.module.css'
+
+import Link from "next/link";
+import Server from "../api/lib/Server";
+
 import Background from '../../assets/img/bg7.jpg'
 
 export default function Reset () {
@@ -40,117 +48,86 @@ export default function Reset () {
       });
   }
 
-  const container = {
-    width: "100%",
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-    minHeight: "100vh",
-    backgroundImage: `url(${Background})`,
-    backgroundSize: "cover"
-  }
-  const heading = {
-    color: "#111",
-    fontWeight: "bold",
-    fontSize: "28px",
-    color: "green",
-    margin: "0"
-  }
-  const headtext = {
-    fontSize: "14px",
-    color: "#333",
-    // fontWeight: "bold",
-  }
-  const formBg = {
-    margin: "0",
-    padding: "40px",
-    background: "#fff",
-    borderRadius: "4px",
-    maxWidth: "400px"
-  }
-  const formdiv = {
-    width: "320px"
-  }
-  const label = {
-    display: "block",
-    fontSize: "14px",
-    fontWeight: "bold",
-    color: "green",
-    margin: "10px 0 5px"
-  }
-  const loginbtn = {
-    display: "block",
-    width: "100%",
-    margin: "20px 0",
-    padding: "12px 24px",
-    background: "green",
-    border: "none",
-    color: "#fff",
-    borderRadius: "30px",
-    fontSize: "14px",
-    fontWeight: "bold",
-    textTransform: "uppercase"
-  }
-  const inputs = {
-    margin: "5px 0",
-    padding: "12px 15px",
-    // paddingLeft: "15px",
-    width: "100%",
-    borderRadius: "30px",
-    border: "1px solid #888",
-    display: "inline-block",
-    fontSize: "14px"
-  }
-  const forgot = {
-    fontSize: "14px",
-    fontWeight: "bold"
-  }
-  const flexdiv = {
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "space-between"
-  }
-  const signuptext = {
-    textAlign: "center",
-    fontSize: "12px",
-    color: "#333",
-  }
-  const googlebtn = {
-    padding: "12px 40px",
-    background: "red",
-    border: "0",
-    borderRadius: "24px",
-    color: "#fff",
-    fontSize: "14px",
-    fontWeight: "bold"
-  }
-  const facebookbtn = {
-    padding: "12px 40px",
-    background: "blue",
-    border: "0",
-    borderRadius: "24px",
-    color: "#fff",
-    fontSize: "14px",
-    fontWeight: "bold"
-  }
 
   return (
     <div>
+      {/* <style jsx>
+            
+        </style> */}
       <Head>
-        <title>NextAuth Example</title>
+        <title>Ubyco Login</title>
       </Head>
-      <main style={container}>
-        <div style={formBg}>
-          <h1 style={heading}>Reset Password.</h1>
-          <p style={headtext}>Kindly enter your email below to reset your password.</p>
-          <form onSubmit={(e) => handleLogin(e)} style={formdiv}>
-            <label style={label} htmlFor='loginEmail'>Email</label>
-            <input style={inputs} id='loginEmail' type='email' value={email} onChange={(e) => setEmail(e.target.value)}/>
-            <span>{loginError}</span>
-            <button type='submit' disabled={isLoginStarted} style={loginbtn}>reset password</button>
-          </form>
+      <ToastContainer />
+      <div className="page_container">
+        <div className="page_content">
+          <div className="form_box">
+            <div className="container">
+              <div className="row justify-content-center">
+                <div className="col-lg-9 text-center">
+                  <div className="section-logo">
+                    <img src={Logo} alt="logo" className="col-5" />
+                  </div>
+                  <div className="section-title pb-10 mt-4">
+                    <h4 className="title">Enter details below to Reset Password.</h4>
+                  </div>
+                  {/* <!-- section title --> */}
+                </div>
+              </div>
+              <div className="row justify-content-center">
+                <div className="col-lg-12">
+                  <div className="contact-form">
+                    <form
+                      id="contact-form"
+                      onSubmit={(e) => handleLogin(e)}
+                      data-toggle="validator"
+                    >
+                      <div className="row">
+                        <div className="col-md-12">
+                          <div className="single-form form-group">
+                            <label style={{ display: "block" }}>Email</label>
+                            <input
+                              type="email"
+                              type="email"
+                              value={email}
+                              onChange={(e) => setEmail(e.target.value)}
+                              className="form-control"
+                              data-error="Email is required."
+                              required="required"
+                            />
+                            <div className="help-block with-errors">
+                              {loginError}
+                            </div>
+                          </div>
+                          {/* <!-- single form --> */}
+                        </div>
+                        <p className="form-message"></p>
+                        <div className="col-md-12">
+                          <div className="single-form form-group text-center">
+                            <button
+                              type="submit"
+                              disabled={isLoginStarted}
+                              className="btn_1"
+                            >
+                              Reset Password
+                            </button>
+                          </div>
+                          {/* <!-- single form --> */}
+                          <hr />
+                        </div>
+                        <div className="text-center">
+                          <h6>
+                            <Link href="/login">Back to Login</Link>
+                          </h6>
+                        </div>
+                      </div>
+                    </form>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
-      </main>
+      </div>
     </div>
   )
 }
