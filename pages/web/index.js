@@ -6,12 +6,6 @@ import Logo from "../../src/assets/img/logo.png";
 import App_2 from "../../src/assets/img/app-2.png";
 import App_3 from "../../src/assets/img/app-1.png";
 import App_4 from "../../src/assets/img/app-4.png";
-import App_5 from "../../src/assets/img/app-5.png";
-import User_1 from "../../src/assets/img/user1.jpg";
-import User_2 from "../../src/assets/img/user2.jpg";
-import User_3 from "../../src/assets/img/user3.jpg";
-// import Logo from "../../src/assets/logo.png";
-import Link from "next/link";
 import "../../src/css/aos.css";
 import Aos from "aos";
 // import validator from 'bootstrap-validator'
@@ -28,6 +22,12 @@ export default function Index() {
 
   return (
     <>
+    <Head>
+      <meta charSet="utf-8" />
+      <title>
+        Ubycohub Home
+      </title>
+    </Head>
       <div className="light-grey">
         {/* <!-- Content Starts --> */}
         <header className="">
