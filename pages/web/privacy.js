@@ -8,7 +8,7 @@ import Aos from "aos";
 import Head from "next/head";
 import { Button } from "@material-ui/core";
 
-export default function Index() {
+export default function Privacy() {
   const [session, loading] = useSession();
   React.useEffect(() => {
     Aos.init();
@@ -18,7 +18,7 @@ export default function Index() {
     <>
       <Head>
         <meta charSet="utf-8" />
-        <title>Ubycohub Home</title>
+        <title>Ubycohub Privacy</title>
       </Head>
       <div className="light-grey">
         {/* <!-- Content Starts --> */}
