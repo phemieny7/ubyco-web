@@ -46,8 +46,8 @@ const dashboardRoutes = [
     layout: "/user",
   },
   {
-    path: "/transaction",
-    name: "Transaction",
+    path: "/transactions",
+    name: "Transactions",
     icon:  BiHistory,
     layout: "/user",
   },

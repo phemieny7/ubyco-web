@@ -46,7 +46,7 @@ export default function Index() {
 
           <nav className="navbar navbar-expand-lg navbar-light px-4 py-0">
             {/* <a className="navbar-brand" href="#">Navbar</a> */}
-            <img src={Logo} alt="Ubyco" className="logo-navbar" />
+            <a  href="/"><img src={Logo} alt="Ubyco" className="logo-navbar" /></a>
             <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
               <span className="fa fa-bars"></span>
             </button>

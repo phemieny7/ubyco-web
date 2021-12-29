@@ -70,24 +70,24 @@ const dashboardRoutes = [
     icon: FiUserPlus,
     layout: "/admin",
   },
-  {
-    path: "/message",
-    name: "Message",
-    icon: FiMessageCircle,
-    layout: "/admin",
-  },
+  // {
+  //   path: "/message",
+  //   name: "Message",
+  //   icon: FiMessageCircle,
+  //   layout: "/admin",
+  // },
   {
     path: "/table-list",
     name: "Setting",
     icon: FiSettings,
     layout: "/admin",
   },
-  {
-    path: "/newsletter",
-    name: "News Letter",
-    icon: BiEnvelope,
-    layout: "/admin",
-  },
+  // {
+  //   path: "/newsletter",
+  //   name: "News Letter",
+  //   icon: BiEnvelope,
+  //   layout: "/admin",
+  // },
   // {
   //   path: "/maps",
   //   name: "Maps",

@@ -101,6 +101,7 @@ const styles = {
   },
 };
 
+
 function Withdraw(props) {
   const useStyles = makeStyles(styles);
   const classes = useStyles();
@@ -112,7 +113,7 @@ function Withdraw(props) {
     setAccountId(event.target.value);
   };
   const priceChange = (e) => {
-      if(props.userData.userAmount === null || props.userData.userAmount.amount === 0){
+      if(props.userData.userAmount === null){
         alert(`You don't have enough amount`)
       }
   }
@@ -121,17 +122,17 @@ function Withdraw(props) {
   let pendingWithdrawal = []
   let failedWithdrawal = []
 
-  for(let i = 0; i < props.userData.userWithdrawal.length; i++){
-    if(props.userData.userWithdrawal[i].completed === true){
-      successWithdrawal.push(props.userData.userWithdrawal[i])
-    }
-    if(props.userData.userWithdrawal[i].status === 1){
-      pendingWithdrawal.push(props.userData.userWithdrawal[i])
-    }
-    if(props.userData.userWithdrawal[i].status === 2){
-      failedWithdrawal.push(props.userData.userWithdrawal[i])
-    }
-  }
+//   for(let i = 0; i < props.userData.userWithdrawal.length; i++){
+//     if(props.userData.userWithdrawal[i].completed === true){
+//       successWithdrawal.push(props.userData.userWithdrawal[i])
+//     }
+//     if(props.userData.userWithdrawal[i].status === 1){
+//       pendingWithdrawal.push(props.userData.userWithdrawal[i])
+//     }
+//     if(props.userData.userWithdrawal[i].status === 2){
+//       failedWithdrawal.push(props.userData.userWithdrawal[i])
+//     }
+//   }
 
 
 
@@ -220,7 +221,7 @@ function Withdraw(props) {
                       Available Balance (Naira)
                     </h4>
                     <h5 className={classes.bolderText}>{
-                        props.userData.userAmount !== null ? props.userData.userAmount.amount : 0
+                        props.userData.userAmount !== null ? props.userData.userAmount : 0
                     }</h5>
                   </div>
                 </GridItem>
@@ -243,13 +244,12 @@ function Withdraw(props) {
                       {props.userData.userAccounts.length > 0
                         ? props.userData.userAccounts.map((account) => (
                             <MenuItem value={account.id} key={account.id}>
-                              <p>{account.account_name} {account.account_number} {account.bank}</p>
+                              <p>{account.name}</p>
                             </MenuItem>
                           ))
                         : (<MenuItem><p>
                             Add an Account
-                            </p>
-                          </MenuItem>)}
+                            </p></MenuItem>)}
                     </Select>
                   </FormControl>
                 </GridItem>
@@ -274,6 +274,9 @@ function Withdraw(props) {
             </CardBody>
             <CardFooter>
               <Button color="danger">Request Withdrawal</Button>
+              {
+                props.userData.userAccounts.length === 0 ? <a href="/addaccount"><Button type="button" color="info">Add Account</Button></a> : null
+              }
             </CardFooter>
         </form>
           </Card>

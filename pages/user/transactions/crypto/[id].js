@@ -8,7 +8,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import GridList from "@material-ui/core/GridList";
 
 // layout for this page
-import Admin from "layouts/Admin.js";
+import User from "layouts/User.js";
 // core components
 import GridItem from "components/Grid/GridItem.js";
 import GridContainer from "components/Grid/GridContainer.js";
@@ -30,8 +30,9 @@ function Id(props) {
   const useStyles = makeStyles(styles);
   const classes = useStyles();
   const image = props.coin.receipt;
-  const remove = image.substring(1, image.length - 1);
-  const split = remove.split(",");
+  console.log(image)
+  // const remove = image.substring(1, image.length - 1);
+  // const split = remove.split(",");
   const Router = useRouter();
 
   const imageLoader = ({ src, width, quality }) => {
@@ -177,7 +178,7 @@ function Id(props) {
   );
 }
 
-Id.layout = Admin;
+Id.layout = User;
 
 export async function getServerSideProps(context) {
   const session = await getSession(context);

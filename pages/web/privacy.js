@@ -27,7 +27,7 @@ export default function Privacy() {
 
           <nav className="navbar navbar-expand-lg navbar-light px-4 py-0">
             {/* <a className="navbar-brand" href="#">Navbar</a> */}
-            <img src={Logo} alt="Ubyco" className="logo-navbar" />
+            <a  href="/"><img src={Logo} alt="Ubyco" className="logo-navbar" /></a>
             <button
               className="navbar-toggler"
               type="button"

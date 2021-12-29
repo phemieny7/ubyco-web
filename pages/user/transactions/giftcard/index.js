@@ -28,15 +28,14 @@ import { getSession } from "next-auth/client";
 
 import styles from "assets/jss/nextjs-material-dashboard/views/dashboardStyle.js";
 
-function Crypto(props) {
+function Index(props) {
   const useStyles = makeStyles(styles);
   const classes = useStyles();
-  const coinOptions = {};
-
-  // console.log(props.brand)
+//   console.log(props.user.cardTransaction)
+  const cardOptions = {};
   props.brand.map((option) => {
     const { id, name } = option;
-    coinOptions[id] = name;
+    cardOptions[id] = name;
   });
 
   return (
@@ -48,9 +47,9 @@ function Crypto(props) {
               <Button
                 fullWidth
                 color="info"
-                onClick={() => Router.push("transactions/giftcard")}
+                onClick={() => Router.push("transactions/crypto")}
               >
-                GiftCard
+                Crypto
               </Button>
             </CardBody>
            </Card>
@@ -62,6 +61,7 @@ function Crypto(props) {
                 fullWidth
                 color="warning"
                 onClick={() => Router.push("transactions/withdrawal")}
+                
               >
                Withdrawal
               </Button>
@@ -76,15 +76,15 @@ function Crypto(props) {
       <GridItem xs={12} sm={12} md={12}>
           <Card>
             <CardHeader color="danger">
-              <h4 className={classes.cardTitleWhite}>Crypto Transaction</h4>
+              <h4 className={classes.cardTitleWhite}>Giftcard Transaction</h4>
             </CardHeader>
             <CardBody>
             <MaterialTable
                 columns={[
                   {
-                    title: "Coin",
-                    field: "id",
-                    lookup: coinOptions,
+                    title: "Card",
+                    field: "card_type_id",
+                    lookup: cardOptions,
                     editable: "never",
                   },
 
@@ -107,10 +107,11 @@ function Crypto(props) {
                   },
                   {
                     title: "Total",
-                    field: "total",
-                  },
+                    // field: "total",
+                    render: (rowData) => Number(rowData.amount) * Number(rowData.rate)
+                },
                 ]}
-                data={props.user.coinTransaction}
+                data={props.user.cardTransaction}
                 title=""
                 // actions={[
                 //   {
@@ -135,7 +136,7 @@ function Crypto(props) {
   );
 }
 
-Crypto.layout = User;
+Index.layout = User;
 export async function getServerSideProps(context){
   const session = await getSession(context);
   if (!session) {
@@ -155,7 +156,7 @@ export async function getServerSideProps(context){
     },
   })
   const user = await userData.data.message
-  const fetchBrand = await Server.get("/user/coin", {
+  const fetchBrand = await Server.get("/user/card", {
     headers: {
       Authorization: `Bearer ${token}`,
     },
@@ -168,4 +169,4 @@ export async function getServerSideProps(context){
     }
   };
 }
-export default Crypto;
+export default Index;
