@@ -136,7 +136,7 @@ function Notification() {
                 Lorem ipsum dolor sit amet
               </p>
             </CardHeader>
-            <CardBody>
+            {/* <CardBody>
               <GridContainer>
                 <GridItem xs={12} sm={12} md={12}>
                   <ul className={classes.listStyle}>
@@ -172,7 +172,7 @@ function Notification() {
                   </ul>
                 </GridItem>
               </GridContainer>
-            </CardBody>
+            </CardBody> */}
             <CardFooter>
               <Button color="primary" onClick={handleOpen}>
                 Mark All as Read
