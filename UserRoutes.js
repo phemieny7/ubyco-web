@@ -54,7 +54,7 @@ const dashboardRoutes = [
   },
   
   {
-    path: "#",
+    path: "/#",
     name: "Message",
     icon: BiMessageAltDetail,
     layout: "/user",
@@ -72,7 +72,7 @@ const dashboardRoutes = [
     layout: "/user",
   },
   {
-    path: "#",
+    path: "/#",
     name: "Notifications",
     icon: Notifications,
     layout: "/user",
