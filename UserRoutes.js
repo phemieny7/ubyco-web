@@ -21,9 +21,10 @@ import People from "@material-ui/icons/People"
 import Redeem from "@material-ui/icons/Redeem"
 import Notifications from "@material-ui/icons/Notifications";
 import { BiBitcoin } from 'react-icons/bi';
-import {MdCardGiftcard} from 'react-icons/md'
-import {BiMessageAltDetail} from 'react-icons/bi'
+import {MdCardGiftcard, } from 'react-icons/md'
+import {BiMessageAltDetail, } from 'react-icons/bi'
 import { BiHistory } from "react-icons/bi";
+import {AiFillBank } from 'react-icons/ai'
 
 const dashboardRoutes = [
   {
@@ -53,7 +54,7 @@ const dashboardRoutes = [
   },
   
   {
-    path: "/message",
+    path: "#",
     name: "Message",
     icon: BiMessageAltDetail,
     layout: "/user",
@@ -65,7 +66,13 @@ const dashboardRoutes = [
     layout: "/user",
   },
   {
-    path: "/notifications",
+    path: "/account",
+    name: "Accounts",
+    icon: AiFillBank,
+    layout: "/user",
+  },
+  {
+    path: "#",
     name: "Notifications",
     icon: Notifications,
     layout: "/user",
