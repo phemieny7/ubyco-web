@@ -83,6 +83,7 @@ function Login() {
                       id="contact-form"
                       onSubmit={(e) => handleLogin(e)}
                       data-toggle="validator"
+                      autoComplete="off"
                     >
                       <div className="row">
                         <div className="col-md-12">
