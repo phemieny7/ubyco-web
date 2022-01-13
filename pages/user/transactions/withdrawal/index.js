@@ -41,7 +41,7 @@ function Index(props) {
               <Button
                 fullWidth
                 color="info"
-                onClick={() => Router.push("transactions/crypto")}
+                onClick={() => Router.push("/user/transactions/crypto")}
               >
                 Crypto
               </Button>
@@ -54,7 +54,7 @@ function Index(props) {
               <Button
                 fullWidth
                 color="warning"
-                onClick={() => Router.push("transactions/withdrawal")}
+                onClick={() => Router.push("/user/transactions/giftcard")}
               >
                Giftcard
               </Button>
@@ -69,7 +69,7 @@ function Index(props) {
       <GridItem xs={12} sm={12} md={12}>
           <Card>
             <CardHeader color="danger">
-              <h4 className={classes.cardTitleWhite}>Giftcard Transaction</h4>
+              <h4 className={classes.cardTitleWhite}>All Withdrawals</h4>
             </CardHeader>
             <CardBody>
             <MaterialTable

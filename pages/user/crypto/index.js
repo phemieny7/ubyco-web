@@ -178,6 +178,7 @@ function Crypto(props) {
         setBrandValue("");
         setWallet("null");
         setImageUrl(null);
+        window.location.reload();
     } else {
       toast.error("Error Submitting Trade");
     }
@@ -342,7 +343,7 @@ function Crypto(props) {
 
                   <GridItem xs={12} sm={6} md={6}>
                     <InputLabel style={{ color: "#AAAAAA" }}>
-                      Upload Giftcard
+                      Upload coin receipt
                     </InputLabel>
                     <input
                       className="form-control"

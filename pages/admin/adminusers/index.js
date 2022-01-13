@@ -57,6 +57,7 @@ function Users(props) {
       },
       method: "POST",
     });
+    return res.status();
   };
 
   return (

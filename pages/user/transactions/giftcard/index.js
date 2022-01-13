@@ -47,7 +47,7 @@ function Index(props) {
               <Button
                 fullWidth
                 color="info"
-                onClick={() => Router.push("transactions/crypto")}
+                onClick={() => Router.push("/user/transactions/crypto")}
               >
                 Crypto
               </Button>
@@ -60,7 +60,7 @@ function Index(props) {
               <Button
                 fullWidth
                 color="warning"
-                onClick={() => Router.push("transactions/withdrawal")}
+                onClick={() => Router.push("/user/transactions/withdrawal")}
                 
               >
                Withdrawal

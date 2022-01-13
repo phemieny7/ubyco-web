@@ -10,7 +10,6 @@ import MenuItem from "@material-ui/core/MenuItem";
 
 // @material-ui/icons
 
-
 // layout for this page
 import User from "layouts/User.js";
 // core components
@@ -38,7 +37,6 @@ import axios from "axios";
 import { GiBanknote } from "react-icons/gi";
 import { grey } from "@material-ui/core/colors";
 var FormData = require("form-data");
-
 
 const styles = {
   cardCategoryWhite: {
@@ -106,8 +104,8 @@ function Giftcard(props) {
 
   //amount state
   const [amount, setAmount] = React.useState("");
-  const [comment, setComment] = React.useState('');
-  const [total, setTotal] = React.useState('');
+  const [comment, setComment] = React.useState("");
+  const [total, setTotal] = React.useState("");
   const [images, setImage] = React.useState([]);
   const [imageUrl, setImageUrl] = React.useState([]);
 
@@ -151,9 +149,9 @@ function Giftcard(props) {
         URL.createObjectURL(file)
       );
 
-    setImage(e.target.files)
+      setImage(e.target.files);
 
-    setImageUrl((prevImages) => prevImages.concat(filesArray));
+      setImageUrl((prevImages) => prevImages.concat(filesArray));
       Array.from(e.target.files).map(
         (file) => URL.revokeObjectURL(file) // avoid memory leak
       );
@@ -165,8 +163,6 @@ function Giftcard(props) {
       return <img src={photo} style={styles.img} alt="" key={photo} />;
     });
   };
-
-  
 
   const formSubmit = async (e) => {
     e.preventDefault();
@@ -180,7 +176,6 @@ function Giftcard(props) {
       toast.error("Please enter a valid Data");
       return;
     }
-    toast.info("Submitting Trade");
 
     const formData = new FormData();
     for (let i = 0; i < images.length; i++) {
@@ -207,32 +202,33 @@ function Giftcard(props) {
       setImage([]);
       setRate(0);
       setBrandValue("");
-      setTypeValue("")
+      setTypeValue("");
       setImageUrl([]);
+
+      window.location.reload();
     } else {
       toast.error("Error Submitting Trade");
     }
   };
-  let successTradeCount = []
-  let pendingTradeCount = []
-  let failedTradeCount = []
+  let successTradeCount = [];
+  let pendingTradeCount = [];
+  let failedTradeCount = [];
 
-
-  for(let i = 0; i < props.cardTransactions.length; i++){
-    if(props.cardTransactions[i].completed === true){
-      successTradeCount.push(props.cardTransactions[i])
+  for (let i = 0; i < props.cardTransactions.length; i++) {
+    if (props.cardTransactions[i].completed === true) {
+      successTradeCount.push(props.cardTransactions[i]);
     }
-    if(props.cardTransactions[i].status === 1){
-      pendingTradeCount.push(props.cardTransactions[i])
+    if (props.cardTransactions[i].status === 1) {
+      pendingTradeCount.push(props.cardTransactions[i]);
     }
-    if(props.cardTransactions[i].status === 2){
-      failedTradeCount.push(props.cardTransactions[i])
+    if (props.cardTransactions[i].status === 2) {
+      failedTradeCount.push(props.cardTransactions[i]);
     }
   }
 
   return (
     <div>
-      <ToastContainer/>
+      <ToastContainer />
       <GridContainer>
         <GridItem xs={12} sm={6} md={4}>
           <Card>
@@ -247,46 +243,38 @@ function Giftcard(props) {
             </CardHeader>
             <CardFooter stats>
               <div className={classes.stats}>
-                <Success>
-                  Successful
-                </Success>
+                <Success>Successful</Success>
               </div>
             </CardFooter>
           </Card>
         </GridItem>
         <GridItem xs={12} sm={6} md={4}>
-        <Card>
+          <Card>
             <CardHeader color="rose" stats icon>
               <CardIcon color="rose">
                 <GiBanknote />
               </CardIcon>
-              <h3 className={classes.cardTitle}>
-                {pendingTradeCount.length}
-              </h3>
+              <h3 className={classes.cardTitle}>{pendingTradeCount.length}</h3>
             </CardHeader>
             <CardFooter stats>
               <div className={classes.stats}>
-                <Danger>
-                  Pending
-                </Danger>
+                <Danger>Pending</Danger>
                 <a href="#pablo" onClick={(e) => e.preventDefault()}></a>
               </div>
             </CardFooter>
           </Card>
         </GridItem>
         <GridItem xs={12} sm={6} md={4}>
-        <Card>
+          <Card>
             <CardHeader color="dark" stats icon>
               <CardIcon color="dark">
                 <GiBanknote />
               </CardIcon>
-              <h3 className={classes.cardTitle}>
-                {failedTradeCount.length}
-              </h3>
+              <h3 className={classes.cardTitle}>{failedTradeCount.length}</h3>
             </CardHeader>
             <CardFooter stats>
               <div className={classes.stats}>
-                  Failed
+                Failed
                 <a href="#pablo" onClick={(e) => e.preventDefault()}></a>
               </div>
             </CardFooter>
@@ -426,13 +414,11 @@ function Giftcard(props) {
                       onChange={onImageChange}
                     />
                     <GridContainer>
-                      {imageUrl !== null ?
-                      (
+                      {imageUrl !== null ? (
                         <div className="form-group multi-preview">
                           <div className="result">{renderPhotos(imageUrl)}</div>
                         </div>
-                      ): null
-                      }
+                      ) : null}
                     </GridContainer>
                   </GridItem>
                 </GridContainer>
@@ -465,19 +451,24 @@ export async function getServerSideProps(context) {
       },
     };
   }
-
+  await fetch(`${process.env.NEXTAUTH_URL}/api/check-user`)
+  
   const token = session?.accessToken;
+  const user = await Server.get("/user", {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+
   const card = await Server.get("/user/card", {
     headers: {
       Authorization: `Bearer ${token}`,
     },
   });
 
-  const user = await Server.get("/user", {
-    headers: {
-      Authorization: `Bearer ${token}`,
-    },
-  });
+  console.log(card.status)
+
+  
 
   const cards = card.data.message;
   const cardTransactions = user.data.message.cardTransaction;

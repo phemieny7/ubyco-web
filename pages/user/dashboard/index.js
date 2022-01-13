@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import Error from 'next/error'
 
 // @material-ui/core
 import { makeStyles } from "@material-ui/core/styles";
@@ -36,7 +37,11 @@ import { GiBanknote } from "react-icons/gi";
 
 import styles from "assets/jss/nextjs-material-dashboard/views/dashboardStyle.js";
 
+import {useRouter} from 'next/router'
+
 function Dashboard(props) {
+  const router = useRouter()
+  
   const useStyles = makeStyles(styles);
   const coinOptions = {};
   props.coinBrand.map((option) => {
@@ -283,6 +288,7 @@ function Dashboard(props) {
 Dashboard.layout = User;
 export async function getServerSideProps(context) {
   const session = await getSession(context);
+  
   if (!session) {
     return {
       props: {},
@@ -298,6 +304,7 @@ export async function getServerSideProps(context) {
       Authorization: `Bearer ${token}`,
     },
   });
+ 
   const user = await userData.data.message;
 
   const fetchBrand = await Server.get("/user/coin", {

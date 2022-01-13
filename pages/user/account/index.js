@@ -101,55 +101,72 @@ const styles = {
   },
 };
 
-function Withdraw(props) {
+function Account(props) {
   const useStyles = makeStyles(styles);
   const classes = useStyles();
-  const [accountId, setAccountId] = React.useState("");
-  const [amount, setAmount] = React.useState("");
-
+  const [bank, setBank] = React.useState("");
+  const [bankCode, setBankCode] = React.useState("");
+  const [accountNumber, setAccountNumber] = React.useState("");
+  const [accountName, setAccountName] = React.useState("");
 
   const handleChange = (event) => {
-    setAccountId(event.target.value);
+    setBank(event.target.value);
+    setBankCode("");
+    setAccountNumber("");
+    props.bank.find((item) => {
+      item.name === event.target.value ? setBankCode(item.code) : null;
+    });
   };
-  const priceChange = (e) => {
-      if(props.userData.userAmount === null || props.userData.userAmount.amount === 0){
-        alert(`You don't have enough amount`)
+
+  const handleChangeAccount = async (event) => {
+    console.log(event.target.value.length);
+    setAccountNumber(event.target.value);
+    if(event.target.value.length === 10) {
+      const res = await fetch("/api/user/get-account", {
+        body: JSON.stringify({
+          account_number: accountNumber,
+          bank_code : bankCode,
+        }),
+        headers: {
+          "Content-Type": "application/json",
+        },
+        method: "POST",
+      });
+
+      if (res.status === 200) {
+        const data = await res.json();
+        setAccountName(data.account_name);
+      }else {
+        setAccountName("Cannot find account");
       }
-  }
-
-  let successWithdrawal = []
-  let pendingWithdrawal = []
-  let failedWithdrawal = []
-
-  
-
-
-
+    }
+  };
   return (
     <div>
-     <GridContainer>
-        {
-            props.userData.userAccounts.length > 0 ?
-            props.userData.userAccounts.map((account) => (
+      <GridContainer>
+        {props.userData.userAccounts.length > 0
+          ? props.userData.userAccounts.map((account) => (
               <GridItem xs={12} sm={6} md={4}>
                 <Card>
                   <CardHeader color="info" stats icon>
                     <CardIcon color="info">
-                      <BsBank/>
+                      <BsBank />
                     </CardIcon>
                     <p className={classes.cardTitle}>
-                      {account.account_name}<br/>
-                      <small>{account.account_number}</small><br/>
+                      {account.account_name}
+                      <br />
+                      <small>{account.account_number}</small>
+                      <br />
                       {account.bank}
                     </p>
                   </CardHeader>
                   <CardFooter>
-                  <Button color="danger">Remove Account</Button>
+                    <Button color="danger">Remove Account</Button>
                   </CardFooter>
-                </Card>                  
+                </Card>
               </GridItem>
-            )): null
-          }
+            ))
+          : null}
       </GridContainer>
 
       <GridContainer>
@@ -166,38 +183,33 @@ function Withdraw(props) {
               data-toggle="validator"
               encType="multipart/form-data"
             >
-            <CardBody>
-              <GridContainer>
-                <GridItem xs={12} sm={12} md={6}>
-                  <FormControl className={classes.formControl}>
-                    <InputLabel
-                      id="demo-simple-select-label"
-                      className={classes.formTitle}
-                    >
-                      Select A Bank{" "}
-                    </InputLabel>
-                    <Select
-                      labelId="demo-simple-select-label"
-                      id="demo-simple-select"
-                      value={accountId}
-                      onChange={handleChange}
-                    >
-                      {props.userData.userAccounts.length > 0
-                        ? props.userData.userAccounts.map((account) => (
-                            <MenuItem value={account.id} key={account.id}>
-                              <p>{account.account_name} {account.account_number} {account.bank}</p>
-                            </MenuItem>
-                          ))
-                        : (<MenuItem><p>
-                            Add an Account
-                            </p>
-                          </MenuItem>)}
-                    </Select>
-                  </FormControl>
-                </GridItem>
-              </GridContainer>
-              <GridContainer>
-                <GridItem xs={12} sm={12} md={6}>
+              <CardBody>
+                <GridContainer>
+                  <GridItem xs={12} sm={12} md={6}>
+                    <FormControl className={classes.formControl}>
+                      <InputLabel
+                        id="demo-simple-select-label"
+                        className={classes.formTitle}
+                      >
+                        Select A Bank{" "}
+                      </InputLabel>
+                      <Select
+                        labelId="demo-simple-select-label"
+                        id="demo-simple-select"
+                        value={bank}
+                        onChange={handleChange}
+                      >
+                        {props.bank.map((account) => (
+                          <MenuItem value={account.name} key={account.id}>
+                            <p>{account.name}</p>
+                          </MenuItem>
+                        ))}
+                      </Select>
+                    </FormControl>
+                  </GridItem>
+                </GridContainer>
+                <GridContainer>
+                  <GridItem xs={12} sm={12} md={6}>
                     <CustomInput
                       labelText="Account Number"
                       id="accountNumber"
@@ -206,25 +218,44 @@ function Withdraw(props) {
                       }}
                       inputProps={{
                         type: "number",
-                        onChange: (e) => priceChange(e),
-                        value: amount,
+                        onChange: (e) => handleChangeAccount(e),
+                        value: accountNumber,
                         required: true,
                       }}
                     />
-                </GridItem>
-              </GridContainer>
-            </CardBody>
-            <CardFooter>
-              <Button color="danger">Add Account</Button>
-            </CardFooter>
-        </form>
+                    {/* <Button color="primary" type="submit" title="Check Account"/> */}
+                  </GridItem>
+                </GridContainer>
+                <GridContainer>
+                  <GridItem xs={12} sm={12} md={6}>
+                    <CustomInput
+                      labelText="Account Name"
+                      id="accountName"
+                      formControlProps={{
+                        fullWidth: true,
+                      }}
+                      inputProps={{
+                        type: "text",
+                        // onChange: (e) => handleChangeAccount(e),
+                        value: accountName,
+                        disabled: true,
+                        // required: true,
+                      }}
+                    />
+                  </GridItem>
+                </GridContainer>
+              </CardBody>
+              <CardFooter>
+                <Button color="danger">Add Account</Button>
+              </CardFooter>
+            </form>
           </Card>
         </GridItem>
       </GridContainer>
     </div>
   );
 }
-Withdraw.layout = User;
+Account.layout = User;
 
 export async function getServerSideProps(context) {
   const session = await getSession(context);
@@ -237,22 +268,23 @@ export async function getServerSideProps(context) {
       },
     };
   }
-
   const token = session?.accessToken;
   const user = await Server.get("/user", {
     headers: {
       Authorization: `Bearer ${token}`,
     },
   });
+  const getBank = await Server.get("/list-banks");
+  const bank = getBank.data.message;
   const userData = user.data.message;
-
-  console.log(userData);
+  // console.log(bank)
 
   return {
     props: {
+      bank,
       userData,
     },
   };
 }
 
-export default Withdraw;
+export default Account;
