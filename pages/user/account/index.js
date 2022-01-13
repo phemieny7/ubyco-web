@@ -120,6 +120,39 @@ function Account(props) {
     });
   };
 
+  const formSubmit = async() => {
+    const data = {bank, bankCode, accountName, accountNumber};
+    const res = await fetch("/api/user/add-account", {
+      body: JSON.stringify(data),
+      headers: {
+        "Content-Type": "application/json",
+      },
+      method: "POST",
+    });
+  };
+
+  const deleteAccount = async(id) => {
+    // const {id} = id;
+    const res = await fetch("/api/user/delete-account", {
+      body: JSON.stringify(id),
+      headers: {
+        "Content-Type": "application/json",
+      },
+      method: "POST",
+    });
+  }
+
+  // const deleteAccount = (id) => {
+  //   Server.delete(`/user/delete-account/${id}`)
+  //     .then((res) => {
+  //       toast.success("Account deleted successfully");
+  //       props.setAccounts(res.data);
+  //     })
+  //     .catch((err) => {
+  //       toast.error(err.message);
+  //     });
+  // }
+
   const handleChangeAccount = async (event) => {
     setAccountNumber(event.target.value);
     setAccountName("");
@@ -135,10 +168,8 @@ function Account(props) {
         },
         method: "POST",
       });
-      // console.log(res);
-      if (res.status === 200) {
+      if (res.status === 200){
         const data = await res.json();
-        // console.log(data)
         setAccountName(data.data);
       }else {
         toast.error("Account number not found");
@@ -152,7 +183,7 @@ function Account(props) {
       <GridContainer>
         {props.userData.userAccounts.length > 0
           ? props.userData.userAccounts.map((account) => (
-              <GridItem xs={12} sm={6} md={4}>
+              <GridItem xs={12} sm={6} md={4} key={account.id}>
                 <Card>
                   <CardHeader color="info" stats icon>
                     <CardIcon color="info">
@@ -167,7 +198,7 @@ function Account(props) {
                     </p>
                   </CardHeader>
                   <CardFooter>
-                    <Button color="danger">Remove Account</Button>
+                    <Button color="danger" onClick={()=>deleteAccount(account.id)}>Remove Account</Button>
                   </CardFooter>
                 </Card>
               </GridItem>
@@ -185,7 +216,7 @@ function Account(props) {
               </p>
             </CardHeader>
             <form
-              onSubmit={(e) => formSubmit(e)}
+              onSubmit={() => formSubmit()}
               data-toggle="validator"
               encType="multipart/form-data"
             >
@@ -254,7 +285,7 @@ function Account(props) {
                 </GridContainer>
               </CardBody>
               <CardFooter>
-                <Button color="danger">Add Account</Button>
+                <Button color="danger"  type="submit">Add Account</Button>
               </CardFooter>
             </form>
           </Card>
