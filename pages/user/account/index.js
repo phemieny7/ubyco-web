@@ -39,6 +39,8 @@ import CardBody from "components/Card/CardBody.js";
 import CardFooter from "components/Card/CardFooter.js";
 import Server from "../../api/lib/Server";
 import Danger from "components/Typography/Danger.js";
+import { ToastContainer, toast } from "react-toastify";
+
 
 // import Button from "@material-ui/core/Button";
 import Button from "components/CustomButtons/Button.js";
@@ -119,12 +121,13 @@ function Account(props) {
   };
 
   const handleChangeAccount = async (event) => {
-    console.log(event.target.value.length);
     setAccountNumber(event.target.value);
+    setAccountName("");
     if(event.target.value.length === 10) {
+      toast.info("Checking account number...");
       const res = await fetch("/api/user/get-account", {
         body: JSON.stringify({
-          account_number: accountNumber,
+          account_number: event.target.value,
           bank_code : bankCode,
         }),
         headers: {
@@ -132,17 +135,20 @@ function Account(props) {
         },
         method: "POST",
       });
-
+      // console.log(res);
       if (res.status === 200) {
         const data = await res.json();
-        setAccountName(data.account_name);
+        // console.log(data)
+        setAccountName(data.data);
       }else {
+        toast.error("Account number not found");
         setAccountName("Cannot find account");
       }
     }
   };
   return (
     <div>
+      <ToastContainer />
       <GridContainer>
         {props.userData.userAccounts.length > 0
           ? props.userData.userAccounts.map((account) => (
@@ -221,6 +227,8 @@ function Account(props) {
                         onChange: (e) => handleChangeAccount(e),
                         value: accountNumber,
                         required: true,
+                        minLength: 10,
+                        maxLength: 11,
                       }}
                     />
                     {/* <Button color="primary" type="submit" title="Check Account"/> */}
