@@ -176,7 +176,7 @@ function Giftcard(props) {
       toast.error("Please enter a valid Data");
       return;
     }
-
+    toast.info("Please wait while we process your request");
     const formData = new FormData();
     for (let i = 0; i < images.length; i++) {
       formData.append(`card${[i]}`, images[i]);
@@ -465,8 +465,6 @@ export async function getServerSideProps(context) {
       Authorization: `Bearer ${token}`,
     },
   });
-
-  console.log(card.status)
 
   
 
