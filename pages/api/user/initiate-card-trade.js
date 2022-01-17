@@ -20,16 +20,11 @@ const request = async (data, token) => {
 };
 
 export default async (req, res) => {
-  try {
     const session = await getSession({ req });
     const token = session?.accessToken;
-
+    const data = await new Promise((resolve, reject) => {
     const form = new formidable.IncomingForm();
     const formData = new FormData();
-    form.uploadDir = "./public/uploads";
-    form.keepExtensions = true;
-    form.multiples = true;
-
     form.parse(req, (err, fields, files) => {
       if (err) {
         res.status(500).json({
@@ -37,26 +32,34 @@ export default async (req, res) => {
         });
       }
 
-      let image;
       for (const property in files) {
         formData.append("card", fs.createReadStream(files[property].path));
-      }
+      };
       formData.append("card_type_id", fields.id);
       formData.append("rate", fields.rate);
       formData.append("amount", fields.amount);
       formData.append("comment", fields.comment);
-      // console.log(formData);
       request(formData, token);
       res.status(200).end();
-      for (const file in files) {
-        fs.unlink(files[file].path, (err) => {
-          if (err) {
-            console.log(err);
-          }
-        });
-      }
     });
-  } catch (error) {
-    res.status(500).end();
-  }
+  });
 };
+
+
+
+
+// import cloudinary from 'cloudinary';
+// import { IncomingForm } from 'formidable';
+
+// cloudinary.config({
+//   cloud_name: 'CLOUDINARY-USER-NAME',
+//   api_key: 'CLOUDINARY-API-KEY',
+//   api_secret: 'CLOUDINARY-API-SECRET',
+// });
+
+// export const config = {
+//   api: {
+//     bodyParser: false,
+//   },
+// };
+
