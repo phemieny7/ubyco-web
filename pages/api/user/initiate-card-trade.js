@@ -26,7 +26,7 @@ export default async (req, res) => {
 
     const form = new formidable.IncomingForm();
     const formData = new FormData();
-    form.uploadDir = "./uploads";
+    form.uploadDir = "./public/uploads";
     form.keepExtensions = true;
     form.multiples = true;
 
@@ -57,6 +57,6 @@ export default async (req, res) => {
       }
     });
   } catch (error) {
-    console.log(error);
+    res.status(500).end();
   }
 };
