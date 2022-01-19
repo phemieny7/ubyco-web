@@ -39,27 +39,9 @@ export default async (req, res) => {
       formData.append("rate", fields.rate);
       formData.append("amount", fields.amount);
       formData.append("comment", fields.comment);
+      formData.append("total", fields.total);
       request(formData, token);
       res.status(200).end();
     });
   });
-};
-
-
-
-
-// import cloudinary from 'cloudinary';
-// import { IncomingForm } from 'formidable';
-
-// cloudinary.config({
-//   cloud_name: 'CLOUDINARY-USER-NAME',
-//   api_key: 'CLOUDINARY-API-KEY',
-//   api_secret: 'CLOUDINARY-API-SECRET',
-// });
-
-// export const config = {
-//   api: {
-//     bodyParser: false,
-//   },
-// };
-
+}; 

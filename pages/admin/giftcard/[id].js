@@ -28,15 +28,17 @@ import Server from "../../api/lib/Server";
 
 
 function Id(props) {
-  const [split, setSplit] = React.useState([])
+  // const [split, setSplit] = React.useState([])
   const useStyles = makeStyles(styles);
   const classes = useStyles();
   const data = props.card.cards;
-  const image = Object.values(data);  
+  const obj = JSON.parse(data)
+  const image = Object.values(obj);
   console.log(image)
+  
   const Router = useRouter();
   const imageLoader = ({ src, width, quality }) => {
-    return `https://res.cloudinary.com/ubycohub/${src}?w=${width}&q=${quality || 75}`;
+    return `https://res.cloudinary.com/ubycohub/${src}.jpg?w=${width}&q=${quality || 75}`;
   };
 
   const actionCoin = async (status) => {
@@ -58,7 +60,7 @@ function Id(props) {
       body: JSON.stringify({
         id: props.card.id,
         user_id: props.card.user_id,
-        amount: props.card.total,
+        amount: Number(props.card.rate * props.card.amount)
       }),
       headers: {
         "Content-Type": "application/json",
@@ -172,7 +174,7 @@ function Id(props) {
               <h4 className={classes.cardTitle}>{props.card.user.fullname}</h4>
               <h4 className={classes.cardTitle}>
                 {" "}
-                Total amount: {props.card.total}
+                Total amount: &#8358;{Number(props.card.amount * props.card.rate).toFixed(2)}
               </h4>
 
               <h4>

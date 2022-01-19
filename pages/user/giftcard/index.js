@@ -186,6 +186,7 @@ function Giftcard(props) {
     formData.append("rate", rate);
     formData.append("amount", amount);
     formData.append("comment", comment);
+    formData.append("total", Number(amount * rate));
 
     const response = await axios.post(
       "/api/user/initiate-card-trade",

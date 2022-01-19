@@ -1,21 +1,36 @@
-import Server from "./lib/Server"
-export default async(req, res)=> {
-    try {
-        const {fullname, email, phone, password} = req.body;
-        const result = await Server.post("/register", {
-            fullname,
+import Server from "./lib/Server";
+// export default async (req, res) => {
+//   try {
+
+//     return res.status(200)
+//   } catch (error) {
+//       let errorMessage;
+//       {error.response.data != '' ? errorMessage = error.response.data : errorMessage = "Email ? Phone number already exists"}
+//     return res.status(400).json({ message: errorMessage });
+//   }
+// };
+
+export default async function(req, res) {
+    const { name, email, phone, password } = req.body;
+    return new Promise((resolve, reject) => {
+        Server.post("/register", {
+            fullname: name,
             email,
             phone,
-            password
+            password,
+          })
+        .then(response => {
+          res.statusCode = 200
+          res.setHeader('Content-Type', 'application/json');
+          res.setHeader('Cache-Control', 'max-age=180000');
+          res.end(JSON.stringify(response));
+          resolve();
         })
-        callback()
-    } catch (error) {
-        
-    }
-  
-    if (result.status === 201){
-      return  res.status(200)
-    }else{
-        return res.status(400).json({data: error})
-    }
-}
+        .catch(error => {
+          res.statusCode = 400
+          res.json(error);
+          res.end();
+          resolve();
+        });
+    });
+  };

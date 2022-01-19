@@ -3,9 +3,7 @@ import { useState, useEffect } from "react";
 import { useRouter } from "next/router";
 import { signIn, getSession } from "next-auth/client";
 import { ToastContainer, toast } from "react-toastify";
-// import "react-toastify/dist/ReactToastify.css";
 import Logo from "../../assets/img/logo.png";
-// import styles from '../../assets/css/login.module.css'
 
 import Link from "next/link";
 import Server from "../api/lib/Server";
@@ -17,22 +15,6 @@ function Login() {
   const [loginError, setLoginError] = useState("");
   const router = useRouter();
 
-  useEffect(() => {
-    if (router.query.error) {
-      setLoginError(router.query.error.message);
-      setEmail(router.query.email);
-    }
-  }, [router]);
-
-  // const resolveAfter3Sec = new Promise(resolve => setTimeout(resolve, 8000));
-  // toast.promise(
-  //     resolveAfter3Sec,
-  //     {
-  //       pending: 'Processing auth',
-  //       success: 'User Authenticated ',
-  //       error: 'Something went wrong 🤯'
-  //     }
-  // )
 
   const handleLogin = (e) => {
     e.preventDefault();
@@ -47,7 +29,8 @@ function Login() {
       .then((res) => {
         toast.success("Login Successful 👌");
       })
-      .catch((e) => {
+      .catch((error)=>{
+        setLoginError(error.message);
         toast.danger("Login Failed");
       });
   };
@@ -90,7 +73,6 @@ function Login() {
                           <div className="single-form form-group">
                             <label style={{ display: "block" }}>Email</label>
                             <input
-                              type="email"
                               type="email"
                               value={email}
                               onChange={(e) => setEmail(e.target.value)}

@@ -31,7 +31,6 @@ function Id(props) {
   const classes = useStyles();
   const image = props.coin.receipt;
   const remove = image.substring(1, image.length - 1);
-  const split = remove.split(",");
   const Router = useRouter();
 
   const imageLoader = ({ src, width, quality }) => {
@@ -57,8 +56,7 @@ function Id(props) {
       body: JSON.stringify({
         id: props.coin.id,
         user_id: props.coin.user_id,
-        amount: props.coin.total,
-      }),
+        amount: Number(props.coin.amount * props.coin.rate),       }),
       headers: {
         "Content-Type": "application/json",
       },
