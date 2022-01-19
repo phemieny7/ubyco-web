@@ -205,10 +205,10 @@ function Giftcard(props) {
       setTypeValue("");
       setImageUrl([]);
 
-      window.location.reload();
     } else {
       toast.error("Error Submitting Trade");
     }
+    window.location.reload();
   };
   let successTradeCount = [];
   let pendingTradeCount = [];
@@ -451,7 +451,7 @@ export async function getServerSideProps(context) {
       },
     };
   }
-  await fetch(`${process.env.NEXTAUTH_URL}/api/check-user`)
+  // await fetch(`${process.env.NEXTAUTH_URL}/api/check-user`)
   
   const token = session?.accessToken;
   const user = await Server.get("/user", {

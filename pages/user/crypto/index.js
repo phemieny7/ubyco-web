@@ -178,10 +178,12 @@ function Crypto(props) {
         setBrandValue("");
         setWallet("null");
         setImageUrl(null);
-        window.location.reload();
+        // window.location.reload();
     } else {
       toast.error("Error Submitting Trade");
     }
+    window.location.reload();
+
   };
 
   let successTradeCount = []

@@ -20,15 +20,3 @@ export default async (req, res) => {
     res.status(500).json({ error: error.message });
   }
 };
-
-
-const deleteAccount = (id) => {
-    Server.delete(`/user/delete-account/${id}`)
-      .then((res) => {
-        toast.success("Account deleted successfully");
-        props.setAccounts(res.data);
-      })
-      .catch((err) => {
-        toast.error(err.message);
-      });
-  }
