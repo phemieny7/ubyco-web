@@ -1,6 +1,7 @@
 
 import React from "react";
 import { signIn, signOut, useSession } from "next-auth/client";
+import Server from "../api/lib/Server";
 import App_1 from "../../src/assets/img/app-1.png";
 import Logo from "../../src/assets/img/logo.png";
 import App_2 from "../../src/assets/img/app-2.png";
@@ -13,11 +14,52 @@ import Aos from "aos";
 import Head from "next/head";
 import { Button } from "@material-ui/core";
 
-export default function Index() {
+export default function Index(props) {
   const [session, loading] = useSession();
   React.useEffect(() => {
     Aos.init();
   });
+
+  const [brandValue, setBrandValue] = React.useState("");
+  const [typeValue, setTypeValue] = React.useState("");
+  const [type, setType] = React.useState([]);
+  const [amount, setAmount] = React.useState("");
+  const [total, setTotal] = React.useState("0.00");
+  const [rate, setRate] = React.useState("0.00");
+
+
+   //when brand selected
+   const cardBrandSelect = async (event) => {
+    setBrandValue(event.target.value);
+    setAmount("");
+    setTotal(0);
+    const res = props.cards.find((card) => card.id == event.target.value);
+    setRate("0.00");
+    setType(res.cardTypes);
+  };
+
+  const cardTypeSelect = async (event) => {
+    setTypeValue(event.target.value);
+    setAmount("");
+    setTotal(0);
+    setRate('0.00');
+  };
+
+  //when price changes multiply the amount by the rate
+  const priceChange = async (event) => {
+    
+    setAmount(event.target.value);
+    const value = type.find((card) => card.id == typeValue);
+    if (type.length == 0 || typeValue == "") {
+      alert("Please select a Brand and card type");
+    } else if (value.rate == "0") {
+      setTotal("We are not accepting this card at this time");
+    } else {
+      setRate(value.rate);
+      const sum = Number(event.target.value * value.rate);
+      setTotal(sum);
+    }
+  };
 
 
   return (
@@ -194,33 +236,46 @@ export default function Index() {
               
               <form>
                 <div className="row">
-                  <div className="input-group col-md-12">
-                    <input type="number" placeholder="0.00" className="form-control py-3" />
-                  </div>
+                  
                   <div className="input-group col-md-12">
                     <div className="col-md-6 p-0 pr-1">
-                      <select className="d-inline-block py-3 col-12">
-                        <option value="1" selected>Select Category</option>
-                        <option value="1">Lorem ipsum</option>
-                        <option value="2">Lorem ipsum</option>
-                        <option value="3">Lorem ipsum</option>
+                      <select className="d-inline-block py-3 col-12" value={brandValue} onChange={(e) => cardBrandSelect(e)}>
+                      <option selected>Select a card</option>
+                        {props.cards.length > 0
+                          ? props.cards.map((card) => (
+                              <option value={card.id} key={card.id}>
+                                {card.name}
+                              </option>
+                            ))
+                          : 0}
                       </select>
                     </div>
 
                     <div className="col-md-6 p-0 pl-1">
-                      <select className="d-inline-block py-3 col-12">
-                        <option value="1" selected>Select Sub-category</option>
-                        <option value="1">Lorem ipsum</option>
-                        <option value="2">Lorem ipsum</option>
-                        <option value="3">Lorem ipsum</option>
+                      <select className="d-inline-block py-3 col-12" value={typeValue}   onChange={(e) => cardTypeSelect(e)}>
+                      <option selected>Select card types</option>
+                        {type.length > 0 ? (
+                          type.map((card) => (
+                            <option value={card.id} key={card.id}>
+                              {card.name}
+                            </option>
+                          ))
+                        ) : (
+                          <option>
+                            Not Available
+                          </option>
+                        )}
                       </select>
                     </div>
                   </div>
+                  <div className="input-group col-md-12">
+                    <input type="number" placeholder="Enter an amount" value={amount} onChange={(e)=>priceChange(e)} className="form-control py-3" />
+                  </div>
 
                   <div className="col-md-12 d-flex justify-content-between">
-                    <h3 className="text-white">Total: <span>0:00</span> </h3>
+                    <h3 className="text-white">Total: <span>{total}</span> </h3>
 
-                    <h3 className="text-white">Rate: <span>0:00</span> </h3>
+                    <h3 className="text-white">Rate: <span>{rate}</span> </h3>
                   </div>
 
                   <div className="col-md-6">
@@ -264,11 +319,12 @@ export default function Index() {
           <div className="container">
             <div className="banner white" data-aos="fade-up" data-aos-anchor-placement="center-bottom">
               <h3>Want to know more about  <mark className="light-yellow t-dark"><span className="t-red">.</span>Ubyco</mark>?</h3>
+
               <p className="center">Reach out to us.</p>
               <div id="fields">
 
                 {/* <!-- CONTACT Form--> */}
-                <form id="contact-form" method="POST" action="http://www.schintudesign.com/envato/Ubyco/php/contact.php" role="form">
+                <form id="contact-form" method="POST" action="#" role="form">
                   <div id="note" className="messages t-snow"></div>
                   <div className="controls center">
 
@@ -320,4 +376,17 @@ export default function Index() {
       </div>
     </>
   );
+}
+
+export async function getServerSideProps(context) {
+  // const session = await getSession(context);
+  const card = await Server.get("/card");
+  const cards = card.data.message;
+  // console.log(cards)
+  return {
+    props: {
+      cards,
+      // cardTransactions,
+    },
+  };
 }

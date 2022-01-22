@@ -50,7 +50,7 @@ export default function Reset () {
             
         </style> */}
       <Head>
-        <title>Ubyco Login</title>
+        <title>Ubyco Verify Account</title>
       </Head>
       <ToastContainer />
       <div className="page_container">
@@ -101,9 +101,10 @@ export default function Reset () {
                             <button
                               type="submit"
                               disabled={isLoginStarted}
-                              className="btn_1"
+                              className="btn_1 sun"
+                              
                             >
-                              Reset Password
+                             Verify Now 
                             </button>
                           </div>
                           {/* <!-- single form --> */}
