@@ -29,8 +29,6 @@ import GridItem from "components/Grid/GridItem.js";
 import GridContainer from "components/Grid/GridContainer.js";
 import FormControl from "@material-ui/core/FormControl";
 import Select from "@material-ui/core/Select";
-import Table from "components/Table/Table.js";
-import Success from "components/Typography/Success.js";
 import Card from "components/Card/Card.js";
 
 import CardHeader from "components/Card/CardHeader.js";
@@ -45,6 +43,7 @@ import { ToastContainer, toast } from "react-toastify";
 // import Button from "@material-ui/core/Button";
 import Button from "components/CustomButtons/Button.js";
 import { getSession } from "next-auth/client";
+import { useRouter } from "next/router";
 
 const styles = {
   cardCategoryWhite: {
@@ -111,6 +110,12 @@ function Account(props) {
   const [accountNumber, setAccountNumber] = React.useState("");
   const [accountName, setAccountName] = React.useState("");
 
+  const router = useRouter();
+
+  const refreshData = () => {
+    router.replace(router.asPath);
+  }
+
   const handleChange = (event) => {
     setBank(event.target.value);
     setBankCode("");
@@ -121,6 +126,7 @@ function Account(props) {
   };
 
   const formSubmit = async() => {
+    toast.info("Updating account information...");
     const data = {bank, bankCode, accountName, accountNumber};
     const res = await fetch("/api/user/add-account", {
       body: JSON.stringify(data),
@@ -129,10 +135,16 @@ function Account(props) {
       },
       method: "POST",
     });
+    if (res.status === 200) {
+      toast.success("Account information updated successfully!");
+      refreshData();
+    } else {
+      toast.error("Failed to update account information!");
+    }
   };
 
   const deleteAccount = async(id) => {
-    // const {id} = id;
+    toast.info("Deleting account...");
     const res = await fetch("/api/user/delete-account", {
       body: JSON.stringify(id),
       headers: {
@@ -140,6 +152,12 @@ function Account(props) {
       },
       method: "POST",
     });
+    if (res.status === 200) {
+      toast.success("Account deleted");
+      refreshData();
+    } else {
+      toast.error("Error deleting account");
+    }
   }
 
   // const deleteAccount = (id) => {

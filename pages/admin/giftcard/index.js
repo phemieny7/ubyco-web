@@ -33,7 +33,7 @@ function Giftcard(props) {
     const { id, name } = option;
     cardOptions[id] = name;
   });
-
+// console.log(c)
   const updateRate = async (id, rate) => {
     console.log(rate);
     const res = await fetch("/api/change-rate", {

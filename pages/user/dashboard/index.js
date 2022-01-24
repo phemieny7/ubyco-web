@@ -49,11 +49,19 @@ function Dashboard(props) {
     coinOptions[id] = name;
   });
 
-  const cardOptions = {};
+  // let coinBrand = coinOptions[props.coinBrand[0].id];
+  let cardOptions = {};
+  let cardName = {}
   props.cardBrand.map((option) => {
-    const { id, name } = option;
-    cardOptions[id] = name;
+    const { id, name, cardTypes } = option;
+    cardTypes.map((card) => { return (
+      cardName[card.id] = card.name,
+      cardOptions[card.id] = option.name
+      )}) 
   });
+  
+
+  // console.log(cardOptions[2]);
   const classes = useStyles();
   return (
     <div>
@@ -130,12 +138,18 @@ function Dashboard(props) {
               <MaterialTable
                 columns={[
                   {
-                    title: "Card",
+                    title: "Brand",
                     field: "card_type_id",
-                    editable: "never",
                     lookup: cardOptions,
+                    editable: false
                   },
-
+                  {
+                    title: "Type",
+                    field: "card_type_id",
+                    lookup: cardName,
+                    editable: false,
+                  },
+                  // { title: "Card", field: "card.name", editable: false },
                   { title: "Amount", field: "amount", editable: "never" },
                   {
                     title: "Date",
@@ -161,15 +175,15 @@ function Dashboard(props) {
                 ]}
                 data={props.user.cardTransaction}
                 title=""
-                actions={[
-                  {
-                    icon: "visibility",
-                    tooltip: "View Trade",
-                    onClick: (event, rowData) => {
-                      Router.push(`/giftcard/${rowData.id}`);
-                    },
-                  },
-                ]}
+                // actions={[
+                //   {
+                //     icon: "visibility",
+                //     tooltip: "View Trade",
+                //     onClick: (event, rowData) => {
+                //       Router.push(`/giftcard/${rowData.id}`);
+                //     },
+                //   },
+                // ]}
                 options={{
                   actionsColumnIndex: -1,
                 }}
@@ -217,15 +231,15 @@ function Dashboard(props) {
                 ]}
                 data={props.user.coinTransaction}
                 title=""
-                actions={[
-                  {
-                    icon: "visibility",
-                    tooltip: "View Trade",
-                    onClick: (event, rowData) => {
-                      Router.push(`/user/transaction/crypto/${rowData.id}`);
-                    },
-                  },
-                ]}
+                // actions={[
+                //   {
+                //     icon: "visibility",
+                //     tooltip: "View Trade",
+                //     onClick: (event, rowData) => {
+                //       Router.push(`/user/transaction/crypto/${rowData.id}`);
+                //     },
+                //   },
+                // ]}
                 options={{
                   actionsColumnIndex: -1,
                 }}
@@ -315,7 +329,7 @@ export async function getServerSideProps(context) {
 
   const coinBrand = await fetchBrand.data.message;
 
-  const fetchCard = await Server.get("/user/card", {
+  const fetchCard = await Server.get("/user/all_card", {
     headers: {
       Authorization: `Bearer ${token}`,
     },
