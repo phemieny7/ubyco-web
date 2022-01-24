@@ -32,12 +32,15 @@ function Index(props) {
   const useStyles = makeStyles(styles);
   const classes = useStyles();
 //   console.log(props.user.cardTransaction)
-  const cardOptions = {};
-  props.brand.map((option) => {
-    const { id, name } = option;
-    cardOptions[id] = name;
-  });
-
+let cardOptions = {};
+let cardName = {}
+props.brand.map((option) => {
+  const { id, name, cardTypes } = option;
+  cardTypes.map((card) => { return (
+    cardName[card.id] = card.name,
+    cardOptions[card.id] = option.name
+    )}) 
+});
   return (
     <div>
       <GridContainer>
@@ -82,9 +85,15 @@ function Index(props) {
             <MaterialTable
                 columns={[
                   {
-                    title: "Card",
+                    title: "Brand",
                     field: "card_type_id",
                     lookup: cardOptions,
+                    editable: "never",
+                  },
+                  {
+                    title: "Type",
+                    field: "card_type_id",
+                    lookup: cardName,
                     editable: "never",
                   },
 
@@ -156,7 +165,7 @@ export async function getServerSideProps(context){
     },
   })
   const user = await userData.data.message
-  const fetchBrand = await Server.get("/user/card", {
+  const fetchBrand = await Server.get("/user/all_card", {
     headers: {
       Authorization: `Bearer ${token}`,
     },
