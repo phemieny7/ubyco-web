@@ -53,12 +53,12 @@ const dashboardRoutes = [
     layout: "/user",
   },
   
-  {
-    path: "/#",
-    name: "Message",
-    icon: BiMessageAltDetail,
-    layout: "/user",
-  },
+  // {
+  //   path: "/#",
+  //   name: "Message",
+  //   icon: BiMessageAltDetail,
+  //   layout: "/user",
+  // },
   {
     path: "/withdraw",
     name: "Withdraw",
@@ -71,12 +71,12 @@ const dashboardRoutes = [
     icon: AiFillBank,
     layout: "/user",
   },
-  {
-    path: "/#",
-    name: "Notifications",
-    icon: Notifications,
-    layout: "/user",
-  },
+  // {
+  //   path: "/#",
+  //   name: "Notifications",
+  //   icon: Notifications,
+  //   layout: "/user",
+  // },
 ];
 
 export default dashboardRoutes;
