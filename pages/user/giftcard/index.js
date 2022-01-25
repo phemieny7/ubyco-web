@@ -222,7 +222,7 @@ function Giftcard(props) {
     if (props.cardTransactions[i].status === 1) {
       pendingTradeCount.push(props.cardTransactions[i]);
     }
-    if (props.cardTransactions[i].status === 2) {
+    if (props.cardTransactions[i].status === 2 || props.cardTransactions[i].status === 3) {
       failedTradeCount.push(props.cardTransactions[i]);
     }
   }
