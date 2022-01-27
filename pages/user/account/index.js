@@ -146,7 +146,9 @@ function Account(props) {
   const deleteAccount = async(id) => {
     toast.info("Deleting account...");
     const res = await fetch("/api/user/delete-account", {
-      body: JSON.stringify(id),
+      body: JSON.stringify({
+        id
+      }),
       headers: {
         "Content-Type": "application/json",
       },
@@ -159,6 +161,7 @@ function Account(props) {
       toast.error("Error deleting account");
     }
   }
+
 
   // const deleteAccount = (id) => {
   //   Server.delete(`/user/delete-account/${id}`)

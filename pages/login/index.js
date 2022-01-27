@@ -13,7 +13,7 @@ function Login() {
   const [password, setPassword] = useState("");
   const [isLoginStarted, setIsLoginStarted] = useState(false);
   const [loginError, setLoginError] = useState("");
-  const router = useRouter();
+  // const router = useRouter();
 
 
   const handleLogin = (e) => {
@@ -30,6 +30,7 @@ function Login() {
         toast.success("Login Successful 👌");
       })
       .catch((error)=>{
+        console.log(error)
         setLoginError(error.message);
         toast.danger("Login Failed");
       });
@@ -168,64 +169,21 @@ function Login() {
 //     };
 //   }
 // }
-export const getServerSideProps = async (context) => {
-    try {
-         const session = await getSession(context);
-        const token = session?.accessToken;    
-        
-        if (!session) throw new Error('Missing auth token cookie')
-
-        const user = await Server.get("/", {
-                headers: {
-                  Authorization: `Bearer ${token}`,
-                },
-              });
-        if(user.status == 200){
-            return {
-                props: {
-                    redirect: {
-                        destination: "/web",
-                        statusCode: 302,
-                      },
-                }
-            }
-        }
-    } catch (err) {
-        // res.writeHead(307, { Location: '/login' }).end()
-        return {
-            props: {
-            redirect: {
-                destination: '/login',
-                statusCode: 307
-            }
-        }
-    }
-    }
+export async function getServerSideProps(context) {
+  const session = await getSession(context);
+  if (session) {
+    return {
+      props: {},
+      redirect: {
+        destination: "/web",
+        permanent: false,
+      },
+    };
+  }
+  return {
+    props: {
+    session
+    },
+  };
 }
-//   export const getServerSideProps = async (context) => {
-//     try {
-//         const session = await getSession(context);
-
-//         if (!session) throw new Error('Missing auth token')
-
-//         // await Server.get('/', { headers: { Authorization: `Bearer ${token}`} })
-
-//         return{
-//             props: {},
-//             redirect: {
-//               destination: '/web',
-//               permanent: false
-//             }
-//           };
-//     } catch (err) {
-//         // Handle error
-
-//         return {
-//             redirect: {
-//                 destination: '',
-//                 statusCode: 307
-//             }
-//         }
-//     }
-// }
 export default Login;
