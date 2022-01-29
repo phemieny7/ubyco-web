@@ -137,12 +137,11 @@ function Account(props) {
       method: "POST",
     });
     if (res.status < 300) {
-      toast.success("Account information updated successfully!");
-      // refreshData();
+      toast.success("Account information updated successfully!", {timeOut: 5000});
+      refreshData();
     } else {
       toast.error("Failed to update account information!");
     }
-    refreshData();
   };
 
   const deleteAccount = async(id) => {
