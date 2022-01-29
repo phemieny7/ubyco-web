@@ -142,33 +142,6 @@ function Login() {
     </div>
   );
 }
-
-// export async function getServerSideProps(context) {
-//   const session = await getSession(context);
-//   const token = session?.accessToken;
-//   const userData = await Server.get("/", {
-//     headers: {
-//       Authorization: `Bearer ${token}`,
-//     },
-//   });
-//   try {
-//     if (userData.data.status === "success") {
-//         return {
-//             redirect: {
-//               destination: "/web",
-//               statusCode: 302,
-//             },
-//           };
-//     }
-//   } catch (error) {
-//     return {
-//       redirect: {
-//         destination: "",
-//         statusCode: 307,
-//       },
-//     };
-//   }
-// }
 export async function getServerSideProps(context) {
   const session = await getSession(context);
   if (session) {

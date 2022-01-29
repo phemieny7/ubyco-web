@@ -109,6 +109,7 @@ function Account(props) {
   const [bankCode, setBankCode] = React.useState("");
   const [accountNumber, setAccountNumber] = React.useState("");
   const [accountName, setAccountName] = React.useState("");
+  const [submit, setSubmit] = React.useState(true)
 
   const router = useRouter();
 
@@ -135,12 +136,13 @@ function Account(props) {
       },
       method: "POST",
     });
-    if (res.status === 200) {
+    if (res.status < 300) {
       toast.success("Account information updated successfully!");
-      refreshData();
+      // refreshData();
     } else {
       toast.error("Failed to update account information!");
     }
+    refreshData();
   };
 
   const deleteAccount = async(id) => {
@@ -154,7 +156,7 @@ function Account(props) {
       },
       method: "POST",
     });
-    if (res.status === 200) {
+    if (res.status < 300) {
       toast.success("Account deleted");
       refreshData();
     } else {
@@ -189,12 +191,17 @@ function Account(props) {
         },
         method: "POST",
       });
-      if (res.status === 200){
-        const data = await res.json();
+      if (res.status < 300){
+      toast.success("Account Found");
+      const data = await res.json();
         setAccountName(data.data);
+        setSubmit(false)
       }else {
         toast.error("Account number not found");
-        setAccountName("Cannot find account");
+        setAccountName("")
+        setAccountNumber("")
+        setBank("")
+        setBankCode("")
       }
     }
   };
@@ -306,7 +313,7 @@ function Account(props) {
                 </GridContainer>
               </CardBody>
               <CardFooter>
-                <Button color="danger"  type="submit">Add Account</Button>
+                <Button color="danger"  type="submit" disabled={submit}>Add Account</Button>
               </CardFooter>
             </form>
           </Card>

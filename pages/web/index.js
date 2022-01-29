@@ -348,7 +348,7 @@ export default function Index(props) {
                           <textarea className="form-control" placeholder="Your Message"></textarea>
                         </div>
                       </div>
-                        <input type="submit" name="submit" id="submit" className="primary-btn blue-vibrant" value="Send Message"/>
+                        <input type="submit" name="submit" id="submit" className="primary-btn red t-white" value="Send Message"/>
                           <div className="help-block with-errors"></div>
                         </div>
                     </div>
@@ -359,7 +359,7 @@ export default function Index(props) {
           </div>
         </div>
 
-        <div className="section dark back three">
+        <div className="section dark back one">
           <div className="container" data-aos="fade-up" data-aos-anchor-placement="center-bottom">
             <h1 className="t-white center">Join the community.</h1>
             <h5 className="t-grey center">#appUbyco</h5>

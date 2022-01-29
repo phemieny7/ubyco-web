@@ -6,7 +6,7 @@ export default async (req, res) => {
   const token = session?.accessToken;
   const { id }= req.body
   console.log(id)
- 
+ try {
   const result = await Server.post(
     "/user/delete-account",
     {
@@ -18,6 +18,11 @@ export default async (req, res) => {
       },
     }
   );
-  res.status(200).json({ data: result});
+  res.status(200).json({ data: result.status});
+ } catch (error) {
+   console.log(error)
+  res.status(500).json({ error: error.message });
+ }
+  
 };
  

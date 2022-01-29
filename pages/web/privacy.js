@@ -52,7 +52,7 @@ export default function Privacy() {
                 </li>
 
                 <li className="nav-item mx-2 active">
-                  <a className="nav-link" href="#rate-calculator">
+                  <a className="nav-link" href="web#rate-calculator">
                     Rate Calculator
                   </a>
                 </li>

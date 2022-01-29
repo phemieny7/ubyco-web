@@ -106,38 +106,58 @@ function Withdraw(props) {
   const classes = useStyles();
   const [accountId, setAccountId] = React.useState("");
   const [amount, setAmount] = React.useState("");
-
+  const [submit, setSubmit] = React.useState(true);
 
   const handleChange = (event) => {
     setAccountId(event.target.value);
   };
   const priceChange = (e) => {
-      if(props.userData.userAmount === null || props.userData.userAmount.amount === 0){
-        alert(`You don't have enough amount`)
-      }
+    if (
+      props.userData.userAmount == null ||
+      props.userData.userAmount.amount == 0
+    ) {
+      alert(`You don't have enough amount`)
+    }
+  };
+
+  const formSubmit = async() => {
+    toast.info("Updating account information...");
+    const data = {bank, bankCode, accountName, accountNumber};
+    const res = await fetch("/api/user/add-account", {
+      body: JSON.stringify(data),
+      headers: {
+        "Content-Type": "application/json",
+      },
+      method: "POST",
+    });
+    if (res.status < 300) {
+      toast.success("Account information updated successfully!");
+      // refreshData();
+    } else {
+      toast.error("Failed to update account information!");
+    }
+    refreshData();
+  };
+
+  let successWithdrawal = [];
+  let pendingWithdrawal = [];
+  let failedWithdrawal = [];
+
+  for (let i = 0; i < props.userData.userWithdrawal.length; i++) {
+    if (props.userData.userWithdrawal[i].completed === true) {
+      successWithdrawal.push(props.userData.userWithdrawal[i]);
+    }
+    if (props.userData.userWithdrawal[i].status === 1) {
+      pendingWithdrawal.push(props.userData.userWithdrawal[i]);
+    }
+    if (props.userData.userWithdrawal[i].status === 2) {
+      failedWithdrawal.push(props.userData.userWithdrawal[i]);
+    }
   }
-
-  let successWithdrawal = []
-  let pendingWithdrawal = []
-  let failedWithdrawal = []
-
-  for(let i = 0; i < props.userData.userWithdrawal.length; i++){
-    if(props.userData.userWithdrawal[i].completed === true){
-      successWithdrawal.push(props.userData.userWithdrawal[i])
-    }
-    if(props.userData.userWithdrawal[i].status === 1){
-      pendingWithdrawal.push(props.userData.userWithdrawal[i])
-    }
-    if(props.userData.userWithdrawal[i].status === 2){
-      failedWithdrawal.push(props.userData.userWithdrawal[i])
-    }
-  }
-
-
 
   return (
     <div>
-     <GridContainer>
+      <GridContainer>
         <GridItem xs={12} sm={6} md={4}>
           <Card>
             <CardHeader color="success" stats icon>
@@ -151,46 +171,38 @@ function Withdraw(props) {
             </CardHeader>
             <CardFooter stats>
               <div className={classes.stats}>
-                <Success>
-                  Successful
-                </Success>
+                <Success>Successful</Success>
               </div>
             </CardFooter>
           </Card>
         </GridItem>
         <GridItem xs={12} sm={6} md={4}>
-        <Card>
+          <Card>
             <CardHeader color="rose" stats icon>
               <CardIcon color="rose">
                 <BsBank />
               </CardIcon>
-              <h3 className={classes.cardTitle}>
-                {pendingWithdrawal.length}
-              </h3>
+              <h3 className={classes.cardTitle}>{pendingWithdrawal.length}</h3>
             </CardHeader>
             <CardFooter stats>
               <div className={classes.stats}>
-                <Danger>
-                  Pending
-                </Danger>
+                <Danger>Pending</Danger>
                 <a href="#pablo" onClick={(e) => e.preventDefault()}></a>
               </div>
             </CardFooter>
           </Card>
         </GridItem>
         <GridItem xs={12} sm={6} md={4}>
-        <Card>
+          <Card>
             <CardHeader color="dark" stats icon>
               <CardIcon color="dark">
                 <BsBank />
               </CardIcon>
-              <h3 className={classes.cardTitle}>
-                {failedWithdrawal.length}
-              </h3>
+              <h3 className={classes.cardTitle}>{failedWithdrawal.length}</h3>
             </CardHeader>
             <CardFooter stats>
               <div className={classes.stats}>
-                  Failed
+                Failed
                 <a href="#pablo" onClick={(e) => e.preventDefault()}></a>
               </div>
             </CardFooter>
@@ -212,50 +224,56 @@ function Withdraw(props) {
               data-toggle="validator"
               encType="multipart/form-data"
             >
-            <CardBody>
-              <GridContainer>
-                <GridItem xs={12} sm={12} md={12} className={classes.center}>
-                  <div>
-                    <h4 className={classes.boldText}>
-                      Available Balance (Naira)
-                    </h4>
-                    <h5 className={classes.bolderText}>{
-                        props.userData.userAmount !== null ? props.userData.userAmount.amount : 0
-                    }</h5>
-                  </div>
-                </GridItem>
-              </GridContainer>
-              <GridContainer>
-                <GridItem xs={12} sm={12} md={6}>
-                  <FormControl className={classes.formControl}>
-                    <InputLabel
-                      id="demo-simple-select-label"
-                      className={classes.formTitle}
-                    >
-                      Select Account{" "}
-                    </InputLabel>
-                    <Select
-                      labelId="demo-simple-select-label"
-                      id="demo-simple-select"
-                      value={accountId}
-                      onChange={handleChange}
-                    >
-                      {props.userData.userAccounts.length > 0
-                        ? props.userData.userAccounts.map((account) => (
+              <CardBody>
+                <GridContainer>
+                  <GridItem xs={12} sm={12} md={12} className={classes.center}>
+                    <div>
+                      <h4 className={classes.boldText}>
+                        Available Balance (Naira)
+                      </h4>
+                      <h5 className={classes.bolderText}>
+                        {props.userData.userAmount !== null
+                          ? props.userData.userAmount.amount
+                          : 0}
+                      </h5>
+                    </div>
+                  </GridItem>
+                </GridContainer>
+                <GridContainer>
+                  <GridItem xs={12} sm={12} md={6}>
+                    <FormControl className={classes.formControl}>
+                      <InputLabel
+                        id="demo-simple-select-label"
+                        className={classes.formTitle}
+                      >
+                        Select Account{" "}
+                      </InputLabel>
+                      <Select
+                        labelId="demo-simple-select-label"
+                        id="demo-simple-select"
+                        value={accountId}
+                        onChange={handleChange}
+                      >
+                        {props.userData.userAccounts.length > 0 ? (
+                          props.userData.userAccounts.map((account) => (
                             <MenuItem value={account.id} key={account.id}>
-                              <p>{account.account_name} {account.account_number} {account.bank}</p>
+                              <p>
+                                {account.account_name} {account.account_number}{" "}
+                                {account.bank}
+                              </p>
                             </MenuItem>
                           ))
-                        : (<MenuItem><p>
-                            Add an Account
-                            </p>
-                          </MenuItem>)}
-                    </Select>
-                  </FormControl>
-                </GridItem>
-              </GridContainer>
-              <GridContainer>
-                <GridItem xs={12} sm={12} md={6}>
+                        ) : (
+                          <MenuItem>
+                            <p>Add an Account</p>
+                          </MenuItem>
+                        )}
+                      </Select>
+                    </FormControl>
+                  </GridItem>
+                </GridContainer>
+                <GridContainer>
+                  <GridItem xs={12} sm={12} md={6}>
                     <CustomInput
                       labelText="Amount"
                       id="amount"
@@ -269,13 +287,15 @@ function Withdraw(props) {
                         required: true,
                       }}
                     />
-                </GridItem>
-              </GridContainer>
-            </CardBody>
-            <CardFooter>
-              <Button color="danger">Request Withdrawal</Button>
-            </CardFooter>
-        </form>
+                  </GridItem>
+                </GridContainer>
+              </CardBody>
+              <CardFooter>
+                <Button color="danger" type="submit" disable={submit}>
+                  Request Withdrawal
+                </Button>
+              </CardFooter>
+            </form>
           </Card>
         </GridItem>
       </GridContainer>
@@ -303,8 +323,6 @@ export async function getServerSideProps(context) {
     },
   });
   const userData = user.data.message;
-
-  console.log(userData);
 
   return {
     props: {
