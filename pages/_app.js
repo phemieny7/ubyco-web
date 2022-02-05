@@ -62,6 +62,14 @@ export default class MyApp extends App {
             <Component {...pageProps} />
           </Layout>
         </Provider>
+        <a
+        href="https://wa.me/2348108337160"
+        class="whatsapp_float"
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        <i class="fa fa-whatsapp whatsapp-icon"></i>
+      </a>
       </React.Fragment>
     );
   }
