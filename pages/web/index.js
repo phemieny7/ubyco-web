@@ -364,7 +364,7 @@ export default function Index(props) {
             <h1 className="t-white center">Join the community.</h1>
             <h5 className="t-grey center">#appUbyco</h5>
             <div className="cta-container center">
-              <a href="#" className="primary-line-btn b-pink t-pink"><i className="fab fa-instagram"></i>Follow us on Instagram</a>
+              <a href="https://www.instagram.com/ubycohubng" className="primary-line-btn b-pink t-pink"><i className="fab fa-instagram"></i>Follow us on Instagram</a>
               <a href="#" className="primary-line-btn b-blue-vibrant t-red"><i className="fab fa-facebook"></i>Follow us on Facebook</a>
             </div>
           </div>
