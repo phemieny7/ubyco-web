@@ -320,7 +320,7 @@ export async function getServerSideProps(context) {
   });
  
   const user = await userData.data.message;
-  console.log(user)
+  // console.log(user)
 
   const fetchBrand = await Server.get("/user/coin", {
     headers: {

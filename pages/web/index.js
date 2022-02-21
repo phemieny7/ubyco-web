@@ -152,7 +152,7 @@ export default function Index(props) {
                 <h5>We offer the best and easiest way to trade your giftcards and crypto for cash.</h5>
                 <div className="cta-container">
                   <a href="#" className="primary-btn red t-white"><i className="fab fa-apple"></i>Get it on Apple Store</a>
-                  <a href="#" className="primary-line-btn b-blue-vibrant t-red"><i className="fab fa-google-play"></i>Get it on Play Store</a>
+                  <a href="https://play.google.com/store/apps/details?id=com.ubycohub.ubycoapps" className="primary-line-btn b-blue-vibrant t-red"><i className="fab fa-google-play"></i>Get it on Play Store</a>
                 </div>
               </div>
               <div className="col-lg-6" data-aos="fade-left" data-aos-anchor-placement="center-bottom">
@@ -218,7 +218,7 @@ export default function Index(props) {
                 <h5>We offer both in-app and web app(next update) transaction for our users this allows a flow of purpose for our users.
                   This 2 minute video can help.</h5>
                 <div className="cta-container">
-                  <a href="#" className="primary-line-btn  b-red t-red"><i className="far fa-file-alt"></i>Watch Video</a>
+                  <a href="https://youtube.com/watch?v=4jTPoRKgpRA" className="primary-line-btn  b-red t-red"><i className="far fa-file-alt"></i>Watch Video</a>
                 </div>
               </div>
             </div>
