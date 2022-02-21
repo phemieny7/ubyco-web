@@ -23,6 +23,8 @@ import avatar from "assets/img/faces/user.png";
 
 import styles from "assets/jss/nextjs-material-dashboard/views/dashboardStyle.js";
 import Server from "../../api/lib/Server";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 
 
@@ -34,7 +36,6 @@ function Id(props) {
   const data = props.card.cards;
   const obj = JSON.parse(data)
   const image = Object.values(obj);
-  console.log(image)
   
   const Router = useRouter();
   const imageLoader = ({ src, width, quality }) => {
@@ -52,7 +53,12 @@ function Id(props) {
       },
       method: "PUT",
     });
-    Router.reload(window.location.pathname);
+    if (res.status == 200) {
+      toast.success("Transaction updated");
+    } else {
+      toast.error("Error");
+    }
+    window.location.reload();
   };
 
   const confirmPayment = async () => {
@@ -67,10 +73,17 @@ function Id(props) {
       },
       method: "PUT",
     });
+    if (res.status == 200) {
+      toast.success("Payment Confirmed");
+    } else {
+      toast.error("Error");
+    }
+    window.location.reload();
   };
 
   return (
     <>
+      <ToastContainer />
       <GridContainer>
         <GridItem xs={12} sm={12} md={8}>
           <Card>

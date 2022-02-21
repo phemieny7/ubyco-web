@@ -5,6 +5,7 @@ import PropTypes from "prop-types";
 import { makeStyles } from "@material-ui/core/styles";
 import ListItem from "@material-ui/core/ListItem";
 import List from "@material-ui/core/List";
+import Link from "next/link"
 // core components
 import styles from "assets/jss/nextjs-material-dashboard/components/footerStyle.js";
 
@@ -17,24 +18,18 @@ export default function Footer(props) {
         <div className={classes.left}>
           <List className={classes.list}>
             <ListItem className={classes.inlineBlock}>
-              <a href="#home" className={classes.block}>
+              <Link href="/web">
+              <a className={classes.block}>
                 Home
               </a>
+              </Link>
             </ListItem>
             <ListItem className={classes.inlineBlock}>
-              <a href="#company" className={classes.block}>
-                Company
+              <Link href="/privacy">
+              <a className={classes.block}>
+                Privacy Policy
               </a>
-            </ListItem>
-            <ListItem className={classes.inlineBlock}>
-              <a href="#portfolio" className={classes.block}>
-                Portfolio
-              </a>
-            </ListItem>
-            <ListItem className={classes.inlineBlock}>
-              <a href="#blog" className={classes.block}>
-                Blog
-              </a>
+              </Link>
             </ListItem>
           </List>
         </div>
@@ -48,7 +43,6 @@ export default function Footer(props) {
             >
              UbycoHub
             </a>
-            , made with love for a better w
           </span>
         </p>
       </div>

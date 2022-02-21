@@ -112,6 +112,9 @@ function Withdraw(props) {
     setAccountId(event.target.value);
   };
   const priceChange = (e) => {
+    e.preventDefault();
+    setAmount(e.target.value);
+
     if (
       props.userData.userAmount == null ||
       props.userData.userAmount.amount == 0

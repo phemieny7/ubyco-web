@@ -30,7 +30,6 @@ function Login() {
         toast.success("Login Successful 👌");
       })
       .catch((error)=>{
-        console.log(error)
         setLoginError(error.message);
         toast.danger("Login Failed");
       });
