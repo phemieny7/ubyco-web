@@ -43,8 +43,6 @@ import Danger from "components/Typography/Danger.js";
 // import Button from "@material-ui/core/Button";
 import Button from "components/CustomButtons/Button.js";
 import { getSession } from "next-auth/client";
-import { ToastContainer, toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
 
 const styles = {
   cardCategoryWhite: {
@@ -103,136 +101,26 @@ const styles = {
   },
 };
 
-function Withdraw(props) {
+function Profile(props) {
   const useStyles = makeStyles(styles);
   const classes = useStyles();
-  const [accountId, setAccountId] = React.useState("");
-  const [amount, setAmount] = React.useState("");
+  const [email, setEmail] = React.useState(props.userData.email);
+  const [name, setName] = React.useState(props.userData.fullname);
+  const [phone, setPhone] = React.useState(props.userData.phone);
   const [submit, setSubmit] = React.useState(true);
-
-  const handleChange = (event) => {
-    setAccountId(event.target.value);
+  const imageLoader = ({ src, width, quality }) => {
+    return `https://res.cloudinary.com/ubycohub/${src}.jpg?w=${width}&q=${quality || 75}`;
   };
-  const priceChange = (e) => {
-    e.preventDefault();
-    setAmount(e.target.value);
-
-    if (
-      props.userData.userAmount == null ||
-      props.userData.userAmount.amount == 0
-    ) {
-      toast.info(`You don't have enough amount`)
-    }
-
-    if (Number(e.target.value) > Number(props.userData.userAmount.amount)) {
-      setSubmit(false);
-      toast.info(`You don't have enough amount`)
-      setAmount("");
-    }
-  };
-
-  const formSubmit = async() => {
-    toast.info("Initiating withdrawal...");
-    // const data = {accountId, amount};
-    const res = await fetch("/api/user/request-withdrawal", {
-      body: JSON.stringify({
-        accountId,
-        amount,
-      }),
-      headers: {
-        "Content-Type": "application/json",
-      },
-      method: "POST",
-    });
-    if (res.status < 300) {
-      setTimeout(() => {
-      toast.success("Account information updated successfully!");
-      }, 5000)
-      refreshData();
-    } else {
-      toast.error("Failed to update account information!");
-    }
-  };
-
-  let successWithdrawal = [];
-  let pendingWithdrawal = [];
-  let failedWithdrawal = [];
-
-  for (let i = 0; i < props.userData.userWithdrawal.length; i++) {
-    if (props.userData.userWithdrawal[i].completed === true) {
-      successWithdrawal.push(props.userData.userWithdrawal[i]);
-    }
-    if (props.userData.userWithdrawal[i].status === 1) {
-      pendingWithdrawal.push(props.userData.userWithdrawal[i]);
-    }
-    if (props.userData.userWithdrawal[i].status === 2) {
-      failedWithdrawal.push(props.userData.userWithdrawal[i]);
-    }
-  }
 
   return (
     <div>
-      <ToastContainer />
       <GridContainer>
-        <GridItem xs={12} sm={6} md={4}>
-          <Card>
-            <CardHeader color="success" stats icon>
-              <CardIcon color="success">
-                <BsBank />
-              </CardIcon>
-              {/* <p className={classes.cardCategory}>Success</p> */}
-              <h3 className={classes.cardTitle}>
-                {successWithdrawal.length > 0 ? successWithdrawal.length : 0}
-              </h3>
-            </CardHeader>
-            <CardFooter stats>
-              <div className={classes.stats}>
-                <Success>Successful</Success>
-              </div>
-            </CardFooter>
-          </Card>
-        </GridItem>
-        <GridItem xs={12} sm={6} md={4}>
-          <Card>
-            <CardHeader color="rose" stats icon>
-              <CardIcon color="rose">
-                <BsBank />
-              </CardIcon>
-              <h3 className={classes.cardTitle}>{pendingWithdrawal.length}</h3>
-            </CardHeader>
-            <CardFooter stats>
-              <div className={classes.stats}>
-                <Danger>Pending</Danger>
-                <a href="#pablo" onClick={(e) => e.preventDefault()}></a>
-              </div>
-            </CardFooter>
-          </Card>
-        </GridItem>
-        <GridItem xs={12} sm={6} md={4}>
-          <Card>
-            <CardHeader color="dark" stats icon>
-              <CardIcon color="dark">
-                <BsBank />
-              </CardIcon>
-              <h3 className={classes.cardTitle}>{failedWithdrawal.length}</h3>
-            </CardHeader>
-            <CardFooter stats>
-              <div className={classes.stats}>
-                Failed
-                <a href="#pablo" onClick={(e) => e.preventDefault()}></a>
-              </div>
-            </CardFooter>
-          </Card>
-        </GridItem>
-      </GridContainer>
-
-      <GridContainer>
-        <GridItem xs={12} sm={12} md={12}>
+        <GridItem xs={12} sm={12} md={8}>
           <Card>
             <CardHeader color="danger">
               <h4 className={classes.cardTitleWhite}>Withdrawal</h4>
               <p className={classes.cardCategoryWhite}>
-                Kindly Enter your Details
+                Kindly Update your Details
               </p>
             </CardHeader>
             <form
@@ -314,11 +202,46 @@ function Withdraw(props) {
             </form>
           </Card>
         </GridItem>
+
+        <GridItem xs={12} sm={12} md={4}>
+        <Card profile>
+            <CardAvatar profile>
+              <a href="#pablo" onClick={(e) => e.preventDefault()}>
+                 {
+                  props.user.picture !== null ? 
+                  <Image
+                  loader={imageLoader}
+                  src={props.user.picture}
+                  width={400}
+                  height={700}
+                /> : <img src={avatar} alt="..." />
+                }
+              </a>
+            </CardAvatar>
+            <CardBody profile>
+              <h4 className={classes.cardCategory}>Balance: N{props.user.userAmount.amount}</h4>
+              <h4 className={classes.cardTitle}>{props.user.fullname}</h4>
+              <p className={classes.description}>
+               { props.user.userAccounts.length > 0 ?
+                  props.user.userAccounts.map((x) => [
+                    <p>Bank: {x.bank} <br/> Account Number : {x.account_number}</p>
+                  ] ) :
+                  'User Has No Account Yet'
+                }
+              </p>
+              
+              {
+                props.user.banned == true ? <Button color="primary" round onClick={unbanned}>Unbanned user</Button> : null
+              }
+           
+            </CardBody>
+          </Card>
+        </GridItem>
       </GridContainer>
     </div>
   );
 }
-Withdraw.layout = User;
+Profile.layout = User;
 
 export async function getServerSideProps(context) {
   const session = await getSession(context);
