@@ -5,7 +5,7 @@ import { useRouter } from 'next/router'
 import { signIn, useSession } from 'next-auth/client'
 
 import { ToastContainer, toast } from "react-toastify";
-// import "react-toastify/dist/ReactToastify.css";
+import "react-toastify/dist/ReactToastify.css";
 import Logo from "../../assets/img/logo.png";
 // import styles from '../../assets/css/login.module.css'
 
