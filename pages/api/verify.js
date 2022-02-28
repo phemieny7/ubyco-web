@@ -13,7 +13,7 @@ import Server from "./lib/Server";
 export default async function(req, res) {
     const { code } = req.body;
     return new Promise((resolve, reject) => {
-        Server.post("/verify", {
+        Server.put("/verify", {
             verification_code: code,
           })
         .then(response => {

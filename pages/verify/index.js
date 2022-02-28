@@ -23,7 +23,8 @@ export default function Reset () {
   
  
 
-  const formSubmit = async() => {
+  const formSubmit = async(e) => {
+    e.preventDefault();
     toast.info("verifying user");
     // const data = {accountId, amount};
     const res = await fetch("/api/verify", {
@@ -35,13 +36,13 @@ export default function Reset () {
       },
       method: "POST",
     });
-    if (res.status < 300) {
+    if (res.status == 200) {
       setTimeout(() => {
       toast.success("User account created successfull");
       }, 5000)
-      router.redirect("login")
+      router.push("/login");
     } else {
-      toast.error("Failed to update account information!");
+      toast.error("Failed to verifyinformation!");
     }
   };
 
