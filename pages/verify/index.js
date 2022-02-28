@@ -23,25 +23,27 @@ export default function Reset () {
   
  
 
-  const handleLogin = (e) => {
-    e.preventDefault()
-    setLoginError('')
-    setIsLoginStarted(true)
-    signIn('credentials',
-      {
-        email,
-        password,
-        callbackUrl: `${window.location.origin}/web`
-      }
-    ).then((res) => {
-        console.log('form::res -> ', res);
-        // router.back();
-      })
-      .catch((e) => {
-        console.log('form::e -> ', e);
-        setError('login error');
-      });
-  }
+  const formSubmit = async() => {
+    toast.info("verifying user");
+    // const data = {accountId, amount};
+    const res = await fetch("/api/verify", {
+      body: JSON.stringify({
+       code
+      }),
+      headers: {
+        "Content-Type": "application/json",
+      },
+      method: "POST",
+    });
+    if (res.status < 300) {
+      setTimeout(() => {
+      toast.success("User account created successfull");
+      }, 5000)
+      router.redirect("login")
+    } else {
+      toast.error("Failed to update account information!");
+    }
+  };
 
 
   return (
@@ -73,7 +75,7 @@ export default function Reset () {
                   <div className="contact-form">
                     <form
                       id="contact-form"
-                      onSubmit={(e) => handleLogin(e)}
+                      onSubmit={(e) => formSubmit(e)}
                       data-toggle="validator"
                     >
                       <div className="row">
@@ -102,7 +104,6 @@ export default function Reset () {
                               type="submit"
                               disabled={isLoginStarted}
                               className="btn_1 sun"
-                              
                             >
                              Verify Now 
                             </button>
