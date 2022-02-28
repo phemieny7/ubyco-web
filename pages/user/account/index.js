@@ -144,24 +144,24 @@ function Account(props) {
     }
   };
 
-  const deleteAccount = async(id) => {
-    toast.info("Deleting account...");
-    const res = await fetch("/api/user/delete-account", {
-      body: JSON.stringify({
-        id
-      }),
-      headers: {
-        "Content-Type": "application/json",
-      },
-      method: "POST",
-    });
-    if (res.status < 300) {
-      toast.success("Account deleted");
-      refreshData();
-    } else {
-      toast.error("Error deleting account");
-    }
-  }
+  // const deleteAccount = async(id) => {
+  //   toast.info("Deleting account...");
+  //   const res = await fetch("/api/user/delete-account", {
+  //     body: JSON.stringify({
+  //       id
+  //     }),
+  //     headers: {
+  //       "Content-Type": "application/json",
+  //     },
+  //     method: "POST",
+  //   });
+  //   if (res.status < 300) {
+  //     toast.success("Account deleted");
+  //     refreshData();
+  //   } else {
+  //     toast.error("Error deleting account");
+  //   }
+  // }
 
 
   // const deleteAccount = (id) => {
@@ -224,9 +224,9 @@ function Account(props) {
                       {account.bank}
                     </p>
                   </CardHeader>
-                  <CardFooter>
+                  {/* <CardFooter>
                     <Button color="danger" onClick={()=>deleteAccount(account.id)}>Remove Account</Button>
-                  </CardFooter>
+                  </CardFooter> */}
                 </Card>
               </GridItem>
             ))
