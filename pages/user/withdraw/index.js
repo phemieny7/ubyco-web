@@ -146,9 +146,9 @@ function Withdraw(props) {
     });
     if (res.status < 300) {
       setTimeout(() => {
-      toast.success("Account information updated successfully!");
+      toast.success("Withdraw successfully initiated !!!");
       }, 5000)
-      refreshData();
+      // refreshData();
     } else {
       toast.error("Failed to update account information!");
     }

@@ -76,12 +76,12 @@ const dashboardRoutes = [
   //   icon: FiMessageCircle,
   //   layout: "/admin",
   // },
-  {
-    path: "/table-list",
-    name: "Setting",
-    icon: FiSettings,
-    layout: "/admin",
-  },
+  // {
+  //   path: "/table-list",
+  //   name: "Setting",
+  //   icon: FiSettings,
+  //   layout: "/admin",
+  // },
   // {
   //   path: "/newsletter",
   //   name: "News Letter",
@@ -95,13 +95,12 @@ const dashboardRoutes = [
 
   //   layout: "/admin",
   // },
-   {
-    path: "/notifications",
-    name: "Notifications",
-    icon: Notifications,
-
-    layout: "/admin",
-  },
+  //  {
+  //   path: "/notifications",
+  //   name: "Notifications",
+  //   icon: Notifications,
+  //   layout: "/admin",
+  // },
 ];
 
 export default dashboardRoutes;

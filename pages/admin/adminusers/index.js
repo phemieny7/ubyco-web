@@ -17,14 +17,16 @@ import CardBody from "components/Card/CardBody.js";
 import CardFooter from "components/Card/CardFooter.js";
 import Server from "../../api/lib/Server";
 import { getSession } from "next-auth/client";
-
 import styles from "assets/jss/nextjs-material-dashboard/views/dashboardStyle.js";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 function Users(props) {
   const useStyles = makeStyles(styles);
   const [data, setData] = React.useState(props.user);
   const classes = useStyles();
 
   const updateAdmin = async (id, email, phone, fullname, banned) => {
+    toast.info("Updating User status")
     const data = {id, email, phone, fullname, banned}
     const res = await fetch("/api/update-admin", {
       body: JSON.stringify(data),
@@ -36,6 +38,7 @@ function Users(props) {
   };
 
   const createAdmin = async (email, phone, fullname) => {
+    toast.info("Creating new user")
     const data = {email, phone, fullname}
     const res = await fetch("/api/create-admin", {
       body: JSON.stringify(data),
@@ -48,6 +51,7 @@ function Users(props) {
 
   
   const deleteAdmin = async (id) => {
+    toast.info("Deleting Admin")
     const res = await fetch("/api/delete-admin", {
       body: JSON.stringify({
         id
@@ -57,11 +61,12 @@ function Users(props) {
       },
       method: "POST",
     });
-    return res.status();
+    // return res.status();
   };
 
   return (
     <GridContainer>
+      <ToastContainer/>
       <GridItem xs={12} sm={12} md={12}>
         <Card>
           <CardHeader color="danger">

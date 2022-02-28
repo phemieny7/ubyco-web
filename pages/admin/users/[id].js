@@ -49,7 +49,10 @@ function UserProfile(props) {
   const imageLoader = ({ src, width, quality }) => {
     return `https://res.cloudinary.com/ubycohub/${src}.jpg?w=${width}&q=${quality || 75}`;
   };
-
+  const router = useRouter()
+  const refreshData = () => {
+    router.replace(router.asPath);
+  }
 
   const useStyles = makeStyles(styles);
   const classes = useStyles();
@@ -64,6 +67,7 @@ function UserProfile(props) {
       },
       method: 'PUT'
     })
+    refreshData()
     // Router.reload(window.location.pathname);
   }
 

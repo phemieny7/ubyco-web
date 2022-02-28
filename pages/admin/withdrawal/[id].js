@@ -21,17 +21,27 @@ import Table from "components/Table/Table.js";
 import moment from 'moment'
 
 import { getSession } from "next-auth/client";
+// import {router} from "next/router";
 
 import styles from "assets/jss/nextjs-material-dashboard/views/dashboardStyle.js";
 
 import Server from "./../../api/lib/Server";
 import { useRouter } from "next/router";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+
 function WithDrawal(props) {
   const [data, setData] = useState(props.withdrawal);
   const useStyles = makeStyles(styles);
   const Router = useRouter();
   const classes = useStyles();
+
+  const refreshData = () => {
+    Router.replace(router.asPath);
+  }
+
   const initiateWithdrawal = async () => {
+    toast.info("Initiating Withdrawal")
     const res = await fetch("/api/initiate-withdrawal", {
       body: JSON.stringify({
         id: data.id,
@@ -41,8 +51,11 @@ function WithDrawal(props) {
       },
       method: "PUT",
     });
+    refreshData()
+
   };
   const verifyWithdrawal = async() =>{
+    toast.info("Verify Withdrawal")
     const res = await fetch("/api/verify-withdrawal", {
       body: JSON.stringify({
         id: data.id
@@ -52,9 +65,24 @@ function WithDrawal(props) {
       },
       method: "PUT"
     })
+    refreshData()
+  }
+
+  const confirmWithdrawal = async()=>{
+    const res = await fetch("/api/verify-withdrawal", {
+      body: JSON.stringify({
+        id: data.id
+      }),
+      headers: {
+        "Content-Type": "application/json"
+      },
+      method: "PUT"
+    })
+    refreshData()
   }
   return (
     <div>
+      <ToastContainer/>
       <GridContainer>
         <GridItem xs={12} sm={6} md={4}>
           <Card>
@@ -63,6 +91,8 @@ function WithDrawal(props) {
               <p>Name: {data.user.fullname}</p>
               <p>Phone: {data.user.phone}</p>
               <p>Customer_id: {data.user.customer_id}</p>
+              <p>Available Balance: {props.user.userAmount.amount}</p>
+
             </CardHeader>
 
             <CardFooter stats>
@@ -77,8 +107,8 @@ function WithDrawal(props) {
             <CardHeader>
               <p className={classes.cardCategory}>Withdrawal Details</p>
               <p>Amount: {data.amount}</p>
-              <p>Available Balance: {data.userAmount.amount}</p>
               <p>Status: {data.status_name.name}</p>
+              <p>Receipt: {data.receipt != null ? data.receipt: "no receipt"}</p>
             </CardHeader>
             <CardFooter stats>
               <div className={classes.stats}>
@@ -119,7 +149,7 @@ function WithDrawal(props) {
                   initiateWithdrawal();
                 }}
               >
-                Generate Receipt
+                Generate Paystack Receipt
               </Button>
             </GridItem>
 
@@ -132,6 +162,18 @@ function WithDrawal(props) {
                 }}
               >
                Decline Withdrawal
+              </Button>
+            </GridItem>
+
+            <GridItem xs={12} sm={6} md={4}>
+              <Button
+                color="success"
+                fullWidth
+                onClick={() => {
+                  initiateWithdrawal();
+                }}
+              >
+              Confirm Manually / upload receipt
               </Button>
             </GridItem>
           </>
@@ -228,6 +270,7 @@ export async function getServerSideProps(context){
   });
   
   const withdrawal = await userData.data.message;
+  // console.log(withdrawal)
   const requestuserWithdrawal = await Server.get(
     `/admin/user/${withdrawal.user_id}`,{
       headers: {
@@ -236,6 +279,8 @@ export async function getServerSideProps(context){
     }
   );
   const user = await requestuserWithdrawal.data.message;
+  // const withdraw = 
+  console.log(user)
   return {
     props: {
       withdrawal,

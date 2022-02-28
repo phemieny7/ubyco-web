@@ -240,7 +240,7 @@ export async function getServerSideProps(context){
       Authorization: `Bearer ${token}`,
     },
   })
-  console.log(revenueData.data.message.length)
+  // console.log(revenueData.data.message.length)
   //pending counter
   const pendingData = await Server.get('/admin/pending-trade',{
     headers: {

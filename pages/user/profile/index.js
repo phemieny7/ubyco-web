@@ -270,4 +270,4 @@ export async function getServerSideProps(context) {
   };
 }
 
-export default Withdraw;
+export default Profile;

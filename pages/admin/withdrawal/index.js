@@ -44,7 +44,7 @@ function WithDrawal(props) {
                 },
                 { title: "Customer ID", field: "user.customer_id", editable: 'never', },
                 { title: "Phone", field: "user.phone", editable: 'never', },
-                { title: "Available Amount", field: "userAmount.amount", editable: 'never',},
+                // { title: "Available Amount", field: "userAmount.amount", editable: 'never',},
                 {title: "Withdraw Request", field:'amount', editable: 'never',},
                 {title: "status", field:"status_name.name"}
               ]}
