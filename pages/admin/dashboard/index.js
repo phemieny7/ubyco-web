@@ -72,13 +72,13 @@ function Dashboard(props) {
               <CardIcon color="dark">
                 <Store />
               </CardIcon>
-              <p className={classes.cardCategory}>Revenue</p>
-              <h3 className={classes.cardTitle}>&#8358; {props.revenue.length !== 0 ? props.revenue : 0}</h3>
+              <p className={classes.cardCategory}>Pending Withdrawal</p>
+              <h3 className={classes.cardTitle}>{props.revenue !== null ? props.revenue.length : 0 }</h3>
             </CardHeader>
             <CardFooter stats>
               <div className={classes.stats}>
                 <DateRange />
-               All time Revenue
+               All time successfull withdrawal
               </div>
             </CardFooter>
           </Card>
@@ -274,6 +274,8 @@ export async function getServerSideProps(context){
   const coinRate = await coinRateData.data.message
 
   const cardGraphString= JSON.stringify(cardGraph)
+
+  console.log(revenue)
  
   return {
     props: {

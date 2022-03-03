@@ -69,7 +69,7 @@ function WithDrawal(props) {
   }
 
   const confirmWithdrawal = async()=>{
-    const res = await fetch("/api/verify-withdrawal", {
+    const res = await fetch("/api/manual-withdrawal", {
       body: JSON.stringify({
         id: data.id
       }),
