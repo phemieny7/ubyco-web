@@ -9,6 +9,7 @@ import Icon from "@material-ui/core/Icon";
 import Success from "components/Typography/Success.js";
 // layout for this page
 import Admin from "layouts/Admin.js";
+import Modal from 'react-modal';
 // core components
 import GridItem from "components/Grid/GridItem.js";
 import GridContainer from "components/Grid/GridContainer.js";
@@ -18,6 +19,7 @@ import CardHeader from "components/Card/CardHeader.js";
 import CardBody from "components/Card/CardBody.js";
 import CardFooter from "components/Card/CardFooter.js";
 import Table from "components/Table/Table.js";
+import { InputLabel } from "@material-ui/core";
 import moment from 'moment'
 
 import { getSession } from "next-auth/client";
@@ -32,9 +34,41 @@ import "react-toastify/dist/ReactToastify.css";
 
 function WithDrawal(props) {
   const [data, setData] = useState(props.withdrawal);
+  const [images, setImage] = React.useState([]);
+  const [imageUrl, setImageUrl] = React.useState([]);
   const useStyles = makeStyles(styles);
   const Router = useRouter();
   const classes = useStyles();
+  const customStyles = {
+    content: {
+      margin:' 100px auto',
+      padding: '20px',
+      background:' #fff',
+      border: '1px solid #666',
+      width: '300px',
+      borderRadius: '6px',
+      boxShadow: '0 0 50px rgba(0, 0, 0, 0.5)',
+      position: 'relative',
+      overlay:'auto'
+    },
+  };
+  // Make sure to bind modal to your appElement (https://reactcommunity.org/react-modal/accessibility/)
+  Modal.setAppElement('#__next');
+  let subtitle;
+  const [modalIsOpen, setIsOpen] = React.useState(false);
+
+  function openModal() {
+    setIsOpen(true);
+  }
+
+  function afterOpenModal() {
+    // references are now sync'd and can be accessed.
+    subtitle.style.color = '#f00';
+  }
+
+  function closeModal() {
+    setIsOpen(false);
+  }
 
   const refreshData = () => {
     Router.replace(router.asPath);
@@ -54,7 +88,7 @@ function WithDrawal(props) {
     refreshData()
 
   };
-  const verifyWithdrawal = async() =>{
+  const verifyWithdrawal = async() => {
     toast.info("Verify Withdrawal")
     const res = await fetch("/api/verify-withdrawal", {
       body: JSON.stringify({
@@ -68,20 +102,102 @@ function WithDrawal(props) {
     refreshData()
   }
 
-  const confirmWithdrawal = async()=>{
-    const res = await fetch("/api/manual-withdrawal", {
-      body: JSON.stringify({
-        id: data.id
-      }),
-      headers: {
-        "Content-Type": "application/json"
-      },
-      method: "PUT"
-    })
+  const onImageChange = (e) => {
+    setImage([]);
+    setImageUrl([]);
+    if (e.target.files) {
+      const filesArray = Array.from(e.target.files).map((file) =>
+        URL.createObjectURL(file)
+      );
+
+      setImage(e.target.files);
+
+      setImageUrl((prevImages) => prevImages.concat(filesArray));
+      Array.from(e.target.files).map(
+        (file) => URL.revokeObjectURL(file) // avoid memory leak
+      );
+    }
+  };
+
+  const renderPhotos = (source) => {
+    return source.map((photo) => {
+      return <img src={photo} style={styles.img} alt="" key={photo} />;
+    });
+  };
+
+  const formSubmit = async (e) => {
+    e.preventDefault();
+    console.log(images);
+    if (
+      brandValue === "" ||
+      amount === 0 ||
+      typeId === "null" ||
+      images === null
+    ) {
+      toast.error("Please enter a valid Data");
+      return;
+    }
+    toast.info("Please wait while we process your request");
+    const formData = new FormData();
+    for (let i = 0; i < images.length; i++) {
+      formData.append(`card${[i]}`, images[i]);
+    }
+    formData.append("image", images);
+    formData.append("id", data.id);
+    const response = await axios.post(
+      "/api/manual-withdrawal",
+      formData
+    );
+    if (response.status == ok) {
+      setTimeout(() => {
+        toast.success("withdrawal Submitted");
+      }, 2000);
+    } else {
+      toast.error("Error Submitting Trade");
+    }
     refreshData()
-  }
+  };
+
+
   return (
     <div>
+       <Modal
+        isOpen={modalIsOpen}
+        onAfterOpen={afterOpenModal}
+        onRequestClose={closeModal}
+        style={customStyles}
+        contentLabel="Example Modal"
+      >
+        <button onClick={closeModal}>close</button>
+        <form   
+        onSubmit={(e) => formSubmit(e)}
+              data-toggle="validator"
+              encType="multipart/form-data">
+          <GridContainer>
+          <GridItem xs={12} sm={12} md={12}>
+                    <InputLabel style={{ color: "#AAAAAA" }}>
+                      Upload Receipt
+                    </InputLabel>
+                    <br />
+                    <input
+                      className="form-control"
+                      type="file"
+                      id="formFileMultiple"
+                      multiple
+                      accept="image/*"
+                      onChange={onImageChange}
+                    />
+                    <GridContainer>
+                      {imageUrl !== null ? (
+                        <div className="form-group multi-preview">
+                          <div className="result">{renderPhotos(imageUrl)}</div>
+                        </div>
+                      ) : null}
+                    </GridContainer>
+                  </GridItem>
+          </GridContainer>
+        </form>
+      </Modal>
       <ToastContainer/>
       <GridContainer>
         <GridItem xs={12} sm={6} md={4}>
@@ -169,9 +285,8 @@ function WithDrawal(props) {
               <Button
                 color="success"
                 fullWidth
-                onClick={() => {
-                  initiateWithdrawal();
-                }}
+                onClick={openModal}
+                id="#manual"
               >
               Confirm Manually / upload receipt
               </Button>
