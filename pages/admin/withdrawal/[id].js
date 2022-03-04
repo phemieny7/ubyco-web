@@ -41,15 +41,15 @@ function WithDrawal(props) {
   const classes = useStyles();
   const customStyles = {
     content: {
-      margin:' 100px auto',
+      margin: ' 100px auto',
       padding: '20px',
-      background:' #fff',
+      background: ' #fff',
       border: '1px solid #666',
       width: '300px',
       borderRadius: '6px',
       boxShadow: '0 0 50px rgba(0, 0, 0, 0.5)',
       position: 'relative',
-      overlay:'auto'
+      overlay: 'auto'
     },
   };
   // Make sure to bind modal to your appElement (https://reactcommunity.org/react-modal/accessibility/)
@@ -88,7 +88,7 @@ function WithDrawal(props) {
     refreshData()
 
   };
-  const verifyWithdrawal = async() => {
+  const verifyWithdrawal = async () => {
     toast.info("Verify Withdrawal")
     const res = await fetch("/api/verify-withdrawal", {
       body: JSON.stringify({
@@ -161,7 +161,7 @@ function WithDrawal(props) {
 
   return (
     <div>
-       <Modal
+      <Modal
         isOpen={modalIsOpen}
         onAfterOpen={afterOpenModal}
         onRequestClose={closeModal}
@@ -169,36 +169,41 @@ function WithDrawal(props) {
         contentLabel="Example Modal"
       >
         <button onClick={closeModal}>close</button>
-        <form   
-        onSubmit={(e) => formSubmit(e)}
-              data-toggle="validator"
-              encType="multipart/form-data">
+        <form
+          onSubmit={(e) => formSubmit(e)}
+          data-toggle="validator"
+          encType="multipart/form-data">
           <GridContainer>
-          <GridItem xs={12} sm={12} md={12}>
-                    <InputLabel style={{ color: "#AAAAAA" }}>
-                      Upload Receipt
-                    </InputLabel>
-                    <br />
-                    <input
-                      className="form-control"
-                      type="file"
-                      id="formFileMultiple"
-                      multiple
-                      accept="image/*"
-                      onChange={onImageChange}
-                    />
-                    <GridContainer>
-                      {imageUrl !== null ? (
-                        <div className="form-group multi-preview">
-                          <div className="result">{renderPhotos(imageUrl)}</div>
-                        </div>
-                      ) : null}
-                    </GridContainer>
-                  </GridItem>
+            <GridItem xs={12} sm={12} md={12}>
+              <InputLabel style={{ color: "#AAAAAA" }}>
+                Upload Receipt
+              </InputLabel>
+              <br />
+              <input
+                className="form-control"
+                type="file"
+                id="formFileMultiple"
+                multiple
+                accept="image/*"
+                onChange={onImageChange}
+              />
+              <GridContainer>
+                {imageUrl !== null ? (
+                  <div className="form-group multi-preview">
+                    <div className="result">{renderPhotos(imageUrl)}</div>
+                  </div>
+                ) : null}
+              </GridContainer>
+            </GridItem>
+            <GridItem>
+              <Button color="danger" type="submit">
+                Confirm
+              </Button>
+            </GridItem>
           </GridContainer>
         </form>
       </Modal>
-      <ToastContainer/>
+      <ToastContainer />
       <GridContainer>
         <GridItem xs={12} sm={6} md={4}>
           <Card>
@@ -224,7 +229,7 @@ function WithDrawal(props) {
               <p className={classes.cardCategory}>Withdrawal Details</p>
               <p>Amount: {data.amount}</p>
               <p>Status: {data.status_name.name}</p>
-              <p>Receipt: {data.receipt != null ? data.receipt: "no receipt"}</p>
+              <p>Receipt: {data.receipt != null ? data.receipt : "no receipt"}</p>
             </CardHeader>
             <CardFooter stats>
               <div className={classes.stats}>
@@ -277,7 +282,7 @@ function WithDrawal(props) {
                   initiateWithdrawal();
                 }}
               >
-               Decline Withdrawal
+                Decline Withdrawal
               </Button>
             </GridItem>
 
@@ -288,7 +293,7 @@ function WithDrawal(props) {
                 onClick={openModal}
                 id="#manual"
               >
-              Confirm Manually / upload receipt
+                Confirm Manually / upload receipt
               </Button>
             </GridItem>
           </>
@@ -296,12 +301,12 @@ function WithDrawal(props) {
         {data.receipt != null && data.completed == false ?
           <>
             <GridItem xs={12} sm={6} md={4}>
-              <Button color="success" onClick={()=>{verifyWithdrawal()}} fullWidth>
+              <Button color="success" onClick={() => { verifyWithdrawal() }} fullWidth>
                 Confirm Payment
               </Button>
             </GridItem>
           </>
-         : null}
+          : null}
       </GridContainer>
       <GridContainer>
         <GridItem xs={12} sm={12} md={12}>
@@ -319,7 +324,7 @@ function WithDrawal(props) {
                     field: "amount",
                     editable: "never",
                   },
-                  { title: "Date",  field: `created_at`, render: rowData => moment(rowData.created_at).fromNow(), editable: "never" },
+                  { title: "Date", field: `created_at`, render: rowData => moment(rowData.created_at).fromNow(), editable: "never" },
                   {
                     title: "status",
                     field: "status",
@@ -355,7 +360,7 @@ function WithDrawal(props) {
 
 WithDrawal.layout = Admin;
 
-export async function getServerSideProps(context){
+export async function getServerSideProps(context) {
   const session = await getSession(context);
   if (!session) {
     return {
@@ -367,7 +372,7 @@ export async function getServerSideProps(context){
     };
   }
 
-  if (session.user.role != 2){
+  if (session.user.role != 2) {
     return {
       props: {},
       redirect: {
@@ -378,20 +383,20 @@ export async function getServerSideProps(context){
   }
   const token = session?.accessToken;
   const id = context.params.id;
-  const userData = await Server.get(`/admin/withdrawal/${id}`,{
+  const userData = await Server.get(`/admin/withdrawal/${id}`, {
     headers: {
       Authorization: `Bearer ${token}`,
     },
   });
-  
+
   const withdrawal = await userData.data.message;
   // console.log(withdrawal)
   const requestuserWithdrawal = await Server.get(
-    `/admin/user/${withdrawal.user_id}`,{
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    }
+    `/admin/user/${withdrawal.user_id}`, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  }
   );
   const user = await requestuserWithdrawal.data.message;
   // const withdraw = 
