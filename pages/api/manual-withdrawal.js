@@ -1,4 +1,4 @@
-import Server from "../lib/Server";
+import Server from '../api/lib/Server'
 import { getSession } from "next-auth/client";
 import formidable from "formidable";
 import FormData from "form-data";
