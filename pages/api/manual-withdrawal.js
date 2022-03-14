@@ -37,6 +37,7 @@ export default async (req, res) => {
       };
       formData.append("id", fields.id);
       request(formData, token);
+      console.log(formData);
       res.status(200).end();
     });
   });

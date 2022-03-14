@@ -21,6 +21,7 @@ import CardFooter from "components/Card/CardFooter.js";
 import Table from "components/Table/Table.js";
 import { InputLabel } from "@material-ui/core";
 import moment from 'moment'
+import axios from 'axios'
 
 import { getSession } from "next-auth/client";
 // import {router} from "next/router";
@@ -43,7 +44,7 @@ function WithDrawal(props) {
     content: {
       margin: ' 100px auto',
       padding: '20px',
-      background: ' #fff',
+      background: ' #ffefc',
       border: '1px solid #666',
       width: '300px',
       borderRadius: '6px',
@@ -61,17 +62,17 @@ function WithDrawal(props) {
     setIsOpen(true);
   }
 
-  function afterOpenModal() {
-    // references are now sync'd and can be accessed.
-    subtitle.style.color = '#f00';
-  }
+  // function afterOpenModal() {
+  //   // references are now sync'd and can be accessed.
+  //   // subtitle.style.color = '#f00';
+  // }
 
   function closeModal() {
     setIsOpen(false);
   }
 
   const refreshData = () => {
-    Router.replace(router.asPath);
+    Router.replace(Router.asPath);
   }
 
   const initiateWithdrawal = async () => {
@@ -128,15 +129,6 @@ function WithDrawal(props) {
   const formSubmit = async (e) => {
     e.preventDefault();
     console.log(images);
-    if (
-      brandValue === "" ||
-      amount === 0 ||
-      typeId === "null" ||
-      images === null
-    ) {
-      toast.error("Please enter a valid Data");
-      return;
-    }
     toast.info("Please wait while we process your request");
     const formData = new FormData();
     for (let i = 0; i < images.length; i++) {
@@ -144,11 +136,12 @@ function WithDrawal(props) {
     }
     formData.append("image", images);
     formData.append("id", data.id);
-    const response = await axios.post(
+    const response = await axios.put(
       "/api/manual-withdrawal",
       formData
     );
-    if (response.status == ok) {
+    console.log(response)
+    if (response.status == 200) {
       setTimeout(() => {
         toast.success("withdrawal Submitted");
       }, 2000);
@@ -163,7 +156,7 @@ function WithDrawal(props) {
     <div>
       <Modal
         isOpen={modalIsOpen}
-        onAfterOpen={afterOpenModal}
+        // onAfterOpen={afterOpenModal}
         onRequestClose={closeModal}
         style={customStyles}
         contentLabel="Example Modal"
