@@ -162,10 +162,10 @@ function Withdraw(props) {
     if (props.userData.userWithdrawal[i].completed === true) {
       successWithdrawal.push(props.userData.userWithdrawal[i]);
     }
-    if (props.userData.userWithdrawal[i].status === 1) {
+    if (props.userData.userWithdrawal[i].status === 1 || props.userData.userWithdrawal[i].status === 2) {
       pendingWithdrawal.push(props.userData.userWithdrawal[i]);
     }
-    if (props.userData.userWithdrawal[i].status === 2) {
+    if (props.userData.userWithdrawal[i].status === 3) {
       failedWithdrawal.push(props.userData.userWithdrawal[i]);
     }
   }

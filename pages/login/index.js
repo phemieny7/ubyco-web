@@ -91,7 +91,6 @@ function Login() {
                             <label style={{ display: "block" }}>Password</label>
                             <input
                               type="password"
-                              type="password"
                               value={password}
                               onChange={(e) => setPassword(e.target.value)}
                               className="form-control"

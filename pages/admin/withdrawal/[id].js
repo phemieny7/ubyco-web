@@ -89,6 +89,24 @@ function WithDrawal(props) {
     refreshData()
 
   };
+
+
+  const declienWithdrawal = async () => {
+    toast.info("declining Withdrawal")
+    const res = await fetch("/api/decline-withdrawal", {
+      body: JSON.stringify({
+        id: data.id,
+        status: 3,
+      }),
+      headers: {
+        "Content-Type": "application/json",
+      },
+      method: "PUT",
+    });
+    refreshData()
+
+  }
+
   const verifyWithdrawal = async () => {
     toast.info("Verify Withdrawal")
     const res = await fetch("/api/verify-withdrawal", {
@@ -226,7 +244,7 @@ function WithDrawal(props) {
             </CardHeader>
             <CardFooter stats>
               <div className={classes.stats}>
-                {data.completed == true
+                {data.completed == true 
                   ? "This transaction has been completed"
                   : "Yet to be completed"}
               </div>
@@ -272,7 +290,7 @@ function WithDrawal(props) {
                 color="danger"
                 fullWidth
                 onClick={() => {
-                  initiateWithdrawal();
+                  declienWithdrawal();
                 }}
               >
                 Decline Withdrawal
