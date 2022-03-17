@@ -66,7 +66,7 @@ function Index(props) {
       {/* Crypto Cards Trade */}
 
       <GridContainer>
-      <GridItem xs={12} sm={12} md={12}>
+        <GridItem xs={12} sm={12} md={12}>
           <Card>
             <CardHeader color="danger">
               <h4 className={classes.cardTitleWhite}>All Withdrawals</h4>

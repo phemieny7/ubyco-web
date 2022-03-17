@@ -393,7 +393,7 @@ export async function getServerSideProps(context) {
   );
   const user = await requestuserWithdrawal.data.message;
   // const withdraw = 
-  console.log(user)
+  // console.log(user)
   return {
     props: {
       withdrawal,
