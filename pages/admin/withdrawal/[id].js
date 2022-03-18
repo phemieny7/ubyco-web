@@ -31,7 +31,9 @@ import styles from "assets/jss/nextjs-material-dashboard/views/dashboardStyle.js
 import Server from "./../../api/lib/Server";
 import { useRouter } from "next/router";
 import { ToastContainer, toast } from "react-toastify";
+import Image from 'next/image';
 import "react-toastify/dist/ReactToastify.css";
+import next from "next";
 
 function WithDrawal(props) {
   const [data, setData] = useState(props.withdrawal);
@@ -138,6 +140,9 @@ function WithDrawal(props) {
     }
   };
 
+  const imageLoader = ({ src, width, quality }) => {
+    return `https://res.cloudinary.com/ubycohub/${src}.jpg?w=${width}&q=${quality || 75}`;
+  };
   const renderPhotos = (source) => {
     return source.map((photo) => {
       return <img src={photo} style={styles.img} alt="" key={photo} />;
@@ -244,10 +249,11 @@ function WithDrawal(props) {
             </CardHeader>
             <CardFooter stats>
               <div className={classes.stats}>
-                {data.completed == true 
+                {data.completed == true
                   ? "This transaction has been completed"
                   : "Yet to be completed"}
               </div>
+
             </CardFooter>
           </Card>
         </GridItem>
@@ -319,11 +325,35 @@ function WithDrawal(props) {
           </>
           : null}
 
-          {
-            data.status == 3 ?
-           ( 'This transaction has been declined'
+        {
+          data.status == 3 ?
+            ('This transaction has been declined'
             ) : null
-          }
+        }
+        {
+          data.receipt.endsWith('png') || data.receipt.endsWith('jpg') || data.receipt.endsWith('jpeg') && data.receipt != null ? (
+            <>
+              <GridContainer>
+                <GridItem xs={12} sm={6} md={4}>
+                  <Card>
+                    git <Image
+                      loader={imageLoader}
+                      src={data.receipt}
+                      width={700}
+                      height={700}
+                    // key={index}
+                    />
+                    <CardFooter stats>
+                      <div className={classes.stats}>
+                        This is the receipt uploaded by the admin
+                      </div>
+                    </CardFooter>
+                  </Card>
+                </GridItem>
+              </GridContainer>
+            </>
+          ) : "This trade was a paystack receipt"
+        }
       </GridContainer>
       <GridContainer>
         <GridItem xs={12} sm={12} md={12}>
