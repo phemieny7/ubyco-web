@@ -271,7 +271,7 @@ function WithDrawal(props) {
       </GridContainer>
 
       <GridContainer>
-        {data.receipt == null && data.completed == false ? (
+        {data.receipt == null && data.completed == false && data.status != 3 ? (
           <>
             <GridItem xs={12} sm={6} md={4}>
               <Button
@@ -318,6 +318,12 @@ function WithDrawal(props) {
             </GridItem>
           </>
           : null}
+
+          {
+            data.status == 3 ?
+           ( 'This transaction has been declined'
+            ) : null
+          }
       </GridContainer>
       <GridContainer>
         <GridItem xs={12} sm={12} md={12}>
