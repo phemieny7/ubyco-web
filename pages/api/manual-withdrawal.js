@@ -17,6 +17,7 @@ const request = async (data, token) => {
       "Content-Type": `multipart/form-data; boundary=${data._boundary}`,
     },
   });
+  console.log(res);
 };
 
 export default async (req, res) => {
@@ -36,9 +37,14 @@ export default async (req, res) => {
         formData.append("receipt", fs.createReadStream(files[property].path));
       };
       formData.append("id", fields.id);
+      try {
       request(formData, token);
-      console.log(formData);
       res.status(200).end();
-    });
+      } catch (error) {
+        console.log(error);
+        res.status(500).end()
+      // console.log(re);
+    }
+  });
   });
 }; 

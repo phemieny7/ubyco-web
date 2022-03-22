@@ -45,6 +45,7 @@ import Button from "components/CustomButtons/Button.js";
 import { getSession } from "next-auth/client";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { useRouter } from 'next/router';
 
 const styles = {
   cardCategoryWhite: {
@@ -110,6 +111,9 @@ function Withdraw(props) {
   const [amount, setAmount] = React.useState("");
   const [submit, setSubmit] = React.useState(true);
 
+  const router = useRouter();
+
+
   const handleChange = (event) => {
     setAccountId(event.target.value);
   };
@@ -131,6 +135,11 @@ function Withdraw(props) {
     }
   };
 
+  const refreshData = () => {
+    router.replace(router.asPath);
+    setIsRefreshing(true);
+  };
+
   const formSubmit = async() => {
     toast.info("Initiating withdrawal...");
     // const data = {accountId, amount};
@@ -148,10 +157,11 @@ function Withdraw(props) {
       setTimeout(() => {
       toast.success("Withdraw successfully initiated !!!");
       }, 5000)
-      // refreshData();
+      refreshData();
     } else {
       toast.error("Failed to update account information!");
     }
+    // window.location.reload();
   };
 
   let successWithdrawal = [];

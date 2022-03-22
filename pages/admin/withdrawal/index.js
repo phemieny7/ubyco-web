@@ -97,7 +97,8 @@ function WithDrawal(props) {
               ]}
              
               options={{
-                actionsColumnIndex: -1
+                actionsColumnIndex: -1,
+                grouping: true
               }}
             />
           </CardBody>

@@ -88,8 +88,9 @@ function WithDrawal(props) {
       },
       method: "PUT",
     });
-    refreshData()
-
+    if (res.status < 300) {
+      refreshData();
+    }
   };
 
 
@@ -105,8 +106,10 @@ function WithDrawal(props) {
       },
       method: "PUT",
     });
-    refreshData()
-
+    if (res.status < 300) {
+      refreshData();
+    }
+    // window.location.reload();
   }
 
   const verifyWithdrawal = async () => {
@@ -120,7 +123,11 @@ function WithDrawal(props) {
       },
       method: "PUT"
     })
-    refreshData()
+    // window.location.reload();
+    if (res.status < 300) {
+      refreshData();
+    }
+
   }
 
   const onImageChange = (e) => {
@@ -163,15 +170,16 @@ function WithDrawal(props) {
       "/api/manual-withdrawal",
       formData
     );
-    console.log(response)
-    if (response.status == 200) {
+    // console.log(response)
+    if (response.status < 300) {
       setTimeout(() => {
         toast.success("withdrawal Submitted");
       }, 2000);
+    refreshData()
     } else {
       toast.error("Error Submitting Trade");
     }
-    refreshData()
+    // window.location.reload(); 
   };
 
 
@@ -331,12 +339,12 @@ function WithDrawal(props) {
             ) : null
         }
         {
-          data.receipt.endsWith('png') || data.receipt.endsWith('jpg') || data.receipt.endsWith('jpeg') && data.receipt != null ? (
+          data.receipt != null && data.receipt.length  > 12 ? (
             <>
               <GridContainer>
                 <GridItem xs={12} sm={6} md={4}>
                   <Card>
-                    git <Image
+                     <Image
                       loader={imageLoader}
                       src={data.receipt}
                       width={700}
@@ -352,7 +360,7 @@ function WithDrawal(props) {
                 </GridItem>
               </GridContainer>
             </>
-          ) : "This trade was a paystack receipt"
+          ) : null
         }
       </GridContainer>
       <GridContainer>

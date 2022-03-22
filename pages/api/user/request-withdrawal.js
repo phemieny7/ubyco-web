@@ -13,6 +13,6 @@ export default async (req, res) => {
       Authorization: `Bearer ${token}`,
     },
   })
-  console.log(result)
-  res.status(200).json({user: result})
+  // console.log(result.status)
+  res.status(200).end()
 }
