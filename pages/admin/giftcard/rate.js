@@ -92,6 +92,7 @@ function Rate(props) {
       },
       method: "PUT",
     });
+    // console.log(id, card_id, name, rate)
   };
 
   const deleteCardRate = async (id) => {
@@ -174,9 +175,10 @@ function Rate(props) {
                         const id= oldData.tableData.id;
                         dataUpdate[id] = newData;
                         const card_id = newData.card.id
-                        const {name, rate} = newData
+                        const{name ,rate}= newData
                         setCard([...dataUpdate]);
-                        updateCardRate(id, card_id, name, rate);
+                        // console.log(newData)
+                        updateCardRate(newData.id, newData.card_id, newData.name, newData.rate);
                         resolve();
                       }, 1000);
                     }),

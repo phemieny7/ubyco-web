@@ -34,34 +34,7 @@ function Index(props) {
 
   return (
     <div>
-      <GridContainer>
-        <GridItem xs={12} sm={6} md={6}>
-          <Card>
-            <CardBody>
-              <Button
-                fullWidth
-                color="info"
-                onClick={() => Router.push("/user/transactions/crypto")}
-              >
-                Crypto
-              </Button>
-            </CardBody>
-           </Card>
-        </GridItem>
-        <GridItem xs={12} sm={6} md={6}>
-        <Card>
-            <CardBody color="warning">
-              <Button
-                fullWidth
-                color="warning"
-                onClick={() => Router.push("/user/transactions/giftcard")}
-              >
-               Giftcard
-              </Button>
-            </CardBody>
-           </Card>
-        </GridItem>
-       </GridContainer>
+        
 
       {/* Crypto Cards Trade */}
 

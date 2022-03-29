@@ -5,13 +5,14 @@ export default async (req, res) => {
   const session = await getSession({ req });
   const token = session?.accessToken;
   const {id, card_id, name, rate} = req.body
+  console.log(id)
   const result = await Server.put(
     "/admin/update_card_rate",
     {
-      id,
-      card_id,
-      rate,
-      name
+      id: req.body.id,
+      card_id: req.body.card_id,
+      rate: req.body.rate,
+      name: req.body.name
     },
     {
       headers: {
