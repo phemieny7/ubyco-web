@@ -27,7 +27,6 @@ import CardIcon from "components/Card/CardIcon.js";
 import CardBody from "components/Card/CardBody.js";
 import CardFooter from "components/Card/CardFooter.js";
 
-import Cookies from 'js-cookie'
 import Server from '../../api/lib/Server'
 import { getSession } from "next-auth/client";
 
@@ -73,13 +72,13 @@ function Dashboard(props) {
               <CardIcon color="dark">
                 <Store />
               </CardIcon>
-              <p className={classes.cardCategory}>Revenue</p>
-              <h3 className={classes.cardTitle}>&#8358; {props.revenue}</h3>
+              <p className={classes.cardCategory}>Pending Withdrawal</p>
+              <h3 className={classes.cardTitle}>{props.revenue !== null ? props.revenue.length : 0 }</h3>
             </CardHeader>
             <CardFooter stats>
               <div className={classes.stats}>
                 <DateRange />
-               All time Revenue
+               All time successfull withdrawal
               </div>
             </CardFooter>
           </Card>
@@ -241,6 +240,7 @@ export async function getServerSideProps(context){
       Authorization: `Bearer ${token}`,
     },
   })
+  // console.log(revenueData.data.message.length)
   //pending counter
   const pendingData = await Server.get('/admin/pending-trade',{
     headers: {
@@ -274,6 +274,8 @@ export async function getServerSideProps(context){
   const coinRate = await coinRateData.data.message
 
   const cardGraphString= JSON.stringify(cardGraph)
+
+  console.log(revenue)
  
   return {
     props: {

@@ -52,7 +52,7 @@ export default function AdminNavbarLinks() {
   };
   return (
     <div>
-      <div className={classes.searchWrapper}>
+      {/* <div className={classes.searchWrapper}>
         <CustomInput
           formControlProps={{
             className: classes.margin + " " + classes.search,
@@ -67,8 +67,8 @@ export default function AdminNavbarLinks() {
         <Button color="white" aria-label="edit" justIcon round>
           <Search />
         </Button>
-      </div>
-      <Button
+      </div> */}
+      {/* <Button
         color={size.width > 959 ? "transparent" : "white"}
         justIcon={size.width > 959}
         simple={!(size.width > 959)}
@@ -79,7 +79,7 @@ export default function AdminNavbarLinks() {
         <Hidden mdUp implementation="css">
           <p className={classes.linkText}>Dashboard</p>
         </Hidden>
-      </Button>
+      </Button> */}
       <div className={classes.manager}>
         <Button
           color={size.width > 959 ? "transparent" : "white"}
@@ -91,7 +91,7 @@ export default function AdminNavbarLinks() {
           className={classes.buttonLink}
         >
           <Notifications className={classes.icons} />
-          <span className={classes.notifications}>5</span>
+          {/* <span className={classes.notifications}>5</span> */}
           <Hidden mdUp implementation="css">
             <p onClick={handleCloseNotification} className={classes.linkText}>
               Notification
@@ -125,9 +125,9 @@ export default function AdminNavbarLinks() {
                       onClick={handleCloseNotification}
                       className={classes.dropdownItem}
                     >
-                      Mike John responded to your email
+                     No Notifications
                     </MenuItem>
-                    <MenuItem
+                    {/* <MenuItem
                       onClick={handleCloseNotification}
                       className={classes.dropdownItem}
                     >
@@ -150,7 +150,7 @@ export default function AdminNavbarLinks() {
                       className={classes.dropdownItem}
                     >
                       Another One
-                    </MenuItem>
+                    </MenuItem> */}
                   </MenuList>
                 </ClickAwayListener>
               </Paper>
@@ -196,18 +196,18 @@ export default function AdminNavbarLinks() {
               <Paper>
                 <ClickAwayListener onClickAway={handleCloseProfile}>
                   <MenuList role="menu">
-                    <MenuItem
+                    {/* <MenuItem
                       onClick={handleCloseProfile}
                       className={classes.dropdownItem}
                     >
                       Profile
-                    </MenuItem>
-                    <MenuItem
+                    </MenuItem> */}
+                    {/* <MenuItem
                       onClick={handleCloseProfile}
                       className={classes.dropdownItem}
                     >
                       Settings
-                    </MenuItem>
+                    </MenuItem> */}
                     <Divider light />
                     <MenuItem
                       onClick={() => signOut()}

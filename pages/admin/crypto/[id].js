@@ -19,7 +19,7 @@ import CardHeader from "components/Card/CardHeader.js";
 import CardBody from "components/Card/CardBody.js";
 import CardFooter from "components/Card/CardFooter.js";
 import CardAvatar from "components/Card/CardAvatar.js";
-import avatar from "assets/img/faces/marc.jpg";
+import avatar from "assets/img/faces/user.png";
 
 import styles from "assets/jss/nextjs-material-dashboard/views/dashboardStyle.js";
 import moment from "moment";
@@ -31,13 +31,10 @@ function Id(props) {
   const classes = useStyles();
   const image = props.coin.receipt;
   const remove = image.substring(1, image.length - 1);
-  const split = remove.split(",");
   const Router = useRouter();
 
-  const cards = ({ src, width, quality }) => {
-    return `${
-      process.env.NEXT_PUBLIC_SERVER_URL
-    }/get-picture/cards/${src}?w=${width}&q=${quality || 75}`;
+  const imageLoader = ({ src, width, quality }) => {
+    return `http://res.cloudinary.com/ubycohub/${src}.jpg?w=${width}&q=${quality || 75}`;
   };
 
   const actionCoin = async (status) => {
@@ -59,8 +56,7 @@ function Id(props) {
       body: JSON.stringify({
         id: props.coin.id,
         user_id: props.coin.user_id,
-        amount: props.coin.total,
-      }),
+        amount: Number(props.coin.amount * props.coin.rate),       }),
       headers: {
         "Content-Type": "application/json",
       },
@@ -78,31 +74,21 @@ function Id(props) {
               <p className={classes.cardCategoryWhite}>Crypt's</p>
             </CardHeader>
             <CardBody>
+            {/* {split.map((src, index) => ( */}
               <GridItem xs={6} sm={6} md={4}>
-                {/* <img src={avatar}/> */}
-              </GridItem>
-              <GridItem xs={6} sm={6} md={4}>
-                <GridList>
                   <Image
-                    loader={cards}
-                    src={split[0].replace(
-                      /[`~!@#$%^&*()_|+\-=?;:'",<>\{\}\[\]\\\/]/gi,
-                      ""
-                    )}
-                    width={300}
-                    height={200}
-                  />
-                  <Image
-                    loader={cards}
-                    src={split[1].replace(
-                      /[`~!@#$%^&*()_|+\-=?;:'",<>\{\}\[\]\\\/]/gi,
-                      ""
-                    )}
-                    width={300}
-                    height={200}
-                  />
-                </GridList>
+                  loader={imageLoader}
+                  src={image.replace(
+                    /[`~!@#$%^&*()|+\-=?;:'",<>\{\}\[\]\\\/]/gi,
+                    ""
+                  )}
+                  width={400}
+                  height={700}
+                  placeholder='blur'
+                  blurDataURL="data:image/jpeg;base64,/9j/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAAIAAoDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAb/xAAhEAACAQMDBQAAAAAAAAAAAAABAgMABAUGIWEREiMxUf/EABUBAQEAAAAAAAAAAAAAAAAAAAMF/8QAGhEAAgIDAAAAAAAAAAAAAAAAAAECEgMRkf/aAAwDAQACEQMRAD8AltJagyeH0AthI5xdrLcNM91BF5pX2HaH9bcfaSXWGaRmknyJckliyjqTzSlT54b6bk+h0R//2Q=="
+                />
               </GridItem>
+            {/* ))}  */}
             </CardBody>
 
             <CardFooter>
@@ -166,7 +152,15 @@ function Id(props) {
           <Card profile>
             <CardAvatar profile>
               <a href="#pablo" onClick={(e) => e.preventDefault()}>
-                <img src={avatar} alt="..." />
+              {
+                  props.coin.user.picture !== null ? 
+                  <Image
+                  loader={imageLoader}
+                  src={props.coin.user.picture}
+                  width={400}
+                  height={700}
+                /> : <img src={avatar} alt="..." />
+              }
               </a>
             </CardAvatar>
             <CardBody profile>
@@ -174,6 +168,10 @@ function Id(props) {
               <h4 className={classes.cardTitle}>
                 {" "}
                 Total amount: {props.coin.total}
+              </h4>
+              <h4>
+              {" "}
+              Comment: {props.coin.comments}
               </h4>
               <Button
                 color="primary"

@@ -5,12 +5,14 @@ import Head from "next/head";
 import Router from "next/router";
 
 import PageChange from "components/PageChange/PageChange.js";
-
-import "assets/css/nextjs-material-dashboard.css?v=1.1.0";
+import  "assets/css/nextjs-material-dashboard.css?v=1.1.0";
+import  'assets/css/login.css'
+import  "../src/css/style.css";
+import  "../src/css/animate.css";
 import { Provider } from "next-auth/client";
 
 Router.events.on("routeChangeStart", (url) => {
-  console.log(`Loading: ${url}`);
+  // console.log(`Loading: ${url}`);
   document.body.classList.add("body-page-transition");
   ReactDOM.render(
     <PageChange path={url} />,
@@ -48,20 +50,26 @@ export default class MyApp extends App {
 
     return (
       <React.Fragment>
-       
-          <Head>
-            <meta
-              name="viewport"
-              content="width=device-width, initial-scale=1, shrink-to-fit=no"
-            />
-            <title>Ubyco Hub</title>
-            {/* <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_KEY_HERE"></script> */}
-          </Head>
-          <Provider session={pageProps.session}>
+        <Head>
+          <meta
+            name="viewport"
+            content="width=device-width, initial-scale=1, shrink-to-fit=no"
+          />
+          <title>Ubyco Hub</title>
+        </Head>
+        <Provider session={pageProps.session}>
           <Layout>
             <Component {...pageProps} />
           </Layout>
-          </Provider>
+        </Provider>
+        <a
+        href="https://wa.me/2348108337160"
+        class="whatsapp_float"
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        <i class="fa fa-whatsapp whatsapp-icon"></i>
+      </a>
       </React.Fragment>
     );
   }

@@ -20,6 +20,7 @@ import Server from "../../api/lib/Server";
 import avatar from "assets/img/faces/marc.jpg";
 import { getSession } from "next-auth/client";
 
+
 const styles = {
   cardCategoryWhite: {
     color: "rgba(255,255,255,.62)",
@@ -44,10 +45,60 @@ function Rate(props) {
   const classes = useStyles();
   const [brand, setBrand] = useState(props.cardBrand);
   const [card, setCard] = useState(props.cardRate);
+
+  const cardOptions = {};
+  brand.map(option => {
+    const { id, name } = option;
+    cardOptions[id]  = name
+})
+// console.log(cardOptions)
+
   const createCard = async (name) => {
     const res = await fetch("/api/create-card", {
       body: JSON.stringify({
         name,
+      }),
+      headers: {
+        "Content-Type": "application/json",
+      },
+      method: "POST",
+    });
+  };
+
+  const createCardRate = async (id, name, rate) => {
+    const res = await fetch("/api/create-card-rate", {
+      body: JSON.stringify({
+        id,
+        name,
+        rate
+      }),
+      headers: {
+        "Content-Type": "application/json",
+      },
+      method: "POST",
+    });
+  };
+
+  const updateCardRate = async (id, card_id, name, rate) => {
+    const res = await fetch("/api/update-card-rate", {
+      body: JSON.stringify({
+        id,
+        card_id,
+        name,
+        rate
+      }),
+      headers: {
+        "Content-Type": "application/json",
+      },
+      method: "PUT",
+    });
+    // console.log(id, card_id, name, rate)
+  };
+
+  const deleteCardRate = async (id) => {
+    const res = await fetch("/api/delete-card-rate", {
+      body: JSON.stringify({
+        id,
       }),
       headers: {
         "Content-Type": "application/json",
@@ -77,7 +128,7 @@ function Rate(props) {
       headers: {
         "Content-Type": "application/json",
       },
-      method: "DELETE",
+      method: "POST",
     });
   };
   return (
@@ -96,8 +147,8 @@ function Rate(props) {
                 columns={[
                   {
                     title: "Card Brand",
-                    field: "card.name",
-                    // lookup: { 1: 'Apple', 2: 'Vanilla'}
+                    field: "card.id",
+                    lookup: cardOptions,
                   },
                   { title: "Card", field: "name" },
                   { title: "Rate", field: "rate" },
@@ -105,13 +156,42 @@ function Rate(props) {
                 data={card}
                 title=""
                 editable={{
+                  
+                  onRowAdd: (newData) =>
+                  new Promise((resolve, reject) => {
+                    setTimeout(() => {
+                      setCard([...card, newData]);
+                      const id = newData.card.id   
+                      console.log(id)     
+                      const{name ,rate}= newData
+                      createCardRate(id, name, rate);
+                      resolve();
+                    }, 1000);
+                  }),
                   onRowUpdate: (newData, oldData) =>
                     new Promise((resolve, reject) => {
                       setTimeout(() => {
                         const dataUpdate = [...card];
+                        const id= oldData.tableData.id;
+                        dataUpdate[id] = newData;
+                        const card_id = newData.card.id
+                        const{name ,rate}= newData
+                        setCard([...dataUpdate]);
+                        // console.log(newData)
+                        updateCardRate(newData.id, newData.card_id, newData.name, newData.rate);
+                        resolve();
+                      }, 1000);
+                    }),
+
+                    onRowDelete: (oldData) =>
+                    new Promise((resolve, reject) => {
+                      setTimeout(() => {
+                        const dataDelete = [...card];
                         const index = oldData.tableData.id;
-                        dataUpdate[index] = newData;
-                        setData([...dataUpdate]);
+                        const pending = dataDelete.splice(index, 1);
+                        const {id} = pending[0];
+                        deleteCardRate(id)
+                        setCard([...dataDelete]);
                         resolve();
                       }, 1000);
                     }),

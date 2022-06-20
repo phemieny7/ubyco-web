@@ -20,8 +20,9 @@ import Table from "components/Table/Table.js";
 import CardFooter from "components/Card/CardFooter.js";
 import MaterialTable from "material-table";
 import moment from 'moment'
+import Image from "next/image";
 
-import avatar from "assets/img/faces/marc.jpg";
+import avatar from "assets/img/faces/user.png";
 import Server from "../../api/lib/Server";
 import { getSession } from "next-auth/client";
 
@@ -45,6 +46,14 @@ const styles = {
 };
 
 function UserProfile(props) {
+  const imageLoader = ({ src, width, quality }) => {
+    return `https://res.cloudinary.com/ubycohub/${src}.jpg?w=${width}&q=${quality || 75}`;
+  };
+  const router = useRouter()
+  const refreshData = () => {
+    router.replace(router.asPath);
+  }
+
   const useStyles = makeStyles(styles);
   const classes = useStyles();
   const unbanned = async()=> {
@@ -58,7 +67,8 @@ function UserProfile(props) {
       },
       method: 'PUT'
     })
-    Router.reload(window.location.pathname);
+    refreshData()
+    // Router.reload(window.location.pathname);
   }
 
   return (
@@ -112,6 +122,25 @@ function UserProfile(props) {
                   />
                 </GridItem>
               </GridContainer>
+              
+
+              <GridContainer>
+                <GridItem xs={12} sm={12} md={12}>
+                  <CustomInput
+                    labelText="Customer email"
+                    id="email-address"
+                    formControlProps={{
+                      fullWidth: true,
+                    }}
+                    inputProps={{
+                      disabled: true,
+                      value: props.user.email,                     
+                    }}
+                  />
+                </GridItem>
+              </GridContainer>
+              
+              
               <GridContainer>
                 <GridItem xs={12} sm={12} md={12}>
                 <MaterialTable
@@ -198,7 +227,15 @@ function UserProfile(props) {
           <Card profile>
             <CardAvatar profile>
               <a href="#pablo" onClick={(e) => e.preventDefault()}>
-                <img src={avatar} alt="..." />
+                 {
+                  props.user.picture !== null ? 
+                  <Image
+                  loader={imageLoader}
+                  src={props.user.picture}
+                  width={400}
+                  height={700}
+                /> : <img src={avatar} alt="..." />
+                }
               </a>
             </CardAvatar>
             <CardBody profile>

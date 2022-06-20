@@ -1,166 +1,172 @@
-import Head from 'next/head'
+import Head from "next/head";
 // import styles from '../styles/pageStyles/login.module.scss'
-import { useState, useEffect } from 'react'
-import { useRouter } from 'next/router'
-import { signIn, useSession } from 'next-auth/client'
+import { useState, useEffect } from "react";
+import { useRouter } from "next/router";
+import { signIn, getSession } from "next-auth/client";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import Logo from "../../assets/img/logo.png";
+import Link from "next/link";
 
-import Background from '../../assets/img/bg7.jpg'
+function SignUp() {
+  const [name, setName] = useState("");
+  const [phone, setPhone] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [isLoginStarted, setIsLoginStarted] = useState(false);
+  const [loginError, setLoginError] = useState([]);
+  const router = useRouter();
 
-export default function Login () {
-  const [email, setEmail] = useState('')
-  const [password, setPassword] = useState('')
-  const [isLoginStarted, setIsLoginStarted] = useState(false)
-  const [loginError, setLoginError] = useState('')
-  const router = useRouter()
 
-  useEffect(() => {
-    if (router.query.error) {
-      setLoginError(router.query.error)
-      setEmail(router.query.email)
-    } 
-  }, [router])
-
-  const handleLogin = (e) => {
-    e.preventDefault()
-    setLoginError('')
-    setIsLoginStarted(true)
-    signIn('credentials',
-      {
-        email,
-        password,
-        callbackUrl: `${window.location.origin}/web`
-      }
-    ).then((res) => {
-        console.log('form::res -> ', res);
-        // router.back();
+  const register = (e) => {
+    e.preventDefault();
+    setLoginError([]);
+    const data = {name, email, phone, password};
+    toast.info("Processing Request");
+    fetch("/api/signup", {
+      body: JSON.stringify(data),
+      headers: {
+        "Content-Type": "application/json",
+      },
+      method: "POST",
+    }).then((res) => {
+      console.log("res", res);
+        toast.success("Successfully Registered");
+        setTimeout(() => {
+          router.push("/verify");
+        }, 2000);
       })
-      .catch((e) => {
-        console.log('form::e -> ', e);
-        setError('login error');
-      });
-  }
+      .catch((err) => {
+        toast.error("Registration Failed");
+      })
+  };
 
-  const container = {
-    width: "100%",
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-    minHeight: "100vh",
-    // background: "#333",
-    backgroundImage: `url(${Background})`,
-    backgroundSize: "cover"
-  }
-  const heading = {
-    color: "#111",
-    fontWeight: "bold",
-    fontSize: "28px",
-    color: "green",
-    margin: "0"
-  }
-  const headtext = {
-    fontSize: "14px",
-    color: "#333",
-    // fontWeight: "bold",
-  }
-  const formBg = {
-    margin: "0",
-    padding: "40px",
-    background: "#fff",
-    borderRadius: "4px",
-    boxShadow: "0 .3rem .9rem rgba(0,0,0, .3)"
-  }
-  const formdiv = {
-    width: "320px",
-  }
-  const label = {
-    display: "block",
-    fontSize: "14px",
-    fontWeight: "bold",
-    color: "green",
-    margin: "10px 0 5px"
-  }
-  const loginbtn = {
-    display: "block",
-    width: "100%",
-    margin: "20px 0",
-    padding: "12px 24px",
-    background: "green",
-    border: "none",
-    color: "#fff",
-    borderRadius: "30px",
-    fontSize: "14px",
-    fontWeight: "bold",
-    textTransform: "uppercase"
-  }
-  const inputs = {
-    margin: "5px 0",
-    padding: "12px 15px",
-    width: "100%",
-    borderRadius: "30px",
-    border: "1px solid #888",
-    // display: "inline-block",
-    fontSize: "14px"
-  }
-  const forgot = {
-    fontSize: "14px",
-    fontWeight: "bold"
-  }
-  const flexdiv = {
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "space-between"
-  }
-  const signuptext = {
-    textAlign: "center",
-    fontSize: "12px",
-    color: "#333",
-  }
-  const googlebtn = {
-    padding: "12px 40px",
-    background: "red",
-    border: "0",
-    borderRadius: "24px",
-    color: "#fff",
-    fontSize: "14px",
-    fontWeight: "bold"
-  }
-  const facebookbtn = {
-    padding: "12px 40px",
-    background: "blue",
-    border: "0",
-    borderRadius: "24px",
-    color: "#fff",
-    fontSize: "14px",
-    fontWeight: "bold"
-  }
+
 
   return (
     <div>
       <Head>
-        <title>NextAuth Example</title>
+        <title>Ubyco Register</title>
       </Head>
-      <main style={container}>
-        <div style={formBg}>
-          <h1 style={heading}>Welcome.</h1>
-          <p style={headtext}>Kindly enter your details below.</p>
-          <form onSubmit={(e) => handleLogin(e)} style={formdiv}>
-          <label style={label} htmlFor='inputName'>Name</label>
-            <input style={inputs} id='inputName' type='text' value={password} onChange={(e) => setPassword(e.target.value)} />
-            <label style={label} htmlFor='loginEmail'>Email</label>
-            <input style={inputs} id='loginEmail' type='email' value={email} onChange={(e) => setEmail(e.target.value)}/>
-            <span>{loginError}</span>
-            <label style={label} htmlFor='inputPassword'>Password</label>
-            <input style={inputs} id='inputPassword' type='password' value={password} onChange={(e) => setPassword(e.target.value)} />
-            <button type='submit' disabled={isLoginStarted} style={loginbtn}>signup</button>
-            <hr></hr>
-            <p style={signuptext}>Or Sign In with</p>
-            <div style={flexdiv}>
-            <button type='button' style={googlebtn}>Google</button>
-            <button type='button' style={facebookbtn}>Facebook</button>
+      <ToastContainer/>
+      <div className="page_container">
+        <div className="page_content">
+          <div className="form_box">
+            <div className="container">
+              <div className="row justify-content-center">
+                <div className="col-lg-9 text-center">
+                  <div className="section-logo">
+                    <img src={Logo} alt="logo" className="col-5" />
+                  </div>
+                  <div className="section-title pb-10 mt-4">
+                    <h4 className="title">Sign Up</h4>
+                  </div>
+                  {/* <!-- section title --> */}
+                </div>
+              </div>
+              <div className="row justify-content-center">
+                <div className="col-lg-12">
+                  <div className="contact-form">
+                    <form
+                      id="contact-form"
+                      onSubmit={(e) => register(e)}
+                      data-toggle="validator"
+                      autoComplete="off"
+                    >
+                      <div className="row">
+                        <div className="col-md-12">
+                          <div className="single-form form-group">
+                            <label style={{ display: "block" }}>Fullname</label>
+                            <input
+                              type="text"
+                              value={name}
+                              onChange={(e) => setName(e.target.value)}
+                              className="form-control"
+                              data-error="Fullname  is required."
+                              required="required"
+                            />
+                            <div className="help-block with-errors"></div>
+                          </div>
+                        </div>
+                        <div className="col-md-12">
+                          <div className="single-form form-group">
+                            <label style={{ display: "block" }}>Email</label>
+                            <input
+                              type="email"
+                              value={email}
+                              onChange={(e) => setEmail(e.target.value)}
+                              className="form-control"
+                              data-error="Email is required."
+                              required="required"
+                            />
+                            <div className="help-block with-errors"></div>
+                          </div>
+                          {/* <!-- single form --> */}
+                        </div>{" "}
+                        <div className="col-md-12">
+                          <div className="single-form form-group">
+                            <label style={{ display: "block" }}>Phone</label>
+                            <input
+                              type="phone-number"
+                              value={phone}
+                              onChange={(e) => setPhone(e.target.value)}
+                              className="form-control"
+                              data-error="Phone is required."
+                              placeholder="080*******"
+                              required="required"
+                              autoComplete="off"
+                            />
+                            <div className="help-block with-errors"></div>
+                          </div>
+                          {/* <!-- single form --> */}
+                        </div>
+                        <div className="col-md-12">
+                          <div className="single-form form-group">
+                            <label style={{ display: "block" }}>Password</label>
+                            <input
+                              type="password"
+                              value={password}
+                              onChange={(e) => setPassword(e.target.value)}
+                              className="form-control"
+                              data-error="Password is required."
+                              required="required"
+                              autoComplete="off"
+                            />
+                            <div className="help-block with-errors"></div>
+                          </div>
+                          {/* <!-- single form --> */}
+                        </div>
+                        <div className="col-md-9">
+                          <p>
+                            Already a member?{" "}
+                            <Link href="/login">Login Now.</Link>
+                          </p>
+                        </div>
+                        <p className="form-message"></p>
+                        <div className="col-md-12">
+                          <div className="single-form form-group text-center">
+                            <button
+                              type="submit"
+                              disabled={isLoginStarted}
+                              className="btn_1"
+                            >
+                              Sign Up
+                            </button>
+                          </div>
+                          {/* <!-- single form --> */}
+                          <hr />
+                        </div>
+                      </div>
+                    </form>
+                  </div>
+                </div>
+              </div>
             </div>
-          </form>
+          </div>
         </div>
-      </main>
+      </div>
     </div>
-  )
+  );
 }
+
+export default SignUp;

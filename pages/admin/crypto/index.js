@@ -18,6 +18,7 @@ import CardHeader from "components/Card/CardHeader.js";
 import CardIcon from "components/Card/CardIcon.js";
 import CardBody from "components/Card/CardBody.js";
 import CardFooter from "components/Card/CardFooter.js";
+import moment from 'moment'
 
 // import { bugs, website, server } from "variables/general.js";
 
@@ -52,7 +53,8 @@ function Crypto(props) {
               <Button
                 fullWidth
                 color="warning"
-                // onClick={() => showNotification("tl")}
+                onClick={() => Router.push("/admin/crypto/histroy")}
+                
               >
                Histroy
               </Button>
@@ -76,7 +78,9 @@ function Crypto(props) {
                 { title: "Brand", field: "coin.name"},
                 { title: "Rate", field: "coin.rate"},
                 { title: "Status", field: "status_name.name"},
+                { title: "Date", field: `created_at`, render: rowData => moment(rowData.created_at).fromNow()},
                 { title: "Amount", field: "amount"},
+
               ]}
               data={props.coin}
               title=""

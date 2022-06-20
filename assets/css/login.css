@@ -1,0 +1,119 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,400;0,600;0,700;1,400;1,600;1,700&display=swap');
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box
+}
+
+html,
+body {
+    font-family: 'Poppins', sans-serif;
+}
+
+/* Variables */
+
+:root {
+    --color-pink: #EF4762;
+    --color-orange: #EF4C40;
+    --color-blue: #0E103A;
+}
+
+/* ------------------------------
+General Sytling
+------------------------------*/
+a,
+a:hover {
+    text-decoration: none;
+}
+
+.btn_1 {
+    padding: .6rem 3rem;
+    width: 100%;
+    display: inline-block;
+    background: var(--color-orange);
+    border: none;
+    border-radius: 4px;
+    color: #fff;
+    transition: all .3s;
+}
+.btn_1:hover {
+    background: var(--color-blue)
+}
+
+.page_container {
+    width: 100%;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(to right bottom, #EF4762, #EF4C40);
+}
+
+.page_content {
+    display: flex;
+    height: 100%;
+    align-items: center;
+    flex-direction: column;
+    padding-top: 4rem;
+}
+
+/* --------------------------------
+Logo Div
+--------------------------------*/
+.logo-div {
+
+}
+
+
+/* ------------------------------------
+Form DIv
+------------------------------------*/
+.form_box {
+    padding: 2rem 1rem;
+    margin-bottom: 2rem;
+    background: #fff;
+    box-shadow: 0 .3rem .9rem rgba(0, 0, 0, .2);
+    border: none;
+    border-radius: 4px;
+    width: 450px;
+}
+
+.form_box label {
+    margin-top: 1rem;
+    display: inline-block;
+    font-size: 1rem;
+}
+
+.form_box input.form-control {
+    margin-bottom: .5rem;
+    padding: .4rem .8rem;
+    
+}
+
+.form_box p a {
+    color: var(--color-blue);
+}
+
+.text-center h6 a {
+    color: var(--color-blue);
+    transition: .3s;
+}
+.text-center h6:hover a {
+    color: var(--color-orange)
+}
+
+.form_box .icon {
+    padding: 1rem;
+    color: #fff;
+    border-radius: 50%;
+}
+
+.form_box .icon.facebook {
+    background: rgb(23, 23, 182);
+}
+.form_box .icon.google {
+    background: orange;
+}
+.form_box .icon.linkedin {
+    background: rgb(76, 76, 226);
+}

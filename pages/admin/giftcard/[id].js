@@ -19,25 +19,27 @@ import CardHeader from "components/Card/CardHeader.js";
 import CardBody from "components/Card/CardBody.js";
 import CardFooter from "components/Card/CardFooter.js";
 import CardAvatar from "components/Card/CardAvatar.js";
-import avatar from "assets/img/faces/marc.jpg";
+import avatar from "assets/img/faces/user.png";
 
 import styles from "assets/jss/nextjs-material-dashboard/views/dashboardStyle.js";
-import moment from "moment";
 import Server from "../../api/lib/Server";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+
+
 
 
 function Id(props) {
+  // const [split, setSplit] = React.useState([])
   const useStyles = makeStyles(styles);
   const classes = useStyles();
-  const image = props.card.cards;
-  const remove = image.substring(1, image.length - 1);
-  const split = remove.split(",");
+  const data = props.card.cards;
+  const obj = JSON.parse(data)
+  const image = Object.values(obj);
+  
   const Router = useRouter();
-
-  const cards = ({ src, width, quality }) => {
-    return `${
-      process.env.NEXT_PUBLIC_SERVER_URL
-    }/get-picture/cards/${src}?w=${width}&q=${quality || 75}`;
+  const imageLoader = ({ src, width, quality }) => {
+    return `https://res.cloudinary.com/ubycohub/${src}.jpg?w=${width}&q=${quality || 75}`;
   };
 
   const actionCoin = async (status) => {
@@ -51,7 +53,12 @@ function Id(props) {
       },
       method: "PUT",
     });
-    Router.reload(window.location.pathname);
+    if (res.status == 200) {
+      toast.success("Transaction updated");
+    } else {
+      toast.error("Error");
+    }
+    window.location.reload();
   };
 
   const confirmPayment = async () => {
@@ -59,17 +66,24 @@ function Id(props) {
       body: JSON.stringify({
         id: props.card.id,
         user_id: props.card.user_id,
-        amount: props.card.total,
+        amount: Number(props.card.rate * props.card.amount)
       }),
       headers: {
         "Content-Type": "application/json",
       },
       method: "PUT",
     });
+    if (res.status == 200) {
+      toast.success("Payment Confirmed");
+    } else {
+      toast.error("Error");
+    }
+    window.location.reload();
   };
 
   return (
     <>
+      <ToastContainer />
       <GridContainer>
         <GridItem xs={12} sm={12} md={8}>
           <Card>
@@ -78,31 +92,23 @@ function Id(props) {
               <p className={classes.cardCategoryWhite}>Giftcards</p>
             </CardHeader>
             <CardBody>
-              <GridItem xs={6} sm={6} md={4}>
-                {/* <img src={avatar}/> */}
-              </GridItem>
-              <GridItem xs={6} sm={6} md={4}>
-                <GridList>
-                  <Image
-                    loader={cards}
-                    src={split[0].replace(
-                      /[`~!@#$%^&*()_|+\-=?;:'",<>\{\}\[\]\\\/]/gi,
-                      ""
-                    )}
-                    width={300}
-                    height={200}
+              
+            <GridContainer>
+              {image.map(function(name, index){
+                return (
+                  <GridItem xs={6} sm={6} md={4}>
+                    <Image
+                    loader={imageLoader}
+                    src={name}
+                    width={400}
+                    height={700}
+                    key={index}
                   />
-                  <Image
-                    loader={cards}
-                    src={split[1].replace(
-                      /[`~!@#$%^&*()_|+\-=?;:'",<>\{\}\[\]\\\/]/gi,
-                      ""
-                    )}
-                    width={300}
-                    height={200}
-                  />
-                </GridList>
-              </GridItem>
+                 </GridItem>
+                );
+              })}
+              </GridContainer>
+
             </CardBody>
 
             <CardFooter>
@@ -153,10 +159,10 @@ function Id(props) {
 
               {props.card.completed == false ? (
                 <>
-                  <p>Incomplete Trade</p>
+                  <p><strong>Status</strong>: Incomplete Trade</p>
                 </>
               ) : (
-                <p>complete Trade</p>
+                <p><strong>Status</strong>: Complete Trade</p>
               )}
             </CardFooter>
           </Card>
@@ -166,14 +172,27 @@ function Id(props) {
           <Card profile>
             <CardAvatar profile>
               <a href="#pablo" onClick={(e) => e.preventDefault()}>
-                <img src={avatar} alt="..." />
+                {
+                  props.card.user.picture !== null ? 
+                  <Image
+                  loader={imageLoader}
+                  src={props.card.user.picture}
+                  width={400}
+                  height={700}
+                /> : <img src={avatar} alt="..." />
+                }
               </a>
             </CardAvatar>
             <CardBody profile>
               <h4 className={classes.cardTitle}>{props.card.user.fullname}</h4>
               <h4 className={classes.cardTitle}>
                 {" "}
-                Total amount: {props.card.total}
+                Total amount: &#8358;{Number(props.card.amount * props.card.rate).toFixed(2)}
+              </h4>
+
+              <h4>
+              {" "}
+              Comment: {props.card.comments}
               </h4>
               <Button
                 color="primary"

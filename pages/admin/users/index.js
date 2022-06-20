@@ -34,7 +34,7 @@ function Users(props) {
       },
       method: "PUT",
     });
-    // Router.reload(window.location.pathname);
+    Router.reload(window.location.pathname);
   };
 
   return (
@@ -58,6 +58,11 @@ function Users(props) {
                   field: "customer_id",
                   editable: "never",
                 },
+                {
+                  title: "Email",
+                  field: "email",
+                  editable: "never",
+                },
                 { title: "Phone", field: "phone", editable: "never" },
                 {
                   title: "Status",
@@ -68,6 +73,7 @@ function Users(props) {
                   title: "Verified",
                   field: "is_verified",
                   lookup: { false: "Not Verified", true: "Confirmed" },
+                  editable: "never",
                 },
                 {
                   title: "Available Amount",
@@ -90,7 +96,7 @@ function Users(props) {
                       resolve();
                       updateStatus(id, status);
                     }, 1000);
-                  }),
+                  })
               }}
               actions={[
                 {

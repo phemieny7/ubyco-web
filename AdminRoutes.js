@@ -25,7 +25,7 @@ import LocationOn from "@material-ui/icons/LocationOn";
 import Notifications from "@material-ui/icons/Notifications";
 import{ BiBitcoin, BiEnvelope }from 'react-icons/bi';
 import {FaBank, FaBitcoin, FaPiggyBank} from 'react-icons/fa';
-import {FiMessageCircle, FiSettings} from 'react-icons/fi'
+import {FiMessageCircle, FiSettings, FiUserPlus} from 'react-icons/fi'
 import Language from "@material-ui/icons/Language";
 
 const dashboardRoutes = [
@@ -63,24 +63,31 @@ const dashboardRoutes = [
     icon: FaPiggyBank,
     layout: "/admin",
   },
+
   {
-    path: "/message",
-    name: "Message",
-    icon: FiMessageCircle,
+    path: "/adminusers",
+    name: "Admin Users",
+    icon: FiUserPlus,
     layout: "/admin",
   },
-  {
-    path: "/table-list",
-    name: "Setting",
-    icon: FiSettings,
-    layout: "/admin",
-  },
-  {
-    path: "/newsletter",
-    name: "News Letter",
-    icon: BiEnvelope,
-    layout: "/admin",
-  },
+  // {
+  //   path: "/message",
+  //   name: "Message",
+  //   icon: FiMessageCircle,
+  //   layout: "/admin",
+  // },
+  // {
+  //   path: "/table-list",
+  //   name: "Setting",
+  //   icon: FiSettings,
+  //   layout: "/admin",
+  // },
+  // {
+  //   path: "/newsletter",
+  //   name: "News Letter",
+  //   icon: BiEnvelope,
+  //   layout: "/admin",
+  // },
   // {
   //   path: "/maps",
   //   name: "Maps",
@@ -88,13 +95,12 @@ const dashboardRoutes = [
 
   //   layout: "/admin",
   // },
-   {
-    path: "/notifications",
-    name: "Notifications",
-    icon: Notifications,
-
-    layout: "/admin",
-  },
+  //  {
+  //   path: "/notifications",
+  //   name: "Notifications",
+  //   icon: Notifications,
+  //   layout: "/admin",
+  // },
 ];
 
 export default dashboardRoutes;

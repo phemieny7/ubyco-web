@@ -5,7 +5,7 @@ import { getSession } from "next-auth/client";
 export default async (req, res) => {
   const session = await getSession({ req });
   const token = session?.accessToken;
-  const result = await Server.delete('/admin/delete_coin', {
+  const result = await Server.post('/admin/delete_coin', {
     id: req.body.id,
   },
   {

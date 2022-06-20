@@ -13,6 +13,7 @@ import GridItem from "components/Grid/GridItem.js";
 import GridContainer from "components/Grid/GridContainer.js";
 
 import Card from "components/Card/Card.js";
+import Button from "components/CustomButtons/Button.js";
 
 import CardHeader from "components/Card/CardHeader.js";
 import CardBody from "components/Card/CardBody.js";
@@ -22,17 +23,47 @@ import styles from "assets/jss/nextjs-material-dashboard/views/dashboardStyle.js
 import { getSession } from "next-auth/client";
 import Server from "./../../api/lib/Server"
 import {useRouter} from 'next/router'
+import moment from "moment";
 function WithDrawal(props) {
   const [data, setData] = useState(props.withdrawal);
   const useStyles = makeStyles(styles);
   const Router = useRouter()
   const classes = useStyles();
   return (
+    <div>
+    <GridContainer>
+        <GridItem xs={12} sm={6} md={6}>
+          <Card>
+            <CardBody>
+              <Button
+                fullWidth
+                color="danger"
+                onClick={() => Router.push("/admin/withdrawal/failed")}
+              >
+                Failed Withdrawal
+              </Button>
+            </CardBody>
+           </Card>
+        </GridItem>
+        <GridItem xs={12} sm={6} md={6}>
+        <Card>
+            <CardBody color="warning">
+              <Button
+                fullWidth
+                color="success"
+                onClick={() => Router.push("/admin/withdrawal/completed")}
+              >
+               Completed Withdrawal
+              </Button>
+            </CardBody>
+           </Card>
+        </GridItem>
+       </GridContainer>
     <GridContainer>
       <GridItem xs={12} sm={12} md={12}>
         <Card>
-          <CardHeader color="success">
-            <h4 className={classes.cardTitleWhite}>User Withdrawal request</h4>
+          <CardHeader color="info">
+            <h4 className={classes.cardTitleWhite}>Active User Withdrawal request</h4>
           </CardHeader>
           <CardBody>
             <MaterialTable
@@ -44,7 +75,12 @@ function WithDrawal(props) {
                 },
                 { title: "Customer ID", field: "user.customer_id", editable: 'never', },
                 { title: "Phone", field: "user.phone", editable: 'never', },
-                { title: "Available Amount", field: "userAmount.amount", editable: 'never',},
+                {
+                  title: "Date",
+                  field: `created_at`,
+                  render: (rowData) => moment(rowData.created_at).fromNow(),
+                },
+                // { title: "Available Amount", field: "userAmount.amount", editable: 'never',},
                 {title: "Withdraw Request", field:'amount', editable: 'never',},
                 {title: "status", field:"status_name.name"}
               ]}
@@ -61,7 +97,8 @@ function WithDrawal(props) {
               ]}
              
               options={{
-                actionsColumnIndex: -1
+                actionsColumnIndex: -1,
+                grouping: true
               }}
             />
           </CardBody>
@@ -69,6 +106,7 @@ function WithDrawal(props) {
         </Card>
       </GridItem>
     </GridContainer>
+    </div>
   );
 }
 

@@ -80,11 +80,20 @@ const options = {
       }
       return token;
     },
-    session: (session, token) => {
+    session: async function session (session, token) {
+      const result = await Server.get("/", {
+        headers: {
+          accept: "*/*",
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token.accessToken}`,
+        },
+      });
+      if (result.status === 200) {
       session.accessToken = token.accessToken;
       session.user = token.user;
-      // console.log(session);
+      session.role = token.user.role;
       return session;
+      }
     },
   },
 };
